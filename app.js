@@ -57,8 +57,21 @@ function process_event(event){
     // Si en el evento existe un mensaje de tipo texto
     if(message.text){
         // Crear un payload para un simple mensaje de texto
+        switch(message.text){
+            case "Hola" : 
+                message.text = "Hola, buenas tardes"
+                break;
+            case "Informacion":
+                message.text = "Materia: Topicos avanzados, docente: Peinado"
+                break;
+            case "Gracias" :
+                message.text = "Gracias a usted, que tenga un buen dia"
+                break;
+            default :
+                message.text = "Introduzca: 'Hola' , 'Informacion' o 'Gracias'"
+        }
         var response = {
-            "text": 'Enviaste este mensaje: ' + message.text
+            "text": message.text 
         }
     }
     
