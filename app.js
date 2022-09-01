@@ -19,11 +19,11 @@ app.get("/", function (req, res) {
 });
 
 // Messenger API parameters
-if (!process.env.FB_PAGE_TOKEN) {
-    throw new Error("missing FB_PAGE_TOKEN");
+if (!process.env.PAGE_ACCESS_TOKEN) {
+    throw new Error("missing PAGE_ACCESS_TOKEN");
   }
-  if (!process.env.FB_VERIFY_TOKEN) {
-    throw new Error("missing FB_VERIFY_TOKEN");
+  if (!process.env.VERIFICATION_TOKEN) {
+    throw new Error("missing VERIFICATION_TOKEN");
   }
   if (!process.env.GOOGLE_PROJECT_ID) {
     throw new Error("missing GOOGLE_PROJECT_ID");
@@ -136,7 +136,7 @@ const sessionIds = new Map();
 app.get("/webhook/", function (req, res) {
   if (
     req.query["hub.mode"] === "subscribe" &&
-    req.query["hub.verify_token"] === process.env.FB_VERIFY_TOKEN
+    req.query["hub.verify_token"] === process.env.VERIFICATION_TOKEN
   ) {
     res.status(200).send(req.query["hub.challenge"]);
   } else {
@@ -329,7 +329,7 @@ function handleDialogFlowResponse(sender, response) {
 }
 // async function getUserData(senderId) {
 //   console.log("consiguiendo datos del usuario...");
-//   let access_token = process.env.FB_PAGE_TOKEN;
+//   let access_token = process.env.PAGE_ACCESS_TOKEN;
 //   try {
 //     let userData = await axios.get(
 //       "https://graph.facebook.com/v6.0/" + senderId,
@@ -430,7 +430,7 @@ function callSendAPI(messageData) {
       {
         uri: "https://graph.facebook.com/v6.0/me/messages",
         qs: {
-          access_token: process.env.FB_PAGE_TOKEN,
+          access_token: process.env.PAGE_ACCESS_TOKEN,
         },
         method: "POST",
         json: messageData,
