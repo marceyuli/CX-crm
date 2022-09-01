@@ -4,6 +4,7 @@ var request = require("request");
 var bodyParser = require("body-parser");
 //libraries
 const axios = require("axios");
+const uuid = require("uuid");
 //files
 const dialogflow = require("./dialogflow");
 
