@@ -205,36 +205,35 @@ async function handleMessages(messages, sender) {
 
 
 
-// async function getUserData(senderId) {
-//   console.log("consiguiendo datos del usuario...");
-//   let access_token = process.env.PAGE_ACCESS_TOKEN;
-//   try {
-//     let userData = await axios.get(
-//       "https://graph.facebook.com/v6.0/" + senderId,
-//       {
-//         params: {
-//           access_token,
-//         },
-//       }
-//     );
-//     return userData.data;
-//   } catch (err) {
-//     console.log("algo salio mal en axios getUserData: ", err);
-//     return {
-//       first_name: "",
-//       last_name: "",
-//       profile_pic: "",
-//     };
-//   }
-// }
+async function getUserData(senderId) {
+  console.log("consiguiendo datos del usuario...");
+  let access_token = process.env.PAGE_ACCESS_TOKEN;
+  try {
+    let userData = await axios.get(
+      "https://graph.facebook.com/v6.0/" + senderId,
+      {
+        params: {
+          access_token,
+        },
+      }
+    );
+    return userData.data;
+  } catch (err) {
+    console.log("algo salio mal en axios getUserData: ", err);
+    return {
+      first_name: "",
+      last_name: "",
+      profile_pic: "",
+    };
+  }
+}
 
 async function sendTextMessage(recipientId, text) {
-//   if (text.includes("{first_name}") || text.includes("{last_name}")) {
-//     let userData = await getUserData(recipientId);
-//     text = text
-//       .replace("{first_name}", userData.first_name)
-//       .replace("{last_name}", userData.last_name);
-//   }
+  if (text.includes("{first_name}")) {
+    let userData = await getUserData(recipientId);
+    text = text
+      .replace("{first_name}", userData.first_name);
+  }
   var messageData = {
     recipient: {
       id: recipientId,
