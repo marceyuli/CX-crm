@@ -220,15 +220,15 @@ async function receivedMessage(event) {
 //   sendTextMessage(senderId, "Archivo adjunto recibido... gracias! .");
 // }
 
-// async function setSessionAndUser(senderId) {
-//   try {
-//     if (!sessionIds.has(senderId)) {
-//       sessionIds.set(senderId, uuid.v1());
-//     }
-//   } catch (error) {
-//     throw error;
-//   }
-// }
+async function setSessionAndUser(senderId) {
+  try {
+    if (!sessionIds.has(senderId)) {
+      sessionIds.set(senderId, uuid.v1());
+    }
+  } catch (error) {
+    throw error;
+  }
+}
 
 // async function handleQuickReply(senderId, quickReply, messageId) {
 //   let quickReplyPayload = quickReply.payload;
@@ -501,4 +501,3 @@ function isDefined(obj) {
   return obj != null;
 }
 
-module.exports = router;
