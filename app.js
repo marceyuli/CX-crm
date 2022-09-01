@@ -72,8 +72,6 @@ app.post("/webhook/", function (req, res) {
       pageEntry.messaging.forEach(function (messagingEvent) {
         if (messagingEvent.message) {
           receivedMessage(messagingEvent);
-        // } else if (messagingEvent.postback) {
-        //   receivedPostback(messagingEvent);
         } else {
           console.log(
             "Webhook received unknown messagingEvent: ",
@@ -109,6 +107,44 @@ async function receivedMessage(event) {
   } 
 }
 
+async function sendToDialogFlow(senderId, messageText) {
+  sendTypingOn(senderId);
+  try {
+    let result;
+    setSessionAndUser(senderId);
+    let session = sessionIds.get(senderId);
+    result = await dialogflow.sendToDialogFlow(
+      messageText,
+      session,
+      "FACEBOOK"
+    );
+    handleDialogFlowResponse(senderId, result);
+  } catch (error) {
+    console.log("salio mal en sendToDialogflow...", error);
+  }
+}
+
+function handleDialogFlowResponse(sender, response) {
+  let responseText = response.fulfillmentMessages.fulfillmentText;
+  let messages = response.fulfillmentMessages;
+  let action = response.action;
+  let contexts = response.outputContexts;
+  let parameters = response.parameters;
+  console.log(responseText)
+  console.log(messages)
+  sendTypingOff(sender);
+
+  if (isDefined(action)) {
+    handleDialogFlowAction(sender, action, messages, contexts, parameters);
+  } else if (isDefined(messages)) {
+    handleMessages(messages, sender);
+  } else if (responseText == "" && !isDefined(action)) {
+    //dialogflow could not evaluate input.
+    sendTextMessage(sender, "No entiendo lo que trataste de decir ...");
+  } else if (isDefined(responseText)) {
+    sendTextMessage(sender, responseText);
+  }
+}
 
 async function setSessionAndUser(senderId) {
   try {
@@ -168,43 +204,9 @@ async function handleMessages(messages, sender) {
   }
 }
 
-async function sendToDialogFlow(senderId, messageText) {
-  sendTypingOn(senderId);
-  try {
-    let result;
-    setSessionAndUser(senderId);
-    let session = sessionIds.get(senderId);
-    result = await dialogflow.sendToDialogFlow(
-      messageText,
-      session,
-      "FACEBOOK"
-    );
-    handleDialogFlowResponse(senderId, result);
-  } catch (error) {
-    console.log("salio mal en sendToDialogflow...", error);
-  }
-}
 
-function handleDialogFlowResponse(sender, response) {
-  let responseText = response.fulfillmentMessages.fulfillmentText;
-  let messages = response.fulfillmentMessages;
-  let action = response.action;
-  let contexts = response.outputContexts;
-  let parameters = response.parameters;
 
-  sendTypingOff(sender);
 
-  if (isDefined(action)) {
-    handleDialogFlowAction(sender, action, messages, contexts, parameters);
-  } else if (isDefined(messages)) {
-    handleMessages(messages, sender);
-  } else if (responseText == "" && !isDefined(action)) {
-    //dialogflow could not evaluate input.
-    sendTextMessage(sender, "No entiendo lo que trataste de decir ...");
-  } else if (isDefined(responseText)) {
-    sendTextMessage(sender, responseText);
-  }
-}
 // async function getUserData(senderId) {
 //   console.log("consiguiendo datos del usuario...");
 //   let access_token = process.env.PAGE_ACCESS_TOKEN;
@@ -324,28 +326,6 @@ function callSendAPI(messageData) {
     );
   });
 }
-
-// async function receivedPostback(event) {
-//   var senderId = event.sender.id;
-//   var recipientID = event.recipient.id;
-//   var timeOfPostback = event.timestamp;
-
-//   var payload = event.postback.payload;
-//   switch (payload) {
-//     default:
-//       //unindentified payload
-//       sendToDialogFlow(senderId, payload);
-//       break;
-//   }
-
-//   console.log(
-//     "Received postback for user %d and page %d with payload '%s' " + "at %d",
-//     senderId,
-//     recipientID,
-//     payload,
-//     timeOfPostback
-//   );
-// }
 
 function isDefined(obj) {
   if (typeof obj == "undefined") {
