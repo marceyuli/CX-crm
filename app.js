@@ -196,8 +196,8 @@ function handleDialogFlowResponse(sender, response) {
 
   if (isDefined(action)) {
     handleDialogFlowAction(sender, action, messages, contexts, parameters);
-  // } else if (isDefined(messages)) {
-  //   handleMessages(messages, sender);
+  } else if (isDefined(messages)) {
+    handleMessages(messages, sender);
   } else if (responseText == "" && !isDefined(action)) {
     //dialogflow could not evaluate input.
     sendTextMessage(sender, "No entiendo lo que trataste de decir ...");
