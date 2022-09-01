@@ -125,7 +125,7 @@ async function sendToDialogFlow(senderId, messageText) {
 }
 
 function handleDialogFlowResponse(sender, response) {
-  let responseText = response.fulfillmentMessages.fulfillmentText;
+  let responseText = response.fulfillmentText;
   let messages = response.fulfillmentMessages;
   let action = response.action;
   let contexts = response.outputContexts;
