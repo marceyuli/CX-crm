@@ -41,95 +41,6 @@ if (!process.env.PAGE_ACCESS_TOKEN) {
   if (!process.env.FB_APP_SECRET) {
     throw new Error("missing FB_APP_SECRET");
   }
-// Facebook Webhook
-
-// Usados para la verificacion
-// app.get("/webhook", function (req, res) {
-//     // Verificar la coincidendia del token
-//     if (req.query["hub.verify_token"] === process.env.VERIFICATION_TOKEN) {
-//         // Mensaje de exito y envio del token requerido
-//         console.log("webhook verificado!");
-//         res.status(200).send(req.query["hub.challenge"]);
-//     } else {
-//         // Mensaje de fallo
-//         console.error("La verificacion ha fallado, porque los tokens no coinciden");
-//         res.sendStatus(403);
-//     }
-// });
-
-// // Todos eventos de mesenger sera apturados por esta ruta
-// app.post("/webhook", function (req, res) {
-//     // Verificar si el vento proviene del pagina asociada
-//     if (req.body.object == "page") {
-//         // Si existe multiples entradas entraas
-//         req.body.entry.forEach(function(entry) {
-//             // Iterara todos lo eventos capturados
-//             entry.messaging.forEach(function(event) {
-//                 if (event.message) {
-//                     process_event(event);
-//                 }
-//             });
-//         });
-//         res.sendStatus(200);
-//     }
-// });
-
-
-// Funcion donde se procesara el evento
-// function process_event(event){
-//     // Capturamos los datos del que genera el evento y el mensaje 
-//     var senderID = event.sender.id;
-//     var message = event.message;
-    
-//     // Si en el evento existe un mensaje de tipo texto
-//     if(message.text){
-//         // Crear un payload para un simple mensaje de texto
-//         switch(message.text){
-//             case "Hola" : 
-//                 message.text = "Hola, buenas tardes"
-//                 break;
-//             case "Informacion":
-//                 message.text = "Materia: Topicos avanzados, docente: Peinado"
-//                 break;
-//             case "Gracias" :
-//                 message.text = "Gracias a usted, que tenga un buen dia"
-//                 break;
-//             default :
-//                 message.text = "Introduzca: 'Hola' , 'Informacion' o 'Gracias'"
-//         }
-//         var response = {
-//             "text": message.text 
-//         }
-//     }
-    
-//     // Enviamos el mensaje mediante SendAPI
-//     enviar_texto(senderID, response);
-// }
-
-// // Funcion donde el chat respondera usando SendAPI
-// function enviar_texto(senderID, response){
-//     // Construcicon del cuerpo del mensaje
-//     let request_body = {
-//         "recipient": {
-//           "id": senderID
-//         },
-//         "message": response
-//     }
-    
-//     // Enviar el requisito HTTP a la plataforma de messenger
-//     request({
-//         "uri": "https://graph.facebook.com/v2.6/me/messages",
-//         "qs": { "access_token": process.env.PAGE_ACCESS_TOKEN },
-//         "method": "POST",
-//         "json": request_body
-//     }, (err, res, body) => {
-//         if (!err) {
-//           console.log('Mensaje enviado!')
-//         } else {
-//           console.error("No se puedo enviar el mensaje:" + err);
-//         }
-//     }); 
-// }
 
 const sessionIds = new Map();
 
@@ -161,8 +72,8 @@ app.post("/webhook/", function (req, res) {
       pageEntry.messaging.forEach(function (messagingEvent) {
         if (messagingEvent.message) {
           receivedMessage(messagingEvent);
-        } else if (messagingEvent.postback) {
-          receivedPostback(messagingEvent);
+        // } else if (messagingEvent.postback) {
+        //   receivedPostback(messagingEvent);
         } else {
           console.log(
             "Webhook received unknown messagingEvent: ",
@@ -190,36 +101,14 @@ async function receivedMessage(event) {
     timeOfMessage
   );
 
-  var isEcho = message.is_echo;
-  var messageId = message.mid;
-  var appId = message.app_id;
-  var metadata = message.metadata;
-
-  // You may get a text or attachment but not both
   var messageText = message.text;
-  var messageAttachments = message.attachments;
-  var quickReply = message.quick_reply;
-
-  if (isEcho) {
-    handleEcho(messageId, appId, metadata);
-    return;
-  } else if (quickReply) {
-    handleQuickReply(senderId, quickReply, messageId);
-    return;
-  }
   if (messageText) {
     //send message to dialogflow
     console.log("MENSAJE DEL USUARIO: ", messageText);
     await sendToDialogFlow(senderId, messageText);
-  } else if (messageAttachments) {
-    handleMessageAttachments(messageAttachments, senderId);
-  }
+  } 
 }
 
-// function handleMessageAttachments(messageAttachments, senderId) {
-//   //for now just reply
-//   sendTextMessage(senderId, "Archivo adjunto recibido... gracias! .");
-// }
 
 async function setSessionAndUser(senderId) {
   try {
@@ -231,17 +120,6 @@ async function setSessionAndUser(senderId) {
   }
 }
 
-// async function handleQuickReply(senderId, quickReply, messageId) {
-//   let quickReplyPayload = quickReply.payload;
-//   console.log(
-//     "Quick reply for message %s with payload %s",
-//     messageId,
-//     quickReplyPayload
-//   );
-//   this.elements = a;
-//   // send payload to api.ai
-//   sendToDialogFlow(senderId, quickReplyPayload);
-// }
 
 async function handleDialogFlowAction(
   sender,
@@ -258,32 +136,31 @@ async function handleDialogFlowAction(
 }
 
 async function handleMessage(message, sender) {
-  switch (message.message) {
-    case "text": // text
+  // switch (message.message) {
+    // case "text": // text
       for (const text of message.text.text) {
         if (text !== "") {
           await sendTextMessage(sender, text);
         }
       }
-      break;
-    default:
-      break;
-  }
+      // break;
+    // default:
+      // break;
+  // }
 }
 
 
 async function handleMessages(messages, sender) {
   try {
     let i = 0;
-    let cards = [];
     while (i < messages.length) {
-      switch (messages[i].message) {
-        case "text":
+      // switch (messages[i].message) {
+        // case "text":
           await handleMessage(messages[i], sender);
-          break;
-        default:
-          break;
-      }
+          // break;
+        // default:
+          // break;
+      // }
       i += 1;
     }
   } catch (error) {
@@ -309,7 +186,6 @@ async function sendToDialogFlow(senderId, messageText) {
 }
 
 function handleDialogFlowResponse(sender, response) {
-    console.log(response);
   let responseText = response.fulfillmentMessages.fulfillmentText;
   let messages = response.fulfillmentMessages;
   let action = response.action;
@@ -320,8 +196,8 @@ function handleDialogFlowResponse(sender, response) {
 
   if (isDefined(action)) {
     handleDialogFlowAction(sender, action, messages, contexts, parameters);
-  } else if (isDefined(messages)) {
-    handleMessages(messages, sender);
+  // } else if (isDefined(messages)) {
+  //   handleMessages(messages, sender);
   } else if (responseText == "" && !isDefined(action)) {
     //dialogflow could not evaluate input.
     sendTextMessage(sender, "No entiendo lo que trataste de decir ...");
@@ -367,26 +243,6 @@ async function sendTextMessage(recipientId, text) {
       text: text,
     },
   };
-  await callSendAPI(messageData);
-}
-
-
-async function sendGenericMessage(recipientId, elements) {
-  var messageData = {
-    recipient: {
-      id: recipientId,
-    },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: elements,
-        },
-      },
-    },
-  };
-
   await callSendAPI(messageData);
 }
 
@@ -469,27 +325,27 @@ function callSendAPI(messageData) {
   });
 }
 
-async function receivedPostback(event) {
-  var senderId = event.sender.id;
-  var recipientID = event.recipient.id;
-  var timeOfPostback = event.timestamp;
+// async function receivedPostback(event) {
+//   var senderId = event.sender.id;
+//   var recipientID = event.recipient.id;
+//   var timeOfPostback = event.timestamp;
 
-  var payload = event.postback.payload;
-  switch (payload) {
-    default:
-      //unindentified payload
-      sendToDialogFlow(senderId, payload);
-      break;
-  }
+//   var payload = event.postback.payload;
+//   switch (payload) {
+//     default:
+//       //unindentified payload
+//       sendToDialogFlow(senderId, payload);
+//       break;
+//   }
 
-  console.log(
-    "Received postback for user %d and page %d with payload '%s' " + "at %d",
-    senderId,
-    recipientID,
-    payload,
-    timeOfPostback
-  );
-}
+//   console.log(
+//     "Received postback for user %d and page %d with payload '%s' " + "at %d",
+//     senderId,
+//     recipientID,
+//     payload,
+//     timeOfPostback
+//   );
+// }
 
 function isDefined(obj) {
   if (typeof obj == "undefined") {
