@@ -192,10 +192,10 @@ async function handleMessages(messages, sender) {
         case "text":
           await handleMessage(messages[i], sender);
           break;
-        default:
-          break;
         case "image":
           await handleMessage(messages[i], sender);
+          break;
+        default:
           break;
       }
       i += 1;
