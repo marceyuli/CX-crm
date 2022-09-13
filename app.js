@@ -9,38 +9,38 @@ const uuid = require("uuid");
 const dialogflow = require("./dialogflow");
 
 var app = express();
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // configurar el puerto y el mensaje en caso de exito
 app.listen((process.env.PORT || 8080), () => console.log('El servidor webhook esta escchando!'));
 
 // Ruta de la pagina index
 app.get("/", function (req, res) {
-    res.send("Se ha desplegado de manera exitosa el CMaquera ChatBot :D!!!");
+  res.send("Se ha desplegado de manera exitosa el CMaquera ChatBot :D!!!");
 });
 
 // Messenger API parameters
 if (!process.env.PAGE_ACCESS_TOKEN) {
-    throw new Error("missing PAGE_ACCESS_TOKEN");
-  }
-  if (!process.env.VERIFICATION_TOKEN) {
-    throw new Error("missing VERIFICATION_TOKEN");
-  }
-  if (!process.env.GOOGLE_PROJECT_ID) {
-    throw new Error("missing GOOGLE_PROJECT_ID");
-  }
-  if (!process.env.DF_LANGUAGE_CODE) {
-    throw new Error("missing DF_LANGUAGE_CODE");
-  }
-  if (!process.env.GOOGLE_CLIENT_EMAIL) {
-    throw new Error("missing GOOGLE_CLIENT_EMAIL");
-  }
-  if (!process.env.GOOGLE_PRIVATE_KEY) {
-    throw new Error("missing GOOGLE_PRIVATE_KEY");
-  }
-  if (!process.env.FB_APP_SECRET) {
-    throw new Error("missing FB_APP_SECRET");
-  }
+  throw new Error("missing PAGE_ACCESS_TOKEN");
+}
+if (!process.env.VERIFICATION_TOKEN) {
+  throw new Error("missing VERIFICATION_TOKEN");
+}
+if (!process.env.GOOGLE_PROJECT_ID) {
+  throw new Error("missing GOOGLE_PROJECT_ID");
+}
+if (!process.env.DF_LANGUAGE_CODE) {
+  throw new Error("missing DF_LANGUAGE_CODE");
+}
+if (!process.env.GOOGLE_CLIENT_EMAIL) {
+  throw new Error("missing GOOGLE_CLIENT_EMAIL");
+}
+if (!process.env.GOOGLE_PRIVATE_KEY) {
+  throw new Error("missing GOOGLE_PRIVATE_KEY");
+}
+if (!process.env.FB_APP_SECRET) {
+  throw new Error("missing FB_APP_SECRET");
+}
 
 const sessionIds = new Map();
 
@@ -104,7 +104,7 @@ async function receivedMessage(event) {
     //send message to dialogflow
     console.log("MENSAJE DEL USUARIO: ", messageText);
     await sendToDialogFlow(senderId, messageText);
-  } 
+  }
 }
 
 async function sendToDialogFlow(senderId, messageText) {
@@ -134,8 +134,8 @@ function handleDialogFlowResponse(sender, response) {
 
   if (isDefined(action)) {
     handleDialogFlowAction(sender, action, messages, contexts, parameters);
-  // } else if (isDefined(messages)) {
-  //   handleMessages(messages, sender);
+  } else if (isDefined(messages)) {
+    handleMessages(messages, sender);
   } else if (responseText == "" && !isDefined(action)) {
     //dialogflow could not evaluate input.
     sendTextMessage(sender, "No entiendo lo que trataste de decir ...");
@@ -171,15 +171,15 @@ async function handleDialogFlowAction(
 
 async function handleMessage(message, sender) {
   // switch (message.message) {
-    // case "text": // text
-      for (const text of message.text.text) {
-        if (text !== "") {
-          await sendTextMessage(sender, text);
-        }
-      }
-      // break;
-    // default:
-      // break;
+  // case "text": // text
+  for (const text of message.text.text) {
+    if (text !== "") {
+      await sendTextMessage(sender, text);
+    }
+  }
+  // break;
+  // default:
+  // break;
   // }
 }
 
@@ -188,13 +188,16 @@ async function handleMessages(messages, sender) {
   try {
     let i = 0;
     while (i < messages.length) {
-      // switch (messages[i].message) {
-        // case "text":
+      switch (messages[i].message) {
+        case "text":
           await handleMessage(messages[i], sender);
-          // break;
-        // default:
-          // break;
-      // }
+          break;
+        default:
+          break;
+        case "image":
+          await handleMessage(messages[i], sender);
+          break;
+      }
       i += 1;
     }
   } catch (error) {
