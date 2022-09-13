@@ -170,17 +170,20 @@ async function handleDialogFlowAction(
 }
 
 async function handleMessage(message, sender) {
-  // switch (message.message) {
-  // case "text": // text
-  for (const text of message.text.text) {
-    if (text !== "") {
-      await sendTextMessage(sender, text);
-    }
+  switch (message.message) {
+    case "text": // text
+      for (const text of message.text.text) {
+        if (text !== "") {
+          await sendTextMessage(sender, text);
+        }
+      }
+      break;
+    case "image":
+      await sendImageMessage(sender, message.image.imageUri);
+      break;
+    default:
+      break;
   }
-  // break;
-  // default:
-  // break;
-  // }
 }
 
 
@@ -248,6 +251,22 @@ async function sendTextMessage(recipientId, text) {
   await callSendAPI(messageData);
 }
 
+async function sendImageMessage(recipientId, imageUrl) {
+  var messageData = {
+    recipient: {
+      id: recipientId,
+    },
+    message: {
+      attachment: {
+        type: "image",
+        payload: {
+          url: imageUrl,
+        },
+      },
+    },
+  };
+  await callSendAPI(messageData);
+}
 
 /*
  * Turn typing indicator on
