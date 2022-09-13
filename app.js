@@ -181,6 +181,18 @@ async function handleMessage(message, sender) {
     case "image":
       await sendImageMessage(sender, message.image.imageUri);
       break;
+    case "quickReplies": // quick replies
+      let replies = [];
+      message.quickReplies.quickReplies.forEach((text) => {
+        let reply = {
+          content_type: "text",
+          title: text,
+          payload: text,
+        };
+        replies.push(reply);
+      });
+      await sendQuickReply(sender, message.quickReplies.title, replies);
+      break;
     default:
       break;
   }
@@ -196,6 +208,9 @@ async function handleMessages(messages, sender) {
           await handleMessage(messages[i], sender);
           break;
         case "image":
+          await handleMessage(messages[i], sender);
+          break;
+        case "quickReplies":
           await handleMessage(messages[i], sender);
           break;
         default:
@@ -265,6 +280,21 @@ async function sendImageMessage(recipientId, imageUrl) {
       },
     },
   };
+  await callSendAPI(messageData);
+}
+
+async function sendQuickReply(recipientId, text, replies, metadata) {
+  var messageData = {
+    recipient: {
+      id: recipientId,
+    },
+    message: {
+      text: text,
+      metadata: isDefined(metadata) ? metadata : "",
+      quick_replies: replies,
+    },
+  };
+
   await callSendAPI(messageData);
 }
 
