@@ -54,7 +54,7 @@ const sessionIds = new Map();
 
 //mongoDB models
 const ChatbotUser = require('./Models/ChatbotUsers');
-const { findOne } = require('./Models/ChatbotUsers');
+// const { findOne } = require('./Models/ChatbotUsers');
 
 // for Facebook verification
 app.get("/webhook/", function (req, res) {
@@ -123,7 +123,7 @@ async function receivedMessage(event) {
 }
 
 async function saveUserData(facebookId) {
-  let isRegistered = await findOne({ facebookId });
+  let isRegistered = await ChatbotUser.findOne({facebookId});
   if (isRegistered){
     return;
   }
