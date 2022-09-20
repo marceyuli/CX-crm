@@ -9,6 +9,7 @@ const uuid = require("uuid");
 const dialogflow = require("./dialogflow");
 
 var app = express();
+const mongoose = require('mongoose');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // configurar el puerto y el mensaje en caso de exito
@@ -42,7 +43,17 @@ if (!process.env.FB_APP_SECRET) {
   throw new Error("missing FB_APP_SECRET");
 }
 
+mongoose.connect('mongodb+srv://dialogflowuser:dialogflowpass@dialogflowcluster.32aujzd.mongodb.net/?retryWrites=true&w=majority', (err, res) => {
+  if (err) {
+    return console.log("Hubo un error en la base de datos", err);
+  }
+  console.log("BASE DE DATOS ONLINE");
+});
+
 const sessionIds = new Map();
+
+//mongoDB models
+const ChatbotUser = require('./Models/ChatbotUsers');
 
 // for Facebook verification
 app.get("/webhook/", function (req, res) {
@@ -100,6 +111,9 @@ async function receivedMessage(event) {
   );
 
   var messageText = message.text;
+
+  saveUserData(senderId);
+
   if (messageText) {
     //send message to dialogflow
     console.log("MENSAJE DEL USUARIO: ", messageText);
@@ -107,6 +121,20 @@ async function receivedMessage(event) {
   }
 }
 
+function saveUserData(facebookId) {
+  let chatbotUser = new ChatbotUser({
+    firstName: "",
+    lastName: "",
+    facebookId,
+    profilePicture: ""
+  })
+  chatbotUser.save((err, res) => {
+    if (err) {
+      return console.log(err);
+    }
+    console.log("Se creo un usuario: ", res);
+  })
+}
 async function sendToDialogFlow(senderId, messageText) {
   sendTypingOn(senderId);
   try {
