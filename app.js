@@ -43,7 +43,7 @@ if (!process.env.FB_APP_SECRET) {
   throw new Error("missing FB_APP_SECRET");
 }
 
-mongoose.connect('mongodb+srv://dialogflowuser:dialogflowpass@dialogflowcluster.32aujzd.mongodb.net/?retryWrites=true&w=majority', (err, res) => {
+mongoose.connect('mongodb+srv://dialogflowuser:dialogflowpass@dialogflowcluster.32aujzd.mongodb.net/chatbotDB?retryWrites=true&w=majority', (err, res) => {
   if (err) {
     return console.log("Hubo un error en la base de datos", err);
   }
