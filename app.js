@@ -124,9 +124,9 @@ async function receivedMessage(event) {
 
 async function saveUserData(facebookId) {
   let isRegistered = await findOne({ facebookId });
-  if (isRegistered) {
+  if (isRegistered){
     return;
-  };
+  }
   let userData = await getUserData(facebookId);
   let chatbotUser = new ChatbotUser({
     firstName: userData.first_name,
