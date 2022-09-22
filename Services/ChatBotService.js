@@ -84,7 +84,6 @@ async function handleDialogFlowAction(
         case "DatosRecibidos.action":
             console.log(parameters.phoneNumber);
             console.log(parameters.email);
-            console.log(parameters.phoneNumber.stringValue);
             saveClientData(sender, parameters);
             handleMessages(messages, sender);
             break;
