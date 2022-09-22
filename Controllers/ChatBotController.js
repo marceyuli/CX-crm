@@ -2,6 +2,7 @@
 const dialogflow = require("../dialogflow");
 const chatBotService = require("../Services/ChatBotService");
 const sessionIds = new Map();
+const uuid = require("uuid");
 
 if (!process.env.PAGE_ACCESS_TOKEN) {
     throw new Error("missing PAGE_ACCESS_TOKEN");

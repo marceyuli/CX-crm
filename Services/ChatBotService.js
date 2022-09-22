@@ -2,9 +2,7 @@ var request = require("request");
 
 //libraries
 const axios = require("axios");
-const uuid = require("uuid");
 const ChatbotUser = require('../Models/ChatbotUsers');
-const sessionIds = new Map();
 
 
 async function saveUserData(facebookId) {
