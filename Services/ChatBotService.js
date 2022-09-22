@@ -37,8 +37,8 @@ async function saveClientData(facebookId, parameters) {
         lastName: userData.last_name,
         facebookId,
         profilePicture: userData.profile_pic,
-        email: parameters.email,
-        phoneNumber: parameters.phoneNumber
+        email: parameters.fields.email,
+        phoneNumber: parameters.fields.phoneNumber
     })
     client.save((err, res) => {
         if (err) {
@@ -82,11 +82,9 @@ async function handleDialogFlowAction(
             handleMessages(messages, sender);
             break;
         case "DatosRecibidos.action":
-            console.log(parameters);
-            console.log(parameters.fields);
-            console.log(parameters.phoneNumber);
-            console.log(parameters.email);
-            saveClientData(sender, parameters);
+            if (parameters.fields.phoneNumber && parameters.fields.email) {
+                saveClientData(sender, parameters);
+            }
             handleMessages(messages, sender);
             break;
         default:
