@@ -81,8 +81,6 @@ async function receivedMessage(event) {
 
     var messageText = message.text;
 
-    chatBotService.saveUserData(senderId);
-
     if (messageText) {
         //send message to dialogflow
         console.log("MENSAJE DEL USUARIO: ", messageText);
