@@ -1,5 +1,3 @@
-
-
 //files
 const dialogflow = require("../dialogflow");
 const chatBotService = require("../Services/ChatBotService");
@@ -27,7 +25,6 @@ if (!config.GOOGLE_PRIVATE_KEY) {
 if (!config.FB_APP_SECRET) {
     throw new Error("missing FB_APP_SECRET");
 }
-//mongoDB models
 
 let postWebhook = (req, res) => {
     var data = req.body;

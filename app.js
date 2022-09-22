@@ -7,10 +7,9 @@ const mongoose = require('mongoose');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// configurar el puerto y el mensaje en caso de exito
 initWebRoutes(app)
+// configurar el puerto y el mensaje en caso de exito
 app.listen((process.env.PORT || 8080), () => console.log('El servidor webhook esta escchando!'));
-
 
 mongoose.connect('mongodb+srv://dialogflowuser:dialogflowpass@dialogflowcluster.32aujzd.mongodb.net/chatbotDB?retryWrites=true&w=majority', (err, res) => {
   if (err) {
@@ -18,8 +17,3 @@ mongoose.connect('mongodb+srv://dialogflowuser:dialogflowpass@dialogflowcluster.
   }
   console.log("BASE DE DATOS ONLINE");
 });
-
-
-
-
-
