@@ -1,28 +1,27 @@
 //files
 const dialogflow = require("../dialogflow");
 const chatBotService = require("../Services/ChatBotService");
-const config = require("../config");
 const sessionIds = new Map();
 
-if (!config.PAGE_ACCESS_TOKEN) {
+if (!process.env.PAGE_ACCESS_TOKEN) {
     throw new Error("missing PAGE_ACCESS_TOKEN");
 }
-if (!config.VERIFICATION_TOKEN) {
+if (!process.env.VERIFICATION_TOKEN) {
     throw new Error("missing VERIFICATION_TOKEN");
 }
-if (!config.GOOGLE_PROJECT_ID) {
+if (!process.env.GOOGLE_PROJECT_ID) {
     throw new Error("missing GOOGLE_PROJECT_ID");
 }
-if (!config.DF_LANGUAGE_CODE) {
+if (!process.env.DF_LANGUAGE_CODE) {
     throw new Error("missing DF_LANGUAGE_CODE");
 }
-if (!config.GOOGLE_CLIENT_EMAIL) {
+if (!process.env.GOOGLE_CLIENT_EMAIL) {
     throw new Error("missing GOOGLE_CLIENT_EMAIL");
 }
-if (!config.GOOGLE_PRIVATE_KEY) {
+if (!process.env.GOOGLE_PRIVATE_KEY) {
     throw new Error("missing GOOGLE_PRIVATE_KEY");
 }
-if (!config.FB_APP_SECRET) {
+if (!process.env.FB_APP_SECRET) {
     throw new Error("missing FB_APP_SECRET");
 }
 
@@ -58,7 +57,7 @@ let postWebhook = (req, res) => {
 let getWebhook = (req, res) => {
     if (
         req.query["hub.mode"] === "subscribe" &&
-        req.query["hub.verify_token"] === config.VERIFICATION_TOKEN
+        req.query["hub.verify_token"] === process.env.VERIFICATION_TOKEN
     ) {
         res.status(200).send(req.query["hub.challenge"]);
     } else {

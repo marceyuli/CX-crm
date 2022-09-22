@@ -4,7 +4,6 @@ var request = require("request");
 const axios = require("axios");
 const uuid = require("uuid");
 const ChatbotUser = require('../Models/ChatbotUsers');
-const config = require("../config");
 const sessionIds = new Map();
 
 
@@ -132,7 +131,7 @@ async function handleMessages(messages, sender) {
 
 async function getUserData(senderId) {
     console.log("consiguiendo datos del usuario...");
-    let access_token = config.PAGE_ACCESS_TOKEN;
+    let access_token = process.env.PAGE_ACCESS_TOKEN;
     try {
         let userData = await axios.get(
             "https://graph.facebook.com/v6.0/" + senderId,
@@ -243,7 +242,7 @@ function callSendAPI(messageData) {
             {
                 uri: "https://graph.facebook.com/v6.0/me/messages",
                 qs: {
-                    access_token: config.PAGE_ACCESS_TOKEN,
+                    access_token: process.env.PAGE_ACCESS_TOKEN,
                 },
                 method: "POST",
                 json: messageData,
