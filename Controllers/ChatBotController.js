@@ -94,7 +94,7 @@ async function sendToDialogFlow(senderId, messageText) {
     chatBotService.sendTypingOn(senderId);
     try {
         let result;
-        chatBotService.setSessionAndUser(senderId);
+        setSessionAndUser(senderId);
         let session = sessionIds.get(senderId);
         result = await dialogflow.sendToDialogFlow(
             messageText,
@@ -107,7 +107,15 @@ async function sendToDialogFlow(senderId, messageText) {
     }
 }
 
-
+async function setSessionAndUser(senderId) {
+    try {
+        if (!sessionIds.has(senderId)) {
+            sessionIds.set(senderId, uuid.v1());
+        }
+    } catch (error) {
+        throw error;
+    }
+}
 
 module.exports = {
     postWebhook: postWebhook,

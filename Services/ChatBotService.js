@@ -47,16 +47,6 @@ function handleDialogFlowResponse(sender, response) {
     }
 }
 
-async function setSessionAndUser(senderId) {
-    try {
-        if (!sessionIds.has(senderId)) {
-            sessionIds.set(senderId, uuid.v1());
-        }
-    } catch (error) {
-        throw error;
-    }
-}
-
 
 async function handleDialogFlowAction(
     sender,
@@ -294,7 +284,6 @@ function isDefined(obj) {
 module.exports = {
     saveUserData,
     handleDialogFlowResponse,
-    setSessionAndUser,
     sendTypingOn,
     
 }
