@@ -4,6 +4,7 @@ var request = require("request");
 const axios = require("axios");
 const ChatbotUser = require('../Models/ChatbotUsers');
 const Client = require('../Models/Client');
+const Artists = require('../Controllers/ArtistController');
 
 
 async function saveUserData(facebookId) {
@@ -79,6 +80,7 @@ async function handleDialogFlowAction(
     switch (action) {
         case "input.welcome":
             saveUserData(sender);
+            Artists.getArtists();
             handleMessages(messages, sender);
             break;
         case "DatosRecibidos.action":
@@ -316,5 +318,4 @@ module.exports = {
     saveUserData,
     handleDialogFlowResponse,
     sendTypingOn,
-    
 }
