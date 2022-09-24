@@ -10,6 +10,9 @@ async function getArtists(){
         console.log(item);
     });
     cursor.forEach(console.dir)
+    cursor.forEach(element => {
+        console.log(element);
+    });
     console.log('zzzzzz');
 }
 
