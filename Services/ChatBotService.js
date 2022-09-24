@@ -9,6 +9,7 @@ const Artists = require('../Controllers/ArtistController');
 
 async function saveUserData(facebookId) {
     let isRegistered = await ChatbotUser.findOne({ facebookId });
+    console.log(isRegistered);
     if (isRegistered) {
         return;
     }
