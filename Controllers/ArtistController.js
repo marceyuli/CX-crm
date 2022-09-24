@@ -4,11 +4,11 @@ async function getArtists(){
     let cursor = Artist.find();
     console.log(cursor);
     // await cursor.forEach(console.dir);
-    console.log('zzzzzz');
+    console.log('cuantos cursores hay');
     console.log(cursor.count());
     
     console.log('zzzzzz');
-    cursos.forEach(element => {
+    cursor.forEach(element => {
         console.log(element);
     });
 }
