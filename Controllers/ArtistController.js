@@ -1,8 +1,10 @@
 const Artist = require('../Models/Artists');
+
 async function getArtists(){
-    console.log((await Artist.find({})).values('name'));
+    cursor = Artist.find();
+    await cursor.forEach(console.dir);
     console.log('zzzzzz');
-    console.log(Artist.find()[1]);
+    console.log();
 }
 
 module.exports = {
