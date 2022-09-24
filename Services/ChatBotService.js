@@ -80,7 +80,8 @@ async function handleDialogFlowAction(
     switch (action) {
         case "input.welcome":
             saveUserData(sender);
-            let artists = Artists.getArtistsInText();
+            let artists = await Artists.getArtistsInText();
+            console.log(artists);
             sendTextMessage(sender, artists);
             handleMessages(messages, sender);
             break;
