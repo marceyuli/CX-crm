@@ -1,21 +1,14 @@
 const Artist = require('../Models/Artists');
 
-async function getArtists(){
+async function getArtistsInText(){
     let cursor = await Artist.find();
-    console.log(Artist.find({name:"Harry Styles"}));
-    console.log(cursor);
-    // await cursor.forEach(console.dir);
-    console.log('cuantos cursores hay');
-    cursor.forEach(function(err,item){
-        console.log(item);
-    });
-    cursor.forEach(console.dir)
+    let artists = "los artistas disponibles son:\n";
     cursor.forEach(element => {
-        console.log(element);
+        artists+=element.name + "\n";
     });
-    console.log('zzzzzz');
+    return artists;
 }
 
 module.exports = {
-    getArtists,
+    getArtistsInText,
 }

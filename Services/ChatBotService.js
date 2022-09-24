@@ -9,7 +9,6 @@ const Artists = require('../Controllers/ArtistController');
 
 async function saveUserData(facebookId) {
     let isRegistered = await ChatbotUser.findOne({ facebookId });
-    console.log(isRegistered);
     if (isRegistered) {
         return;
     }
@@ -81,7 +80,8 @@ async function handleDialogFlowAction(
     switch (action) {
         case "input.welcome":
             saveUserData(sender);
-            Artists.getArtists();
+            let artists = Artists.getArtistsInText();
+            sendTextMessage(sender, artists);
             handleMessages(messages, sender);
             break;
         case "DatosRecibidos.action":
