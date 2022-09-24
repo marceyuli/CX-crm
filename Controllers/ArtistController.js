@@ -6,7 +6,6 @@ async function getArtists(){
     console.log(cursor);
     // await cursor.forEach(console.dir);
     console.log('cuantos cursores hay');
-    console.log(cursor.size());
     cursor.forEach(function(err,item){
         console.log(item);
     });
