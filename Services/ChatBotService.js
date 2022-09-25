@@ -3,6 +3,7 @@ var request = require("request");
 //libraries
 const axios = require("axios");
 const ChatbotUser = require('../Models/ChatbotUsers');
+const Client = require('../Models/Client');
 
 
 async function saveUserData(facebookId) {
@@ -22,6 +23,28 @@ async function saveUserData(facebookId) {
             return console.log(err);
         }
         console.log("Se creo un usuario: ", res);
+    })
+}
+
+async function saveClientData(facebookId, parameters) {
+    let isRegistered = await Client.findOne({ facebookId });
+    if (isRegistered) {
+        return;
+    }
+    let userData = await getUserData(facebookId);
+    let client = new Client({
+        firstName: userData.first_name,
+        lastName: userData.last_name,
+        facebookId,
+        profilePicture: userData.profile_pic,
+        email: parameters.email,
+        phoneNumber: parameters.phone-number
+    })
+    client.save((err, res) => {
+        if (err) {
+            return console.log(err);
+        }
+        console.log("Se creo un cliente: ", res);
     })
 }
 
@@ -54,6 +77,15 @@ async function handleDialogFlowAction(
     parameters
 ) {
     switch (action) {
+        case "input.welcome":
+            saveUserData(sender);
+            handleMessages(messages, sender);
+            break;
+        case "DatosRecibidos.action":
+            console.log(parameters);
+            saveClientData(sender, parameters);
+            handleMessages(messages, sender);
+            break;
         default:
             //unhandled action, just send back the text
             handleMessages(messages, sender);
