@@ -1,53 +1,10 @@
 var request = require("request");
 
 //libraries
-const axios = require("axios");
-const ChatbotUser = require('../Models/ChatbotUsers');
-const Client = require('../Models/Client');
 const Artists = require('../Controllers/ArtistController');
-
-
-async function saveUserData(facebookId) {
-    let isRegistered = await ChatbotUser.findOne({ facebookId });
-    if (isRegistered) {
-        return;
-    }
-    let userData = await getUserData(facebookId);
-    let chatbotUser = new ChatbotUser({
-        firstName: userData.first_name,
-        lastName: userData.last_name,
-        facebookId,
-        profilePicture: userData.profile_pic
-    })
-    chatbotUser.save((err, res) => {
-        if (err) {
-            return console.log(err);
-        }
-        console.log("Se creo un usuario: ", res);
-    })
-}
-
-async function saveClientData(facebookId, parameters) {
-    let isRegistered = await Client.findOne({ facebookId });
-    if (isRegistered) {
-        return;
-    }
-    let userData = await getUserData(facebookId);
-    let client = new Client({
-        firstName: userData.first_name,
-        lastName: userData.last_name,
-        facebookId,
-        profilePicture: userData.profile_pic,
-        email: parameters.fields.email.stringValue,
-        phoneNumber: parameters.fields.phoneNumber.stringValue
-    })
-    client.save((err, res) => {
-        if (err) {
-            return console.log(err);
-        }
-        console.log("Se creo un cliente: ", res);
-    })
-}
+const utils = require('../Utils/utils');
+const ChatBotUsers = require('../Controllers/ChatBotUsersController');
+const Clients = require('../Controllers/ClientsController');
 
 function handleDialogFlowResponse(sender, response) {
     let responseText = response.fulfillmentText;
@@ -79,7 +36,7 @@ async function handleDialogFlowAction(
 ) {
     switch (action) {
         case "input.welcome":
-            saveUserData(sender);
+            ChatBotUsers.saveUserData(sender);
             let artists = await Artists.getArtistsInText();
             console.log(artists);
             sendTextMessage(sender, artists);
@@ -87,7 +44,7 @@ async function handleDialogFlowAction(
             break;
         case "DatosRecibidos.action":
             if (parameters.fields.phoneNumber.stringValue != '' && parameters.fields.email.stringValue != '') {
-                saveClientData(sender, parameters);
+                Clients.saveClientData(sender, parameters);
             }
             handleMessages(messages, sender);
             break;
@@ -151,35 +108,9 @@ async function handleMessages(messages, sender) {
     }
 }
 
-
-
-
-async function getUserData(senderId) {
-    console.log("consiguiendo datos del usuario...");
-    let access_token = process.env.PAGE_ACCESS_TOKEN;
-    try {
-        let userData = await axios.get(
-            "https://graph.facebook.com/v6.0/" + senderId,
-            {
-                params: {
-                    access_token,
-                },
-            }
-        );
-        return userData.data;
-    } catch (err) {
-        console.log("algo salio mal en axios getUserData: ", err);
-        return {
-            first_name: "",
-            last_name: "",
-            profile_pic: "",
-        };
-    }
-}
-
 async function sendTextMessage(recipientId, text) {
     if (text.includes("{first_name}")) {
-        let userData = await getUserData(recipientId);
+        let userData = await utils.getUserData(recipientId);
         text = text
             .replace("{first_name}", userData.first_name);
     }
@@ -317,7 +248,6 @@ function isDefined(obj) {
 }
 
 module.exports = {
-    saveUserData,
     handleDialogFlowResponse,
     sendTypingOn,
 }
