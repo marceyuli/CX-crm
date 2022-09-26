@@ -8,7 +8,12 @@ async function getProductsByArtist( artist_idParam){
     });
     return products;
 }
-
+async function getProductsByName( nameParam){
+    let result = await Product.find(({name}) => name ===nameParam);
+    
+    return result;
+}
 module.exports = {
     getProductsByArtist,
+    getProductsByName
 }
