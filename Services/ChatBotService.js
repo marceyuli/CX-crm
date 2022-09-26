@@ -38,7 +38,6 @@ async function handleDialogFlowAction(
         case "input.welcome":
             ChatBotUsers.saveUserData(sender);
             let artists = await Artists.getArtistsInText();
-            console.log(artists);
             sendTextMessage(sender, artists);
             handleMessages(messages, sender);
             break;

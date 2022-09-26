@@ -1,19 +1,16 @@
 const Client = require('../Models/Client');
-const utils = require('../Utils/utils');
+const ChatBotUser = require('../Models/ChatbotUsers');
 
 async function saveClientData(facebookId, parameters) {
-    let isRegistered = await Client.findOne({ facebookId });
+    let isRegistered = await Client.findOne({ email:parameters.fields.email.stringValue });
     if (isRegistered) {
         return;
     }
-    let userData = await utils.getUserData(facebookId);
+    let chatBotUser = await ChatBotUser.findOne({facebookId});
     let client = new Client({
-        firstName: userData.first_name,
-        lastName: userData.last_name,
-        facebookId,
-        profilePicture: userData.profile_pic,
         email: parameters.fields.email.stringValue,
-        phoneNumber: parameters.fields.phoneNumber.stringValue
+        phoneNumber: parameters.fields.phoneNumber.stringValue,
+        chatBotUserId: chatBotUser._id
     })
     client.save((err, res) => {
         if (err) {
