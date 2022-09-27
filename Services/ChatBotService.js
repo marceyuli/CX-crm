@@ -8,6 +8,7 @@ const Clients = require('../Controllers/ClientsController');
 const Promotions = require('../Controllers/PromotionController');
 const Products = require('../Controllers/ProductController');
 const ProductDescriptions = require('../Controllers/ProductDescriptionsController');
+const Score = require('../Controllers/ScoresController');
 
 function handleDialogFlowResponse(sender, response) {
     let responseText = response.fulfillmentText;
@@ -72,6 +73,10 @@ async function handleDialogFlowAction(
                 Clients.saveClientData(sender, parameters);
             }
             handleMessages(messages, sender);
+            break;
+        case "PuntuacionFinal.action":
+            console.log(parameters.fields);
+            Score.saveScore(sender, parameters.fields.number.stringValue);
             break;
         default:
             //unhandled action, just send back the text
