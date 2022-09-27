@@ -49,7 +49,7 @@ async function handleDialogFlowAction(
             break;
         case "FallbackArtista.action":
             let artists = await Artists.getArtistsInText();
-            sendImageMessage(sender, artists);
+            sendTextMessage(sender, artists);
             break;
         case "ArtistaPrendaEspecifica.action":
             sendTextMessage(sender, "tenemos disponibles las siguientes prendas de " + parameters.fields.NombreDeArtista.stringValue);
