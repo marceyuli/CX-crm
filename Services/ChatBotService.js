@@ -81,7 +81,7 @@ async function handleDialogFlowAction(
             handleMessages(messages, sender);
             break;
         default:
-            //unhandled action, just send back the text
+            //unhandled action, just send back the tex
             handleMessages(messages, sender);
     }
 }
