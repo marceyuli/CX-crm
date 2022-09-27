@@ -1,6 +1,6 @@
-const Promotion = require('.../Models/Promotions');
+const Promotion = require('../Models/Promotions');
 
-async function getPromotionsDescription(){
+async function getPromotionsDescription() {
     let cursor = await Promotion.find();
     let promotions = "Las promociones disponibles son: ";
     cursor.forEach(element => {

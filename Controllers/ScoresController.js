@@ -2,8 +2,8 @@ const ChatbotUsers = require("../Models/ChatbotUsers");
 const Scores = require("../Models/Scores");
 
 
-async function saveScore(facebookId, score){
-    let chatBotUser = ChatbotUsers.findOne({facebookId});
+async function saveScore(facebookId, score) {
+    let chatBotUser = ChatbotUsers.findOne({ facebookId });
     score = Number(score);
     let scores = new Scores({
         score,

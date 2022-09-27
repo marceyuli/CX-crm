@@ -5,6 +5,7 @@ const Artists = require('../Controllers/ArtistController');
 const utils = require('../Utils/utils');
 const ChatBotUsers = require('../Controllers/ChatBotUsersController');
 const Clients = require('../Controllers/ClientsController');
+const Promotions = require('../Controllers/PromotionController');
 
 function handleDialogFlowResponse(sender, response) {
     let responseText = response.fulfillmentText;
@@ -37,9 +38,12 @@ async function handleDialogFlowAction(
     switch (action) {
         case "input.welcome":
             ChatBotUsers.saveUserData(sender);
-            let artists = await Artists.getArtistsInText();
-            sendTextMessage(sender, artists);
             handleMessages(messages, sender);
+            break;
+        case "Promociones.action":
+            let promotions = Promotions.getPromotionsDescription;
+            handleMessage(promotions, sender);
+            // handleMessages(messages, sender);
             break;
         case "DatosRecibidos.action":
             if (parameters.fields.phoneNumber.stringValue != '' && parameters.fields.email.stringValue != '') {
