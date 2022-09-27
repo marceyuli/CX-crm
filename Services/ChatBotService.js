@@ -75,8 +75,8 @@ async function handleDialogFlowAction(
             handleMessages(messages, sender);
             break;
         case "PuntuacionFinal.action":
-            console.log(parameters.fields);
-            Score.saveScore(sender, parameters.fields.number.stringValue);
+            Score.saveScore(sender, parameters.fields.number.numberValue);
+            handleMessages(messages, sender);
             break;
         default:
             //unhandled action, just send back the text
