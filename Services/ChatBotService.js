@@ -46,7 +46,6 @@ async function handleDialogFlowAction(
             break;
         case "Promociones.action":
             let promotions = await Promotions.getPromotionsDescription();
-            console.log(promotions);
             sendTextMessage(sender, promotions);
             // handleMessages(messages, sender);
             break;
