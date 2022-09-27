@@ -8,6 +8,7 @@ const Clients = require('../Controllers/ClientsController');
 const Promotions = require('../Controllers/PromotionController');
 const Products = require('../Controllers/ProductController');
 const ProductDescriptions = require('../Controllers/ProductDescriptionsController');
+const ChatBotUsers_Products = require('../Controllers/ChatBotUsers_ProductsController');
 const Score = require('../Controllers/ScoresController');
 
 function handleDialogFlowResponse(sender, response) {
@@ -65,6 +66,7 @@ async function handleDialogFlowAction(
                 handleMessages(messages, sender);
                 break;
             }
+            ChatBotUsers_Products.saveUserInterest(sender, parameters.fields.NombreDePrenda.stringValue, parameters.fields.Prenda.stringValue);
             let res = await ProductDescriptions.getPrice(parameters.fields.Talla.stringValue, parameters.fields.NombreDePrenda.stringValue, parameters.fields.Prenda.stringValue);
             sendTextMessage(sender, res);
             break;

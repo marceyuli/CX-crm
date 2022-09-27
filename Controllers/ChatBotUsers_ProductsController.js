@@ -3,7 +3,7 @@ const Product = require('../Controllers/ProductController');
 const ChatBotUser = require('../Models/ChatbotUsers');
 
 async function saveUserInterest(facebookId, productName, productType) {
-    let product = await Product.getProductsByNameAndType(productName, productType);
+    let product = await Product.getProductByNameAndType(productName, productType);
     let chatBotUser = await ChatBotUser.findOne({ facebookId });
     let isRegistered = await ChatBotUsers_Products.findOne({
         productId: product._id,
