@@ -62,6 +62,7 @@ async function handleDialogFlowAction(
         case "ArtistaPrendaYTalla.action":
             if (parameters.fields.Talla.stringValue == '' || parameters.fields.NombreDePrenda.stringValue == '' || parameters.fields.Prenda.stringValue == '') {
                 handleMessages(messages, sender);
+                break;
             }
             let res = await ProductDescriptions.getPrice(parameters.fields.Talla.stringValue, parameters.fields.NombreDePrenda.stringValue, parameters.fields.Prenda.stringValue);
             sendTextMessage(sender, res);
@@ -70,7 +71,7 @@ async function handleDialogFlowAction(
             if (parameters.fields.phoneNumber.stringValue != '' && parameters.fields.email.stringValue != '') {
                 Clients.saveClientData(sender, parameters);
             }
-            
+            handleMessages(messages, sender);
             break;
         default:
             //unhandled action, just send back the text
