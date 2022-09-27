@@ -4,7 +4,7 @@ const Artists = require('../Controllers/ArtistController');
 //devuelve la lista de productos de un artista
 async function getProductsByArtistName(artistName) {
     let artist = await Artists.getArtist(artistName);
-    console.log(artist);
+    console.log(await Product.find());
     let result = await Product.find({ artistId: artist._id });
     // let products = "Los productos disponibles son: ";
     // result.forEach(element => {
