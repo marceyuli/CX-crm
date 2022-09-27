@@ -49,8 +49,7 @@ async function handleDialogFlowAction(
             break;
         case "ArtistaPrendaEspecifica.action":
             sendTextMessage(sender, "tenemos disponibles las siguientes prendas");
-            console.log(parameters.fields);
-            let product = await Product.getProductsByArtistName(parameters.fields.NombreArtista.stringValue);
+            let product = await Product.getProductsByArtistName(parameters.fields.NombreDeArtista.stringValue);
             product.forEach(element => {
                 sendImageMessage(sender, element.picture);
             });
