@@ -7,6 +7,7 @@ const ChatBotUsers = require('../Controllers/ChatBotUsersController');
 const Clients = require('../Controllers/ClientsController');
 const Promotions = require('../Controllers/PromotionController');
 const Products = require('../Controllers/ProductController');
+const ProductDescriptions = require('../Controllers/ProductDescriptionsController');
 
 function handleDialogFlowResponse(sender, response) {
     let responseText = response.fulfillmentText;
@@ -58,11 +59,18 @@ async function handleDialogFlowAction(
                 sendImageMessage(sender, element.picture);
             });
             break;
+        case "ArtistaPrendaYTalla.action":
+            if (parameters.fields.Talla.stringValue == '' || parameters.fields.NombreDePrenda.stringValue == '' || parameters.fields.Prenda.stringValue == '') {
+                handleMessages(messages, sender);
+            }
+            let res = ProductDescriptions.getPrice(parameters.fields.Talla.stringValue, parameters.fields.NombreDePrenda.stringValue, parameters.fields.Prenda.stringValue);
+            sendTextMessage(sender, res);
+            break;
         case "DatosRecibidos.action":
             if (parameters.fields.phoneNumber.stringValue != '' && parameters.fields.email.stringValue != '') {
                 Clients.saveClientData(sender, parameters);
             }
-            handleMessages(messages, sender);
+            
             break;
         default:
             //unhandled action, just send back the text
