@@ -1,19 +1,23 @@
 const Product = require('.../Models/Products');
+const Artists = require('../Controllers/ArtistController');
 
-async function getProductsByArtist(artist_idParam) {
-    let result = await Product.find(({ artist_id }) => artist_id === artist_idParam);
-    let products = "Los productos disponibles son: ";
-    result.forEach(element => {
-        products += element.name + "\n";
-    });
-    return products;
+//devuelve la lista de productos de un artista
+async function getProductsByArtistName(artistName) {
+    let artist = await Artists.getArtist(artistName);
+    let result = await Product.find({artistId: artist._id});
+    // let products = "Los productos disponibles son: ";
+    // result.forEach(element => {
+    //     products += element.name + "\n";
+    // });
+    return result;
 }
-async function getProductsByName(nameParam) {
-    let result = await Product.find(({ name }) => name === nameParam);
 
+//devuelve 1 producto
+async function getProductsByNameAndType(productName, productType) {
+    let result = await Product.findOne({name:productName, type: productType});
     return result;
 }
 module.exports = {
-    getProductsByArtist,
-    getProductsByName
+    getProductsByArtistName,
+    getProductsByNameAndType
 }

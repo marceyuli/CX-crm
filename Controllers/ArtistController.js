@@ -1,8 +1,8 @@
 const Artist = require('../Models/Artists');
 
+//devuelve todos los artistas en un texto
 async function getArtistsInText(){
     let cursor = await Artist.find();
-    console.log(cursor);
     let artists = "los artistas disponibles son:\n";
     cursor.forEach(element => {
         artists+=element.name + "\n";
@@ -10,9 +10,9 @@ async function getArtistsInText(){
     return artists;
 }
 
+//devuelve un artista por su nombre
 async function getArtist(artistName){
-    let cursor = await Artist.find({name:artistName});
-    console.log(cursor);
+    let cursor = await Artist.findOne({name:artistName});
     return cursor;
 }
 
