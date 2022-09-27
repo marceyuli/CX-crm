@@ -6,7 +6,7 @@ const utils = require('../Utils/utils');
 const ChatBotUsers = require('../Controllers/ChatBotUsersController');
 const Clients = require('../Controllers/ClientsController');
 const Promotions = require('../Controllers/PromotionController');
-const Product = require('../Controllers/ProductController');
+const Products = require('../Controllers/ProductController');
 
 function handleDialogFlowResponse(sender, response) {
     let responseText = response.fulfillmentText;
@@ -47,10 +47,13 @@ async function handleDialogFlowAction(
             sendTextMessage(sender, promotions);
             // handleMessages(messages, sender);
             break;
+        case "FallbackArtista.action":
+            let artists = await Artists.getArtistsInText();
+            sendImageMessage(sender, artists);
+            break;
         case "ArtistaPrendaEspecifica.action":
-            sendTextMessage(sender, "tenemos disponibles las siguientes prendas");
-            let product = await Product.getProductsByArtistName(parameters.fields.NombreDeArtista.stringValue);
-            console.log(product);
+            sendTextMessage(sender, "tenemos disponibles las siguientes prendas de " + parameters.fields.NombreDeArtista.stringValue);
+            let product = await Products.getProductsByArtistName(parameters.fields.NombreDeArtista.stringValue);
             product.forEach(element => {
                 sendImageMessage(sender, element.picture);
             });
