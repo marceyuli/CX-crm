@@ -6,6 +6,7 @@ const utils = require('../Utils/utils');
 const ChatBotUsers = require('../Controllers/ChatBotUsersController');
 const Clients = require('../Controllers/ClientsController');
 const Promotions = require('../Controllers/PromotionController');
+const Product = require('../Controllers/ProductController');
 
 function handleDialogFlowResponse(sender, response) {
     let responseText = response.fulfillmentText;
@@ -45,6 +46,13 @@ async function handleDialogFlowAction(
             console.log(promotions);
             sendTextMessage(sender, promotions);
             // handleMessages(messages, sender);
+            break;
+        case "ArtistaPrendaEspecifica.action":
+            sendTextMessage(sender, "tenemos disponibles las siguientes prendas");
+            let product = await Product.getProductsByArtistName(parameters.fields.NombreArtista.stringValue);
+            product.forEach(element => {
+                sendImageMessage(sender, element.picture);
+            });
             break;
         case "DatosRecibidos.action":
             if (parameters.fields.phoneNumber.stringValue != '' && parameters.fields.email.stringValue != '') {
