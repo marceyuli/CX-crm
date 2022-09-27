@@ -41,7 +41,7 @@ async function handleDialogFlowAction(
             handleMessages(messages, sender);
             break;
         case "Promociones.action":
-            let promotions = Promotions.getPromotionsDescription;
+            let promotions = await Promotions.getPromotionsDescription();
             handleMessage(promotions, sender);
             // handleMessages(messages, sender);
             break;
