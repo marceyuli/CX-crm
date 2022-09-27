@@ -63,7 +63,7 @@ async function handleDialogFlowAction(
             if (parameters.fields.Talla.stringValue == '' || parameters.fields.NombreDePrenda.stringValue == '' || parameters.fields.Prenda.stringValue == '') {
                 handleMessages(messages, sender);
             }
-            let res = ProductDescriptions.getPrice(parameters.fields.Talla.stringValue, parameters.fields.NombreDePrenda.stringValue, parameters.fields.Prenda.stringValue);
+            let res = await ProductDescriptions.getPrice(parameters.fields.Talla.stringValue, parameters.fields.NombreDePrenda.stringValue, parameters.fields.Prenda.stringValue);
             sendTextMessage(sender, res);
             break;
         case "DatosRecibidos.action":
