@@ -10,6 +10,7 @@ const Products = require('../Controllers/ProductController');
 const ProductDescriptions = require('../Controllers/ProductDescriptionsController');
 const ChatBotUsers_Products = require('../Controllers/ChatBotUsers_ProductsController');
 const Score = require('../Controllers/ScoresController');
+const UserVisits = require('../Controllers/UserVisitsController');
 
 function handleDialogFlowResponse(sender, response) {
     let responseText = response.fulfillmentText;
@@ -41,7 +42,8 @@ async function handleDialogFlowAction(
 ) {
     switch (action) {
         case "input.welcome":
-            ChatBotUsers.saveUserData(sender);
+            await ChatBotUsers.saveUserData(sender);
+            UserVisits.saveUserVisit(sender);
             handleMessages(messages, sender);
             break;
         case "Promociones.action":
