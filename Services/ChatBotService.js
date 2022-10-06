@@ -62,7 +62,7 @@ async function handleDialogFlowAction(
             // product.forEach(element => {
             //     sendImageMessage(sender, element.picture);
             // });
-            let cards = ResponseConstructor.carrouselConstructor(product);
+            let cards = await ResponseConstructor.carrouselConstructor(product);
             sendGenericMessage(sender, cards);
             break;
         case "ArtistaPrendaYTalla.action":
