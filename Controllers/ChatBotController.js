@@ -117,7 +117,6 @@ async function receivedPostback(event) {
 
 
 async function sendToDialogFlow(senderId, messageText) {
-    console.log(messageText);
     chatBotService.sendTypingOn(senderId);
     try {
         let result;

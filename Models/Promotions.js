@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const PromotionSchema = new Schema({
     description: String,
-    discount: Number
+    discount: Number,
+    picture: String,
 },);
 
 module.exports = mongoose.model('promotions', PromotionSchema)
