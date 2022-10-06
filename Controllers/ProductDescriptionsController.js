@@ -2,7 +2,7 @@ const Product = require('../Controllers/ProductController');
 const Promotion = require('../Models/Promotions');
 const ProductDescriptions = require('../Models/ProductDescriptions');
 
-//devuelve el precio de un producto
+//verifica si existe la talla y devuelve un texto
 async function sizeExist(size, productName, productType){
     let product = await Product.getProductByNameAndType(productName, productType);
     let productDescription = await ProductDescriptions.findOne({productId: product._id, size});
