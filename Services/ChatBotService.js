@@ -52,7 +52,7 @@ async function handleDialogFlowAction(
             promotions.forEach( element => {
                 setTimeout(() => {
                     sendTextMessage(sender, element.description);
-                    sendImageMessage(sender, element.description);
+                    sendImageMessage(sender, element.picture);
                 }, 1500);
             });
             break;
