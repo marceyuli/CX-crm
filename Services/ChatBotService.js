@@ -49,9 +49,9 @@ async function handleDialogFlowAction(
             break;
         case "Promociones.action":
             let promotions = await Promotions.getPromotions();
-            promotions.forEach( element => {
-                sendImageMessage(sender, element.picture).then(()=>{
-                    sendTextMessage(sender, element.description)
+            promotions.forEach(element => {
+                sendImageMessage(sender, element.picture).finally(() => {
+                    sendTextMessage(sender, element.description);
                 })
             });
             break;
@@ -198,22 +198,22 @@ async function sendQuickReply(recipientId, text, replies, metadata) {
 
 async function sendGenericMessage(recipientId, elements) {
     var messageData = {
-      recipient: {
-        id: recipientId,
-      },
-      message: {
-        attachment: {
-          type: "template",
-          payload: {
-            template_type: "generic",
-            elements: elements,
-          },
+        recipient: {
+            id: recipientId,
         },
-      },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: elements,
+                },
+            },
+        },
     };
-  
+
     await callSendAPI(messageData);
-  }
+}
 
 /*
  * Turn typing indicator on
