@@ -20,7 +20,7 @@ async function getProductByNameAndType(productName, productType) {
 }
 
 async function getPrice(product) {
-    let promotion = Promotion.findOne({ _id: product.promotionId });
+    let promotion = await Promotion.findOne({ _id: product.promotionId });
     let discount = 1;
     if (promotion) {
         discount = promotion.discount;

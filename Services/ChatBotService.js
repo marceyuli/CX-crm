@@ -66,15 +66,15 @@ async function handleDialogFlowAction(
             sendGenericMessage(sender, cards);
             break;
         case "ArtistaPrendaYTalla.action":
-            let talla = parameters.fields.Talla.stringValue;
-            let nombreDePrenda = parameters.fields.NombreDePrenda.stringValue;
-            let prenda = parameters.fields.Prenda.stringValue;
-            if (talla == '' || nombreDePrenda == '' || prenda == '') {
+            let size = parameters.fields.Talla.stringValue;
+            let productName = parameters.fields.NombreDePrenda.stringValue;
+            let productType = parameters.fields.Prenda.stringValue;
+            if (size == '' || productName == '' || productType == '') {
                 handleMessages(messages, sender);
                 break;
             }
-            ChatBotUsers_Products.saveUserInterest(sender, nombreDePrenda, prenda);
-            let res = "Ha seleccionado la siguiente prenda " + nombreDePrenda + " de talla " + talla + "\nDesea continuar con el pedido?"
+            ChatBotUsers_Products.saveUserInterest(sender, productName, productType);
+            let res = await ProductDescriptions.sizeExist(size, productName, productType);
             sendTextMessage(sender, res);
             break;
         case "DatosRecibidos.action":
