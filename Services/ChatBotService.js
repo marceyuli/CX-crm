@@ -50,9 +50,7 @@ async function handleDialogFlowAction(
         case "Promociones.action":
             let promotions = await Promotions.getPromotions();
             promotions.forEach(element => {
-                sendImageMessage(sender, element.picture).then((resolve)=>{
-                    sendTextMessage(sender, element.description);
-                });
+                sendImageAndTextMessage(sender, element.picture, element.description);
             });
             break;
         case "FallbackArtista.action":
@@ -161,7 +159,7 @@ async function sendTextMessage(recipientId, text) {
             text: text,
         },
     };
-    return await callSendAPI(messageData);
+    await callSendAPI(messageData);
 }
 
 async function sendImageMessage(recipientId, imageUrl) {
@@ -178,7 +176,25 @@ async function sendImageMessage(recipientId, imageUrl) {
             },
         },
     };
-    return await callSendAPI(messageData);
+    await callSendAPI(messageData);
+}
+
+async function sendImageAndTextMessage(recipientId, imageUrl, text) {
+    var messageData = {
+        recipient: {
+            id: recipientId,
+        },
+        message: {
+            text: text,
+            attachment: {
+                type: "image",
+                payload: {
+                    url: imageUrl,
+                },
+            },
+        },
+    };
+    await callSendAPI(messageData);
 }
 
 async function sendQuickReply(recipientId, text, replies, metadata) {
