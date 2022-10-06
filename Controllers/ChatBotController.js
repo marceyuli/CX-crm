@@ -40,6 +40,8 @@ let postWebhook = (req, res) => {
             pageEntry.messaging.forEach(function (messagingEvent) {
                 if (messagingEvent.message) {
                     receivedMessage(messagingEvent);
+                } else if (messagingEvent.postback) {
+                    receivedPostback(messagingEvent);
                 } else {
                     console.log(
                         "Webhook received unknown messagingEvent: ",
@@ -88,8 +90,35 @@ async function receivedMessage(event) {
     }
 }
 
+async function receivedPostback(event) {
+    console.log(event);
+    var senderId = event.sender.id;
+    var recipientID = event.recipient.id;
+    var timeOfPostback = event.timestamp;
+
+    var payload = event.postback.payload;
+    switch (payload) {
+        case "hacer_compra":
+            sendToDialogFlow(senderId, payload);
+            break;
+        default:
+            //unindentified payload
+            sendToDialogFlow(senderId, payload);
+            break;
+    }
+
+    console.log(
+        "Received postback for user %d and page %d with payload '%s' " + "at %d",
+        senderId,
+        recipientID,
+        payload,
+        timeOfPostback
+    );
+}
+
 
 async function sendToDialogFlow(senderId, messageText) {
+    console.log(messageText);
     chatBotService.sendTypingOn(senderId);
     try {
         let result;
