@@ -11,6 +11,7 @@ const ProductDescriptions = require('../Controllers/ProductDescriptionsControlle
 const ChatBotUsers_Products = require('../Controllers/ChatBotUsers_ProductsController');
 const Score = require('../Controllers/ScoresController');
 const UserVisits = require('../Controllers/UserVisitsController');
+const ResponseConstructor = require('../Utils/responseConstructors');
 
 function handleDialogFlowResponse(sender, response) {
     let responseText = response.fulfillmentText;
@@ -58,9 +59,11 @@ async function handleDialogFlowAction(
         case "ArtistaPrendaEspecifica.action":
             sendTextMessage(sender, "tenemos disponibles las siguientes prendas de " + parameters.fields.NombreDeArtista.stringValue);
             let product = await Products.getProductsByArtistName(parameters.fields.NombreDeArtista.stringValue);
-            product.forEach(element => {
-                sendImageMessage(sender, element.picture);
-            });
+            // product.forEach(element => {
+            //     sendImageMessage(sender, element.picture);
+            // });
+            let cards = ResponseConstructor.carrouselConstructor(product);
+            sendGenericMessage(sender, cards);
             break;
         case "ArtistaPrendaYTalla.action":
             if (parameters.fields.Talla.stringValue == '' || parameters.fields.NombreDePrenda.stringValue == '' || parameters.fields.Prenda.stringValue == '') {
@@ -189,6 +192,25 @@ async function sendQuickReply(recipientId, text, replies, metadata) {
 
     await callSendAPI(messageData);
 }
+
+async function sendGenericMessage(recipientId, elements) {
+    var messageData = {
+      recipient: {
+        id: recipientId,
+      },
+      message: {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "generic",
+            elements: elements,
+          },
+        },
+      },
+    };
+  
+    await callSendAPI(messageData);
+  }
 
 /*
  * Turn typing indicator on
