@@ -49,9 +49,8 @@ async function handleDialogFlowAction(
             break;
         case "Promociones.action":
             let promotions = await Promotions.getPromotions();
-            promotions.forEach(element => {
-                sendTextMessage(sender, element.description);
-                sendImageMessage(sender, element.picture);
+            promotions.forEach(async element => {
+                await sendTextMessageAndImage(sender, element.description, element.picture);
             });
             break;
         case "FallbackArtista.action":
@@ -144,6 +143,11 @@ async function handleMessages(messages, sender) {
     } catch (error) {
         console.log(error);
     }
+}
+
+async function sendTextMessageAndImage(recipientId, text, imageUrl){
+    await sendTextMessage(recipientId, text);
+    await sendImageMessage(recipientId, imageUrl);
 }
 
 async function sendTextMessage(recipientId, text) {
