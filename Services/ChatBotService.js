@@ -50,7 +50,7 @@ async function handleDialogFlowAction(
         case "Promociones.action":
             let promotions = await Promotions.getPromotions();
             promotions.forEach(async element => {
-                await sendImageMessage(sender, element.picture, element.description, sendTextMessage());
+                await sendImageMessage(sender, element.picture, element.description, sendTextMessage);
             });
             break;
         case "FallbackArtista.action":
