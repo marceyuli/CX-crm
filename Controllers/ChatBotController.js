@@ -95,10 +95,10 @@ async function receivedPostback(event) {
     var senderId = event.sender.id;
     var recipientID = event.recipient.id;
     var timeOfPostback = event.timestamp;
-
+    var title = event.postback.title;
     var payload = event.postback.payload;
-    switch (payload) {
-        case "hacer_compra":
+    switch (title) {
+        case "Hacer compra":
             sendToDialogFlow(senderId, payload);
             break;
         default:
