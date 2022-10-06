@@ -63,7 +63,8 @@ async function handleDialogFlowAction(
       let product = await Products.getProductsByArtistName(
         parameters.fields.NombreDeArtista.stringValue
       );
-      sendGenericMessage(sender, product);
+      handleMessages(messages, sender);
+      //sendGenericMessage(sender, product);
     //   product.forEach((element) => {
     //     sendImageMessage(sender, element.picture);
     //   });
