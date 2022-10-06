@@ -91,7 +91,6 @@ async function receivedMessage(event) {
 }
 
 async function receivedPostback(event) {
-    console.log(event);
     var senderId = event.sender.id;
     var recipientID = event.recipient.id;
     var timeOfPostback = event.timestamp;

@@ -59,9 +59,6 @@ async function handleDialogFlowAction(
         case "ArtistaPrendaEspecifica.action":
             sendTextMessage(sender, "tenemos disponibles las siguientes prendas de " + parameters.fields.NombreDeArtista.stringValue);
             let product = await Products.getProductsByArtistName(parameters.fields.NombreDeArtista.stringValue);
-            // product.forEach(element => {
-            //     sendImageMessage(sender, element.picture);
-            // });
             let cards = await ResponseConstructor.carrouselConstructor(product);
             sendGenericMessage(sender, cards);
             break;
@@ -74,7 +71,6 @@ async function handleDialogFlowAction(
                 break;
             }
             ChatBotUsers_Products.saveUserInterest(sender, nombreDePrenda, prenda);
-            // let res = await ProductDescriptions.getPrice(parameters.fields.Talla.stringValue, parameters.fields.NombreDePrenda.stringValue, parameters.fields.Prenda.stringValue);
             let res = "Ha seleccionado la siguiente prenda " + nombreDePrenda + " de talla " + talla + "\nDesea continuar con el pedido?"
             sendTextMessage(sender, res);
             break;

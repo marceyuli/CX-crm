@@ -8,7 +8,7 @@ async function carrouselConstructor(products) {
                 {
                     type: "postback",
                     title: "Hacer compra",
-                    payload: product.type + product.name,
+                    payload: product.type + " " + product.name,
                 },
             ],
         });
