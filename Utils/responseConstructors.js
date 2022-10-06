@@ -1,8 +1,10 @@
+const Product = require('../Controllers/ProductController');
 async function carrouselConstructor(products) {
     let cards = [];
-    products.forEach((product) => {
+    products.forEach(async (product) => {
+        let price = await Product.getPrice(product);
         cards.push({
-            title: product.name + " $" + product.price,
+            title: product.name + " $" + price,
             image_url: product.picture,
             buttons: [
                 {

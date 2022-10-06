@@ -1,5 +1,6 @@
 const Product = require('../Models/Products');
 const Artists = require('../Controllers/ArtistController');
+const Promotion = require('../Models/Promotions');
 
 //devuelve la lista de productos de un artista
 async function getProductsByArtistName(artistName) {
@@ -17,7 +18,17 @@ async function getProductByNameAndType(productName, productType) {
     let result = await Product.findOne({ name: productName, type: productType });
     return result;
 }
+
+async function getPrice(product) {
+    let promotion = Promotion.findOne({ _id: product.promotionId });
+    let discount = 1;
+    if (promotion) {
+        discount = promotion.discount;
+    }
+    return product.price * discount;
+}
 module.exports = {
     getProductsByArtistName,
-    getProductByNameAndType
+    getProductByNameAndType,
+    getPrice
 }
