@@ -49,9 +49,9 @@ async function handleDialogFlowAction(
             break;
         case "Promociones.action":
             let promotions = await Promotions.getPromotions();
-            promotions.forEach(async element => {
-                await sendImageMessage(sender, element.picture).then(async (resolve)=>{
-                    await sendTextMessage(sender, element.description);
+            promotions.forEach(element => {
+                sendImageMessage(sender, element.picture).then((resolve)=>{
+                    sendTextMessage(sender, element.description);
                 });
             });
             break;
