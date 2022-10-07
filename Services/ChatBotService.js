@@ -42,6 +42,10 @@ async function handleDialogFlowAction(
     parameters
 ) {
     switch (action) {
+        case "Ubicacion.action":
+            let card = ResponseConstructor.carrouselUbications();
+            sendGenericMessage(sender, card);
+            break;
         case "input.welcome":
             await ChatBotUsers.saveUserData(sender);
             UserVisits.saveUserVisit(sender);
