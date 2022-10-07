@@ -28,8 +28,15 @@ async function getPrice(product) {
     }
     return product.price * discount;
 }
+
+async function getProducts(){
+    let products = await Product.find();
+    return products;
+}
+
 module.exports = {
     getProductsByArtistName,
     getProductByNameAndType,
-    getPrice
+    getPrice,
+    getProducts,
 }

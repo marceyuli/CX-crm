@@ -24,6 +24,7 @@ async function saveUserInterest(facebookId, productName, productType) {
     })
 }
 
+
 module.exports = {
-    saveUserInterest
+    saveUserInterest,
 }
