@@ -100,13 +100,13 @@ async function receivedPostback(event) {
         case "Hacer compra":
             sendToDialogFlow(senderId, payload);
             break;
-        case "Direccion 1":
+        case "direccion 1":
             chatBotService.sendTextMessage(senderId, payload);
             break;
-        case "Direccion 2":
+        case "direccion 2":
             chatBotService.sendTextMessage(senderId, payload);
             break;
-        case "Direccion 3":
+        case "direccion 3":
             chatBotService.sendTextMessage(senderId, payload);
             break;
         default:
