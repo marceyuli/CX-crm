@@ -100,12 +100,6 @@ async function receivedPostback(event) {
         case "Hacer compra":
             sendToDialogFlow(senderId, payload);
             break;
-        case "Poleras de Harry Styles 50% de descuento":
-            sendToDialogFlow(senderId, "Harry Styles");
-            break;
-        case "Hoodie 20% de descuento":
-            sendToDialogFlow(senderId, "Taylor Swift");
-            break;
         default:
             //unindentified payload
             sendToDialogFlow(senderId, payload);
