@@ -49,11 +49,13 @@ async function handleDialogFlowAction(
             break;
         case "Promociones.action":
             let promotions = await Promotions.getPromotions();
-            for (let index = 0; index < promotions.length; index++) {
-                const element = promotions[index];
-                await sendTextMessage(sender, element.description);
-                await sendImageMessage(sender, element.picture);
-            }
+            // for (let index = 0; index < promotions.length; index++) {
+            //     const element = promotions[index];
+            //     await sendTextMessage(sender, element.description);
+            //     await sendImageMessage(sender, element.picture);
+            // }
+            let card = await ResponseConstructor.carrouselPromotions(promotions);
+            sendGenericMessage(sender, card);
             break;
         case "FallbackArtista.action":
             let artists = await Artists.getArtistsInText();
