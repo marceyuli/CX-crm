@@ -43,7 +43,7 @@ async function handleDialogFlowAction(
 ) {
     switch (action) {
         case "Ubicacion.action":
-            let card = ResponseConstructor.carrouselUbications();
+            let card = await ResponseConstructor.carrouselUbications();
             sendGenericMessage(sender, card);
             break;
         case "input.welcome":
