@@ -122,12 +122,60 @@ async function handleMessage(message, sender) {
     }
 }
 
+async function handleCardMessages(messages, sender) {
+    let elements = [];
+    for (let m = 0; m < messages.length; m++) {
+        let message = messages[m];
+        let buttons = [];
+        for (let b = 0; b < message.card.buttons.length; b++) {
+            let isLink = message.card.buttons[b].postback.substring(0, 4) === "http";
+            let button;
+            if (isLink) {
+                button = {
+                    type: "web_url",
+                    title: message.card.buttons[b].text,
+                    url: message.card.buttons[b].postback,
+                };
+            } else {
+                button = {
+                    type: "postback",
+                    title: message.card.buttons[b].text,
+                    payload:
+                        message.card.buttons[b].postback === ""
+                            ? message.card.buttons[b].text
+                            : message.card.buttons[b].postback,
+                };
+            }
+            buttons.push(button);
+        }
+
+        let element = {
+            title: message.card.title,
+            image_url: message.card.imageUri,
+            subtitle: message.card.subtitle,
+            buttons,
+        };
+        elements.push(element);
+    }
+    await sendGenericMessage(sender, elements);
+}
 
 async function handleMessages(messages, sender) {
     try {
         let i = 0;
+        let cards = [];
         while (i < messages.length) {
             switch (messages[i].message) {
+                case "card":
+                    for (let j = i; j < messages.length; j++) {
+                        if (messages[j].message === "card") {
+                            cards.push(messages[j]);
+                            i += 1;
+                        } else j = 9999;
+                    }
+                    await handleCardMessages(cards, sender);
+                    cards = [];
+                    break;
                 case "text":
                     await handleMessage(messages[i], sender);
                     break;
@@ -308,4 +356,5 @@ function isDefined(obj) {
 module.exports = {
     handleDialogFlowResponse,
     sendTypingOn,
+    sendTextMessage,
 }
