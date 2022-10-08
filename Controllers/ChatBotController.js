@@ -82,7 +82,10 @@ async function receivedMessage(event) {
     );
 
     var messageText = message.text;
-
+    if (messageText = "salir") {
+        chatBotService.sendTextMessage(senderId, "chau (enviado desde codigo)");
+        return;
+    }
     if (messageText) {
         //send message to dialogflow
         console.log("MENSAJE DEL USUARIO: ", messageText);
