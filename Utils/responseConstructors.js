@@ -21,5 +21,4 @@ async function carrouselConstructor(products) {
 
 module.exports = {
     carrouselConstructor,
-    carrouselPromotions
 }
