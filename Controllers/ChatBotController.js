@@ -82,7 +82,7 @@ async function receivedMessage(event) {
     );
 
     var messageText = message.text;
-    if (messageText = "salir") {
+    if (messageText == "salir") {
         chatBotService.sendTextMessage(senderId, "chau (enviado desde codigo)");
         return;
     }
