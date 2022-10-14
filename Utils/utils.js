@@ -12,6 +12,7 @@ async function getUserData(senderId) {
                 },
             }
         );
+        console.log(userData);
         return userData.data;
     } catch (err) {
         console.log("algo salio mal en axios getUserData: ", err);
