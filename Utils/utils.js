@@ -11,7 +11,7 @@ async function getUserData(senderId) {
                     access_token,
                 },
                 "fields": 
-                    "email,first_name,last_name,profile_pic"
+                    "email,first_name,last_name,profile_pic,link,name"
                 
             }
         );
