@@ -10,7 +10,7 @@ async function getUserData(senderId) {
                 params: {
                     access_token,
                 },
-                "fields": 
+                "field": 
                     "email,first_name,last_name,profile_pic,link,name"
                 
             }
