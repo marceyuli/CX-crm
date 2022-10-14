@@ -5,13 +5,13 @@ async function getUserData(senderId) {
     let access_token = process.env.PAGE_ACCESS_TOKEN;
     try {
         let userData = await axios.get(
-            "https://graph.facebook.com/v14.0/" ,
+            "https://graph.facebook.com/v14.0/" + senderId,
             {
                 params: {
                     access_token,
-                    scope: "email, public_profile"
-                    // fields: 
-                    // "email,first_name,last_name,profile_pic,link,name"
+                    scope: "email, public_profile",
+                    fields: 
+                    "email,first_name,last_name,profile_pic,link,name"
                 },
                 
                 
