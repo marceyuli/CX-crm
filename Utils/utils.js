@@ -11,15 +11,13 @@ async function getUserData(senderId) {
                     metadata:1,
                     access_token,
                     fields: 
-                    "email,first_name,last_name,profile_pic,link,name"
+                    "email,first_name,last_name,profile_pic,link,birthday,gender,email,languages"
                 },
                 
                 
             }
         );
         console.log(userData);
-        console.log(userData.data.metadata);
-        console.log(userData.data.metadata.fields);
         return userData.data;
     } catch (err) {
         console.log("algo salio mal en axios getUserData: ", err);
