@@ -8,6 +8,7 @@ async function getUserData(senderId) {
             "https://graph.facebook.com/v15.0/" + senderId,
             {
                 params: {
+                    metadata:1,
                     access_token,
                     fields: 
                     "email,first_name,last_name,profile_pic,link,name"
