@@ -18,8 +18,8 @@ async function getUserData(senderId) {
             }
         );
         console.log(userData);
-        console.log(userData.metadata);
-        console.log(userData.metadata.fields);
+        console.log(userData.data.metadata);
+        console.log(userData.data.metadata.fields);
         return userData.data;
     } catch (err) {
         console.log("algo salio mal en axios getUserData: ", err);
