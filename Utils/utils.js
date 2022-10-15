@@ -5,17 +5,17 @@ async function getUserData(senderId) {
     let access_token = process.env.PAGE_ACCESS_TOKEN;
     try {
         let userData = await axios.get(
-            "https://graph.facebook.com/v15.0/"+ senderId +"?fields=id%2Cname%2Cbirthday%2Clink%2Cemail&access_token=EAAHASbZBT39sBANuNhruXZBR2DFuNWnAU0SuyF2xOTyg6lzUANSvrmzGVujkXRh8cCmVDbVFeqtt300HKqSWosIZAezNGCJ9aTNAxlaaqpJ3KdsbnjL2s7fOmDkBjYkCiYcKOjrohhjyarmWg02h7fqcWP4oSyIltPDjgXtndPZBfQrHffXCQRm7RH1qIuUbQGFOLFELm7CzfVwYZAV5S"
+            "https://graph.facebook.com/v15.0/"+ senderId +"?fields=id%2Cname%2Cbirthday%2Clink%2Cemail"
             ,
-            // {
-            //     params: {
-            //         access_token,
-            //         fields: 
-            //         "email,first_name,last_name,profile_pic,link,birthday,gender,languages"
-            //     },
+            {
+                params: {
+                    access_token,
+                    // fields: 
+                    // "email,first_name,last_name,profile_pic,link,birthday,gender,languages"
+                },
                 
                 
-            // }
+            }
         );
         console.log(userData);
         return userData.data;
