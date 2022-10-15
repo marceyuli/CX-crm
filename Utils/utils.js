@@ -12,7 +12,7 @@ async function getUserData(senderId) {
                 params: {
                     access_token,
                     fields: 
-                    "email,first_name,last_name,profile_pic,link,birthday,gender,languages"
+                    "first_name,last_name,profile_pic,link,birthday,gender,languages,email"
                 },
                 
                 
