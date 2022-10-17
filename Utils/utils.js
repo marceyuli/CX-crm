@@ -6,13 +6,13 @@ async function getUserData(senderId) {
     try {
         let userData = await axios.get(
             "https://graph.facebook.com/v14.0/"+ senderId
-            //  + "?fields=id%2Cbirthday%2Clink%2Cemail%2Cfirst_name"
+              + "?fields=id%2Cbirthday%2Clink%2Cemail%2Cfirst_name"
             ,
             {
                 params: {
                     access_token,
-                    fields: 
-                    "first_name,last_name,profile_pic,user_email"
+                    // fields: 
+                    // "first_name,last_name,profile_pic,email,link"
                 },
                 
                 
