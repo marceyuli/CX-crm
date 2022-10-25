@@ -6,7 +6,6 @@ const ProductSchema = new Schema({
     type: String,
     artistId: mongoose.SchemaTypes.ObjectId,
     picture: String,
-    promotionId: mongoose.SchemaTypes.ObjectId,
     price: Number,
 },);
 
