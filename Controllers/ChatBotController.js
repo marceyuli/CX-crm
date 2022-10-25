@@ -40,6 +40,8 @@ let postWebhook = (req, res) => {
             pageEntry.messaging.forEach(function (messagingEvent) {
                 if (messagingEvent.message) {
                     receivedMessage(messagingEvent);
+                } else if (messagingEvent.postback) {
+                    receivedPostback(messagingEvent);
                 } else {
                     console.log(
                         "Webhook received unknown messagingEvent: ",
@@ -86,6 +88,31 @@ async function receivedMessage(event) {
         console.log("MENSAJE DEL USUARIO: ", messageText);
         await sendToDialogFlow(senderId, messageText);
     }
+}
+
+async function receivedPostback(event) {
+    var senderId = event.sender.id;
+    var recipientID = event.recipient.id;
+    var timeOfPostback = event.timestamp;
+    var title = event.postback.title;
+    var payload = event.postback.payload;
+    switch (title) {
+        case "Hacer compra":
+            sendToDialogFlow(senderId, payload);
+            break;
+        default:
+            //unindentified payload
+            sendToDialogFlow(senderId, payload);
+            break;
+    }
+
+    console.log(
+        "Received postback for user %d and page %d with payload '%s' " + "at %d",
+        senderId,
+        recipientID,
+        payload,
+        timeOfPostback
+    );
 }
 
 

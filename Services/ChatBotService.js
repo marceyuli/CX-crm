@@ -1,52 +1,17 @@
 var request = require("request");
 
 //libraries
-const axios = require("axios");
-const ChatbotUser = require('../Models/ChatbotUsers');
-const Client = require('../Models/Client');
-
-
-async function saveUserData(facebookId) {
-    let isRegistered = await ChatbotUser.findOne({ facebookId });
-    if (isRegistered) {
-        return;
-    }
-    let userData = await getUserData(facebookId);
-    let chatbotUser = new ChatbotUser({
-        firstName: userData.first_name,
-        lastName: userData.last_name,
-        facebookId,
-        profilePicture: userData.profile_pic
-    })
-    chatbotUser.save((err, res) => {
-        if (err) {
-            return console.log(err);
-        }
-        console.log("Se creo un usuario: ", res);
-    })
-}
-
-async function saveClientData(facebookId, parameters) {
-    let isRegistered = await Client.findOne({ facebookId });
-    if (isRegistered) {
-        return;
-    }
-    let userData = await getUserData(facebookId);
-    let client = new Client({
-        firstName: userData.first_name,
-        lastName: userData.last_name,
-        facebookId,
-        profilePicture: userData.profile_pic,
-        email: parameters.email,
-        phoneNumber: parameters.phone-number
-    })
-    client.save((err, res) => {
-        if (err) {
-            return console.log(err);
-        }
-        console.log("Se creo un cliente: ", res);
-    })
-}
+const Artists = require('../Controllers/ArtistController');
+const utils = require('../Utils/utils');
+const ChatBotUsers = require('../Controllers/ChatBotUsersController');
+const Clients = require('../Controllers/ClientsController');
+const Promotions = require('../Controllers/PromotionController');
+const Products = require('../Controllers/ProductController');
+const ProductDescriptions = require('../Controllers/ProductDescriptionsController');
+const ChatBotUsers_Products = require('../Controllers/ChatBotUsers_ProductsController');
+const Score = require('../Controllers/ScoresController');
+const UserVisits = require('../Controllers/UserVisitsController');
+const ResponseConstructor = require('../Utils/responseConstructors');
 
 function handleDialogFlowResponse(sender, response) {
     let responseText = response.fulfillmentText;
@@ -78,16 +43,52 @@ async function handleDialogFlowAction(
 ) {
     switch (action) {
         case "input.welcome":
-            saveUserData(sender);
+            await ChatBotUsers.saveUserData(sender);
+            UserVisits.saveUserVisit(sender);
             handleMessages(messages, sender);
             break;
+        case "Promociones.action":
+            let promotions = await Promotions.getPromotions();
+            for (let index = 0; index < promotions.length; index++) {
+                const element = promotions[index];
+                await sendTextMessage(sender, element.description);
+                await sendImageMessage(sender, element.picture);
+            }
+            break;
+        case "FallbackArtista.action":
+            let artists = await Artists.getArtistsInText();
+            sendTextMessage(sender, artists);
+            break;
+        case "ArtistaPrendaEspecifica.action":
+            sendTextMessage(sender, "tenemos disponibles las siguientes prendas de " + parameters.fields.NombreDeArtista.stringValue);
+            let product = await Products.getProductsByArtistName(parameters.fields.NombreDeArtista.stringValue);
+            let cards = await ResponseConstructor.carrouselConstructor(product);
+            sendGenericMessage(sender, cards);
+            break;
+        case "ArtistaPrendaYTalla.action":
+            let size = parameters.fields.Talla.stringValue;
+            let productName = parameters.fields.NombreDePrenda.stringValue;
+            let productType = parameters.fields.Prenda.stringValue;
+            if (size == '' || productName == '' || productType == '') {
+                handleMessages(messages, sender);
+                break;
+            }
+            ChatBotUsers_Products.saveUserInterest(sender, productName, productType);
+            let res = await ProductDescriptions.sizeExist(size, productName, productType);
+            sendTextMessage(sender, res);
+            break;
         case "DatosRecibidos.action":
-            console.log(parameters);
-            saveClientData(sender, parameters);
+            if (parameters.fields.phoneNumber.stringValue != '' && parameters.fields.email.stringValue != '') {
+                Clients.saveClientData(sender, parameters);
+            }
+            handleMessages(messages, sender);
+            break;
+        case "PuntuacionFinal.action":
+            Score.saveScore(sender, parameters.fields.number.numberValue);
             handleMessages(messages, sender);
             break;
         default:
-            //unhandled action, just send back the text
+            //unhandled action, just send back the tex
             handleMessages(messages, sender);
     }
 }
@@ -121,12 +122,60 @@ async function handleMessage(message, sender) {
     }
 }
 
+async function handleCardMessages(messages, sender) {
+    let elements = [];
+    for (let m = 0; m < messages.length; m++) {
+        let message = messages[m];
+        let buttons = [];
+        for (let b = 0; b < message.card.buttons.length; b++) {
+            let isLink = message.card.buttons[b].postback.substring(0, 4) === "http";
+            let button;
+            if (isLink) {
+                button = {
+                    type: "web_url",
+                    title: message.card.buttons[b].text,
+                    url: message.card.buttons[b].postback,
+                };
+            } else {
+                button = {
+                    type: "postback",
+                    title: message.card.buttons[b].text,
+                    payload:
+                        message.card.buttons[b].postback === ""
+                            ? message.card.buttons[b].text
+                            : message.card.buttons[b].postback,
+                };
+            }
+            buttons.push(button);
+        }
+
+        let element = {
+            title: message.card.title,
+            image_url: message.card.imageUri,
+            subtitle: message.card.subtitle,
+            buttons,
+        };
+        elements.push(element);
+    }
+    await sendGenericMessage(sender, elements);
+}
 
 async function handleMessages(messages, sender) {
     try {
         let i = 0;
+        let cards = [];
         while (i < messages.length) {
             switch (messages[i].message) {
+                case "card":
+                    for (let j = i; j < messages.length; j++) {
+                        if (messages[j].message === "card") {
+                            cards.push(messages[j]);
+                            i += 1;
+                        } else j = 9999;
+                    }
+                    await handleCardMessages(cards, sender);
+                    cards = [];
+                    break;
                 case "text":
                     await handleMessage(messages[i], sender);
                     break;
@@ -146,35 +195,9 @@ async function handleMessages(messages, sender) {
     }
 }
 
-
-
-
-async function getUserData(senderId) {
-    console.log("consiguiendo datos del usuario...");
-    let access_token = process.env.PAGE_ACCESS_TOKEN;
-    try {
-        let userData = await axios.get(
-            "https://graph.facebook.com/v6.0/" + senderId,
-            {
-                params: {
-                    access_token,
-                },
-            }
-        );
-        return userData.data;
-    } catch (err) {
-        console.log("algo salio mal en axios getUserData: ", err);
-        return {
-            first_name: "",
-            last_name: "",
-            profile_pic: "",
-        };
-    }
-}
-
 async function sendTextMessage(recipientId, text) {
     if (text.includes("{first_name}")) {
-        let userData = await getUserData(recipientId);
+        let userData = await utils.getUserData(recipientId);
         text = text
             .replace("{first_name}", userData.first_name);
     }
@@ -215,6 +238,25 @@ async function sendQuickReply(recipientId, text, replies, metadata) {
             text: text,
             metadata: isDefined(metadata) ? metadata : "",
             quick_replies: replies,
+        },
+    };
+
+    await callSendAPI(messageData);
+}
+
+async function sendGenericMessage(recipientId, elements) {
+    var messageData = {
+        recipient: {
+            id: recipientId,
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: elements,
+                },
+            },
         },
     };
 
@@ -312,8 +354,7 @@ function isDefined(obj) {
 }
 
 module.exports = {
-    saveUserData,
     handleDialogFlowResponse,
     sendTypingOn,
-    
+    sendTextMessage,
 }
