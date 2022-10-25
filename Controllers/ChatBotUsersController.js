@@ -1,4 +1,5 @@
 const ChatbotUser = require('../Models/ChatbotUsers');
+const UserVisit = require('./UserVisitsController');
 const utils = require('../Utils/utils');
 
 async function saveUserData(facebookId) {
@@ -21,6 +22,23 @@ async function saveUserData(facebookId) {
     })
 }
 
+async function getUsersByState(state){
+    return await ChatbotUser.find({state})
+}
+
+async function getTimesVisited(chatBotUserId){
+    return await UserVisit.getTimesVisited(chatBotUserId);
+}
+
+async function getLastVisit(chatBotUserId){
+    return await UserVisit.getLastVisit(chatBotUserId);
+}
+
+
+
 module.exports = {
-    saveUserData
+    saveUserData,
+    getUsersByState,
+    getTimesVisited,
+    getLastVisit,
 }

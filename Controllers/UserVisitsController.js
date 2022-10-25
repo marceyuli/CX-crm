@@ -14,6 +14,17 @@ async function saveUserVisit(facebookId){
     });
 }
 
+async function getTimesVisited(chatBotUserId){
+    return (await UserVisit.find({chatBotUserId})).length
+}
+
+async function getLastVisit(chatBotUserId){
+    let lastUserVisit = await UserVisit.findOne({chatBotUserId}).sort('-createdAt')
+    return lastUserVisit.createdAt;
+}
+
 module.exports = {
-    saveUserVisit
+    saveUserVisit,
+    getTimesVisited,
+    getLastVisit
 }
