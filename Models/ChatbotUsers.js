@@ -5,7 +5,11 @@ const ChatbotUserSchema = new Schema({
     firstName: String,
     lastName: String,
     facebookId: String,
-    profilePicture: String
+    profilePicture: String,
+    email: String,
+    phoneNumber: String,
+    urlProfile: String,
+    state: String,
 }, { timestamps: true });
 
 module.exports = mongoose.model('ChatbotUsers', ChatbotUserSchema);

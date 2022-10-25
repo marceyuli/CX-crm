@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ScoreSchema = new Schema({
-    score: Number,
+    punctuation: Number,
     chatBotUserId: mongoose.SchemaTypes.ObjectId,
 }, { timestamps: true });
 
