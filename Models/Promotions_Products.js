@@ -6,4 +6,4 @@ const Promotions_ProductsSchema = new Schema({
     productId: mongoose.SchemaTypes.ObjectId
 }, { timestamps: true });
 
-module.exports = mongoose.model('promotions_products', ChatBotUsers_ProductsSchema);
+module.exports = mongoose.model('promotions_products', Promotions_ProductsSchema);
