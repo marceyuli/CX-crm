@@ -4,7 +4,6 @@ var request = require("request");
 const Artists = require('../Controllers/ArtistController');
 const utils = require('../Utils/utils');
 const ChatBotUsers = require('../Controllers/ChatBotUsersController');
-const Clients = require('../Controllers/ClientsController');
 const Promotions = require('../Controllers/PromotionController');
 const Products = require('../Controllers/ProductController');
 const ProductDescriptions = require('../Controllers/ProductDescriptionsController');
@@ -79,7 +78,7 @@ async function handleDialogFlowAction(
             break;
         case "DatosRecibidos.action":
             if (parameters.fields.phoneNumber.stringValue != '' && parameters.fields.email.stringValue != '') {
-                Clients.saveClientData(sender, parameters);
+                // Clients.saveClientData(sender, parameters);
             }
             handleMessages(messages, sender);
             break;
