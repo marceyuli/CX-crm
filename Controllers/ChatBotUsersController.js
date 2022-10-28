@@ -22,7 +22,8 @@ async function saveUserData(facebookId) {
     })
 }
 
-let getUsersData = async (req, res, state) => {
+let getUsersData = async (req, res) => {
+    console.log(req);
     var data = req.body;
     console.log(state);
     console.log(data);
