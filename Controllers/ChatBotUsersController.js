@@ -28,7 +28,7 @@ let getUsersData = async (req, res) => {
     let list = await ChatbotUser.find()
     console.log(data);
     // console.log(newTodo);
-    console.log(req);
+    console.log(req.query);
     console.log(list);
     res.json(list);
 }
