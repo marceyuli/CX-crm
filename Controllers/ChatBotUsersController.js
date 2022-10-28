@@ -22,15 +22,23 @@ async function saveUserData(facebookId) {
     })
 }
 
-async function getUsersByState(state){
-    return await ChatbotUser.find({state})
+let getUsersData = async (req, res) => {
+    var data = req.body;
+    let list = await ChatbotUser.find()
+    console.log(data);
+    console.log(list);
+    res.send("holaaaa");
 }
 
-async function getTimesVisited(chatBotUserId){
+async function getUsersByState(state) {
+    return await ChatbotUser.find({ state })
+}
+
+async function getTimesVisited(chatBotUserId) {
     return await UserVisit.getTimesVisited(chatBotUserId);
 }
 
-async function getLastVisit(chatBotUserId){
+async function getLastVisit(chatBotUserId) {
     return await UserVisit.getLastVisit(chatBotUserId);
 }
 
@@ -41,4 +49,5 @@ module.exports = {
     getUsersByState,
     getTimesVisited,
     getLastVisit,
+    getUsersData
 }
