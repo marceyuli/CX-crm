@@ -6,7 +6,7 @@ var app = express();
 var initWebRoutes = require("./routes")
 const mongoose = require('mongoose');
 
-app.use(cors);
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 initWebRoutes(app)
