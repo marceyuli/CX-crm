@@ -33,7 +33,6 @@ let getUsersData = async (req, res) => {
     chatBotUsers.forEach(element => {
         switch (element.state) {
             case 1:
-                console.log(element)
                 newChatBotUsers1.push(element);
                 break;
             case 2:
@@ -56,13 +55,20 @@ let getUsersData = async (req, res) => {
     res.json(newChatBotUsers);
 }
 
-async function getUsersByState(state) {
-    return await ChatbotUser.find({ state })
-}
+// async function getUsersByState(state) {
+//     return await ChatbotUser.find({ state })
+// }
 
-async function getTimesVisited(chatBotUserId) {
-    return await UserVisit.getTimesVisited(chatBotUserId);
+let getTimesVisited = async (req, res) => {
+    var data = req.body;
+    console.log(data);
+    let chatBotUsersTimesVisited = (await ChatbotUser.find({ _id: data._id })).length
+    console.log(chatBotUsersTimesVisited);
+    res.json(chatBotUsersTimesVisited);
 }
+// async function getTimesVisited(chatBotUserId) {
+//     return await UserVisit.getTimesVisited(chatBotUserId);
+// }
 
 async function getLastVisit(chatBotUserId) {
     return await UserVisit.getLastVisit(chatBotUserId);
@@ -72,7 +78,7 @@ async function getLastVisit(chatBotUserId) {
 
 module.exports = {
     saveUserData,
-    getUsersByState,
+    // getUsersByState,
     getTimesVisited,
     getLastVisit,
     getUsersData
