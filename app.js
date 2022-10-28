@@ -1,10 +1,12 @@
 // Importar las dependencias para configurar el servidor
 var express = require("express");
 var bodyParser = require("body-parser");
+var cors = require('cors')
 var app = express();
 var initWebRoutes = require("./routes")
 const mongoose = require('mongoose');
 
+app.use(cors);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 initWebRoutes(app)
