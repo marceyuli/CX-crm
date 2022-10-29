@@ -34,7 +34,7 @@ let getUsersData = async (req, res) => {
 
 let getTimesVisited = async (req, res) => {
     var data = req.query;
-    let timesVisited = (await UserVisit.find({ _id: data._id })).length
+    let timesVisited = (await UserVisit.find({ chatBotUserId: data._id })).length
     res.json(timesVisited);
 }
 // async function getTimesVisited(chatBotUserId) {
