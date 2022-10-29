@@ -32,11 +32,11 @@ let getUsersData = async (req, res) => {
 //     return await ChatbotUser.find({ state })
 // }
 
-let getTimesVisited = async (req, res) => {
-    var data = req.query;
-    let timesVisited = (await UserVisit.find({ chatBotUserId: data._id })).length
-    res.json(timesVisited);
-}
+// let getTimesVisited = async (req, res) => {
+//     var data = req.query;
+//     let timesVisited = (await UserVisit.find({ chatBotUserId: data._id })).length
+//     res.json(timesVisited);
+// }
 // async function getTimesVisited(chatBotUserId) {
 //     return await UserVisit.getTimesVisited(chatBotUserId);
 // }
@@ -50,7 +50,7 @@ async function getLastVisit(chatBotUserId) {
 module.exports = {
     saveUserData,
     // getUsersByState,
-    getTimesVisited,
+    // getTimesVisited,
     getLastVisit,
     getUsersData
 }

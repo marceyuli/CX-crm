@@ -14,10 +14,14 @@ async function saveUserVisit(facebookId){
     });
 }
 
-async function getTimesVisited(chatBotUserId){
-    return (await UserVisit.find({chatBotUserId})).length
+// async function getTimesVisited(chatBotUserId){
+//     return (await UserVisit.find({chatBotUserId})).length
+// }
+let getTimesVisited = async (req, res) => {
+    var data = req.query;
+    let timesVisited = (await UserVisit.find({ chatBotUserId: data._id })).length
+    res.json(timesVisited);
 }
-
 async function getLastVisit(chatBotUserId){
     let lastUserVisit = await UserVisit.findOne({chatBotUserId}).sort('-createdAt')
     return lastUserVisit.createdAt;
