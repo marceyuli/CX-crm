@@ -23,9 +23,9 @@ async function saveUserData(facebookId) {
 }
 
 let getUsersData = async (req, res) => {
-    console.log(req);
+    console.log(req.query);
+    console.log(req.params);
     var data = req.body;
-    console.log(state);
     console.log(data);
     let chatBotUsers = await ChatbotUser.find({ state: data.state });
     console.log(chatBotUsers);
