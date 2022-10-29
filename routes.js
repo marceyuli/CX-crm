@@ -10,7 +10,7 @@ let initWebRoutes = (app)=> {
     router.get("/webhook", ChatBotController.getWebhook);
     router.post("/webhook", ChatBotController.postWebhook);
     router.get("/getusersdata", ChatBotUsersController.getUsersData);
-    router.get("/getusertimesvisited/:id", ChatBotUsersController.getTimesVisited);
+    router.get("/getusertimesvisited", ChatBotUsersController.getTimesVisited);
     return app.use("/", router);
 };
 

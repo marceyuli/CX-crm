@@ -25,7 +25,6 @@ async function saveUserData(facebookId) {
 let getUsersData = async (req, res) => {
     var data = req.query;
     let chatBotUsers = await ChatbotUser.find({ state: data.state });
-    console.log(chatBotUsers);
     res.json(chatBotUsers);
 }
 
@@ -36,7 +35,6 @@ let getUsersData = async (req, res) => {
 let getTimesVisited = async (req, res) => {
     var data = req.query;
     let chatBotUsersTimesVisited = (await ChatbotUser.find({ _id: data._id })).length
-    console.log(chatBotUsersTimesVisited);
     res.json(chatBotUsersTimesVisited);
 }
 // async function getTimesVisited(chatBotUserId) {
