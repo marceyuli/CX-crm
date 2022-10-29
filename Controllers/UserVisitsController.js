@@ -29,10 +29,10 @@ let getLastVisit = async (req, res) => {
     console.log(lastUserVisit);
     res.json(lastUserVisit);
 }
-async function getLastVisit(chatBotUserId){
-    let lastUserVisit = await UserVisit.findOne({chatBotUserId}).sort('-createdAt')
-    return lastUserVisit.createdAt;
-}
+// async function getLastVisit(chatBotUserId){
+//     let lastUserVisit = await UserVisit.findOne({chatBotUserId}).sort('-createdAt')
+//     return lastUserVisit.createdAt;
+// }
 
 module.exports = {
     saveUserVisit,
