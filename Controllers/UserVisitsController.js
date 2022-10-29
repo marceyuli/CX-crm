@@ -22,6 +22,13 @@ let getTimesVisited = async (req, res) => {
     let timesVisited = (await UserVisit.find({ chatBotUserId: data._id })).length
     res.json(timesVisited);
 }
+
+let getLastVisit = async (req, res) => {
+    var data = req.query;
+    let lastUserVisit = await UserVisit.findOne({ chatBotUserId: data._id }).sort('-createdAt');
+    console.log(lastUserVisit);
+    res.json(lastUserVisit);
+}
 async function getLastVisit(chatBotUserId){
     let lastUserVisit = await UserVisit.findOne({chatBotUserId}).sort('-createdAt')
     return lastUserVisit.createdAt;
