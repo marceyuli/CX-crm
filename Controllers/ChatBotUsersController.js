@@ -47,10 +47,10 @@ let getUsersData = async (req, res) => {
                     //         break;
                     //     }
                     // }
-                    element.timesVisited = "hola";
+                    chatBotUsers[index].timesVisited = "hola";
                     console.log(element.timesVisited);
                     // chatBotUsersVisited.splice(i, 1);
-                    newChatBotUsers1.push(element);
+                    newChatBotUsers1.push(chatBotUsers[index]);
                     break;
                 case 2:
                     newChatBotUsers2.push(element);
