@@ -54,7 +54,13 @@ async function getTimesVisited() {
                 state: "$chatbotuser.state",
             }
         },
-        { $unwind: ["$firstName", "$lastName", "$facebookId", "profilePicture", "$email", "$phoneNumber", "$state"] }
+        { $unwind: "$firstName" },
+        { $unwind: "$lastName" },
+        { $unwind: "$facebookId" },
+        { $unwind: "$profilePicture" },
+        { $unwind: "$email" },
+        { $unwind: "$phoneNumber" },
+        { $unwind: "$state" }
     ])
     return userVisit;
 }
