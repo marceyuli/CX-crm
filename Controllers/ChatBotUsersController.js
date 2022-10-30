@@ -27,10 +27,7 @@ let getUsersData = async (req, res) => {
     try {
         // let chatBotUsers = await ChatbotUser.find({})
         let chatBotUsersVisited = await UserVisit.getTimesVisited();
-        console.log(chatBotUsersVisited);
         let newChatBotUsers = [];
-        let newChatBotUsers1 = [];
-        newChatBotUsers1.push(chatBotUsersVisited);
         let newChatBotUsers2 = [];
         let newChatBotUsers3 = [];
         let newChatBotUsers4 = [];
@@ -66,7 +63,7 @@ let getUsersData = async (req, res) => {
         //             break;
         //     }
         // });
-        newChatBotUsers.push(newChatBotUsers1);
+        newChatBotUsers.push(chatBotUsersVisited);
         newChatBotUsers.push(newChatBotUsers2);
         newChatBotUsers.push(newChatBotUsers3);
         newChatBotUsers.push(newChatBotUsers4);
