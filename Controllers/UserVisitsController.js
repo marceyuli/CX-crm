@@ -17,11 +17,6 @@ async function saveUserVisit(facebookId) {
 async function getTimesVisited() {
     let userVisit = await UserVisit.aggregate([
         {
-            $match:{
-                state: 1
-            }
-        },
-        {
             $sort: {
                 createdAt: -1
             }
@@ -56,6 +51,11 @@ async function getTimesVisited() {
                                     ["$chatbotuser", 0]
                             }, "$$ROOT"]
                 }
+            }
+        },
+        {
+            $match: {
+                state: 1
             }
         },
         {
