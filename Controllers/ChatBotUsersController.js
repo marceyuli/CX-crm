@@ -48,7 +48,8 @@ let getUsersData = async (req, res) => {
                     //     }
                     // }
                     chatBotUsers[index].timesVisited = "hola";
-                    console.log(chatBotUsers[index]);
+                    let asd = {...element, asd:"asd"};
+                    console.log(asd);
                     // chatBotUsersVisited.splice(i, 1);
                     newChatBotUsers1.push(chatBotUsers[index]);
                     break;
