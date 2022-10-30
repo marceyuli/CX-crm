@@ -17,8 +17,8 @@ async function saveUserVisit(facebookId) {
 async function getTimesVisited() {
     let userVisit = await UserVisit.aggregate([
         {
-            $sort:{
-                createdAt:-1
+            $sort: {
+                createdAt: -1
             }
         },
         {
@@ -27,9 +27,32 @@ async function getTimesVisited() {
                 timesVisited: {
                     $count: {}
                 },
-                lastUserVisit:{
-                    $first:"$createdAt"
+                lastUserVisit: {
+                    $first: "$createdAt"
                 }
+            }
+        },
+        {
+            $lookup: {
+                from: "chatbotusers",
+                localField: "_id",
+                foreignField: "_id",
+                as: "chatbotuser"
+            }
+        },
+        {
+            $project: {
+                _id: 1,
+                timesVisited: 1,
+                lastUserVisit: 1,
+                firstName: "$chatbotuser.firstname",
+                lastName: "$chatbotuser.lastName",
+                facebookId: "$chatbotuser.facebookId",
+                profilePicture: "$chatbotuser.profilePicture",
+                email: "$chatbotuser.email",
+                phoneNumber: "$chatbotuser.phoneNumber",
+                urlProfile: "$chatbotuser.urlProfile",
+                state: "$chatbotuser.state",
             }
         }
     ])
