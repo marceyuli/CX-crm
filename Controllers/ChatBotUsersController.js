@@ -48,7 +48,7 @@ let getUsersData = async (req, res) => {
                     //     }
                     // }
                     chatBotUsers[index].timesVisited = "hola";
-                    console.log(element.timesVisited);
+                    console.log(chatBotUsers[index]);
                     // chatBotUsersVisited.splice(i, 1);
                     newChatBotUsers1.push(chatBotUsers[index]);
                     break;
@@ -71,7 +71,6 @@ let getUsersData = async (req, res) => {
         newChatBotUsers.push(newChatBotUsers2);
         newChatBotUsers.push(newChatBotUsers3);
         newChatBotUsers.push(newChatBotUsers4);
-        console.log(newChatBotUsers);
         res.json(newChatBotUsers);
     } catch (error) {
         console.log(error);
