@@ -37,7 +37,9 @@ async function getTimesContactedLastContact() {
                     {
                         $sort: {
                             createdAt: -1
-                        },
+                        }
+                    },
+                    {
                         $group: {
                             _id: '$chatBotUserId',
                             timesVisited: {
@@ -47,13 +49,13 @@ async function getTimesContactedLastContact() {
                                 $first: "$createdAt"
                             }
                         }
-                    }
+                    } 
                 ],
-                as: "talkDetails"
+        as: "talkDetails"
             }
         }
     ])
-    return talkDetail;
+return talkDetail;
 }
 //devuelve la cantidad de veces que fue contactado un usario
 // async function getTimesContacted(){
