@@ -26,7 +26,6 @@ let getUsersData = async (req, res) => {
     try {
         let chatBotUsers = await ChatbotUser.find()
         let chatBotUsersVisited = await UserVisit.getTimesVisited();
-        console.log(chatBotUsersVisited);
         let newChatBotUsers = [];
         let newChatBotUsers1 = [];
         let newChatBotUsers2 = [];
@@ -38,7 +37,8 @@ let getUsersData = async (req, res) => {
                     let i = 0
                     for (i = 0; i < chatBotUsersVisited.length; i++) {
                         const element2 = chatBotUsersVisited[i];
-                        if (element._id == element2._id) {
+                        if (element._id === element2._id) {
+                            console.log("holaaa");
                             element.timesVisited = element2.timesVisited;
                             // element.lastVisit = element2.lastVisit;
                             break;
