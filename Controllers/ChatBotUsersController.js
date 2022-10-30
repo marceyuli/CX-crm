@@ -38,13 +38,11 @@ let getUsersData = async (req, res) => {
                     for (i = 0; i < chatBotUsersVisited.length; i++) {
                         const element2 = chatBotUsersVisited[i];
                         if (element._id.equals(element2._id)) {
-                            console.log("holaaa");
                             element.timesVisited = element2.timesVisited;
-                            // element.lastVisit = element2.lastVisit;
+                            console.log(element);
                             break;
                         }
                     }
-                    console.log(i);
                     chatBotUsersVisited.splice(i, 1);
                     newChatBotUsers1.push(element);
                     break;
