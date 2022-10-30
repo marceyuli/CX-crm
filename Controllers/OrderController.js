@@ -1,5 +1,5 @@
 const Order = require('../Models/Orders');
-const ChatBotUsers = require('../Models/ChatbotUser');
+const ChatBotUsers = require('../Models/ChatbotUsers');
 
 
 
