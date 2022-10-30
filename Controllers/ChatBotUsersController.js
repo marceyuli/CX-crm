@@ -38,8 +38,8 @@ let getUsersData = async (req, res) => {
                     for (i = 0; i < chatBotUsersVisited.length; i++) {
                         const element2 = chatBotUsersVisited[i];
                         if (element._id.equals(element2._id)) {
-                            element = {...element, timesVisited: element2.timesVisited};
-                            console.log(element);
+                            // element = {...element, timesVisited: element2.timesVisited};
+                            // console.log(element);
                             element.asd = "asd";
                             console.log(element);
                             break;
