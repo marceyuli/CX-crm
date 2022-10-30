@@ -31,15 +31,15 @@ async function getTimesVisited() {
                     $first: "$createdAt"
                 }
             }
+        },
+        {
+            $lookup: {
+                from: "chatbotusers",
+                localField: "_id",
+                foreignField: "_id",
+                as: "chatbotuser"
+            }
         }
-        // {
-        //     $lookup: {
-        //         from: "chatbotusers",
-        //         localField: "_id",
-        //         foreignField: "_id",
-        //         as: "chatbotuser"
-        //     }
-        // },
         // {
         //     $project: {
         //         _id: 1,
