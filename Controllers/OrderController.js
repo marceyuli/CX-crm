@@ -1,5 +1,72 @@
-import Order from '../Models/Orders';
+const Order = request('../Models/Orders');
+const ChatBotUsers = request('../Models/ChatbotUser');
 
+
+
+async function getTimesOrderedLastOrder() {
+    return await ChatBotUsers.aggregate([
+        {
+            $match: {
+                state: 3
+            }
+        },
+        {
+            $lookup: {
+                from: "orders",
+                localField: "_id",
+                foreignField: "chatBotUserId",
+                pipeline: [
+                    {
+                        $match: {
+                            order: true
+                        }
+                    },
+                    {
+                        $sort: {
+                            createdAt: -1
+                        }
+                    },
+                    {
+                        $group: {
+                            _id: '$chatBotUserId',
+                            timesOrdered: {
+                                $count: {}
+                            },
+                            lastUserOrder: {
+                                $first: "$createdAt"
+                            }
+                        }
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            totalPrice: 0,
+                            order: 0,
+                        }
+                    }
+                ],
+                as: "orders"
+            },
+        },
+        {
+            $replaceRoot: {
+                newRoot:
+                {
+                    $mergeObjects:
+                        [
+                            {
+                                $arrayElemAt:
+                                    ["$orders", 0]
+                            }, "$$ROOT"]
+                }
+            },
+        },
+        {
+            $project:
+                { orders: 0 }
+        }
+    ])
+}
 //devuelve la cantidad de veces que hizo una orden un usuario
 async function getTimesOrdered(chatBotUserId) {
     return (await Order.find({ chatBotUserId, order: true })).length
@@ -37,8 +104,9 @@ async function getAvgTotalPrice(chatBotUserId) {
     return order;
 }
 
-export default {
+module.exports = {
     getTimesOrdered,
     getLastOrder,
-    getAvgTotalPrice
+    getAvgTotalPrice,
+    getTimesOrderedLastOrder
 }

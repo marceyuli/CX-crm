@@ -1,6 +1,7 @@
 const ChatbotUser = require('../Models/ChatbotUsers');
 const UserVisit = require('./UserVisitsController');
 const TalkDetails = require('./TalkDetailsController');
+const Orders = require('./OrderController');
 const utils = require('../Utils/utils');
 
 
@@ -30,8 +31,8 @@ let getUsersData = async (req, res) => {
         let chatBotUsersProspect = await UserVisit.getTimesVisited();
         // let chatBotUsersProspect = [];
         let chatBotUsersContacted = await TalkDetails.getTimesContactedLastContact();
-        console.log(chatBotUsersContacted);
-        let chatBotUsersActive = [];
+        // let chatBotUsersActive = [];
+        let chatBotUsersActive = await Orders.getTimesOrderedLastOrder();
         let chatBotUsersHabitual = [];
         let newChatBotUsers = [];
         newChatBotUsers.push(chatBotUsersProspect);
