@@ -32,26 +32,25 @@ let getUsersData = async (req, res) => {
         let newChatBotUsers2 = [];
         let newChatBotUsers3 = [];
         let newChatBotUsers4 = [];
-        for (let index = 0; index < chatBotUsers.length; index++) {
-            const element = chatBotUsers[index];
+        chatBotUsers.forEach(element => {
             switch (element.state) {
                 case 1:
-                    // for (let i = 0; i < chatBotUsersVisited.length; i++) {
+                    element.update({hola:"asd"});
+                    // let i = 0;
+                    // for (i = 0; i < chatBotUsersVisited.length; i++) {
                     //     const element2 = chatBotUsersVisited[i];
                     //     if (element._id.equals(element2._id)) {
                     //         // element = {...element, timesVisited: element2.timesVisited};
                     //         // console.log(element);
-                    //         const timesVisited = element2.timesVisited;
-                    //         element.timesVisited = timesVisited;
+                    //         const timesVisited = element2.timesVisited
+                    //         element.timesVisited = element2.timesVisited;
                     //         console.log(element.timesVisited);
                     //         break;
                     //     }
                     // }
-                    // chatBotUsers[index].timesVisited = "hola";
-                    let asd = {...element, asd:"asd"};
-                    console.log(asd);
+                    // console.log(element.timesVisited);
                     // chatBotUsersVisited.splice(i, 1);
-                    newChatBotUsers1.push(chatBotUsers[index]);
+                    newChatBotUsers1.push(element);
                     break;
                 case 2:
                     newChatBotUsers2.push(element);
@@ -65,13 +64,12 @@ let getUsersData = async (req, res) => {
                 default:
                     break;
             }
-        }
-
-
+        });
         newChatBotUsers.push(newChatBotUsers1);
         newChatBotUsers.push(newChatBotUsers2);
         newChatBotUsers.push(newChatBotUsers3);
         newChatBotUsers.push(newChatBotUsers4);
+        // console.log(newChatBotUsers);
         res.json(newChatBotUsers);
     } catch (error) {
         console.log(error);
