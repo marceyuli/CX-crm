@@ -39,21 +39,21 @@ async function getTimesVisited() {
                 foreignField: "_id",
                 as: "chatbotuser"
             }
-        }
-        // {
-        //     $project: {
-        //         _id: 1,
-        //         timesVisited: 1,
-        //         lastUserVisit: 1,
-        //         firstName: "$chatbotuser.firstName",
-        //         lastName: "$chatbotuser.lastName",
-        //         facebookId: "$chatbotuser.facebookId",
-        //         profilePicture: "$chatbotuser.profilePicture",
-        //         email: "$chatbotuser.email",
-        //         phoneNumber: "$chatbotuser.phoneNumber",
-        //         state: "$chatbotuser.state",
-        //     }
-        // },
+        },
+        {
+            $project: {
+                _id: 1,
+                timesVisited: 1,
+                lastUserVisit: 1,
+                firstName: "$chatbotuser.firstName",
+                lastName: "$chatbotuser.lastName",
+                facebookId: "$chatbotuser.facebookId",
+                profilePicture: "$chatbotuser.profilePicture",
+                email: "$chatbotuser.email",
+                phoneNumber: "$chatbotuser.phoneNumber",
+                state: "$chatbotuser.state",
+            }
+        },
         // { $unwind: "$firstName" },
         // { $unwind: "$lastName" },
         // { $unwind: "$facebookId" },
