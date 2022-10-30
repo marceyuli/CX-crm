@@ -30,41 +30,42 @@ let getUsersData = async (req, res) => {
         console.log(chatBotUsersVisited);
         let newChatBotUsers = [];
         let newChatBotUsers1 = [];
+        newChatBotUsers1.push(chatBotUsersVisited);
         let newChatBotUsers2 = [];
         let newChatBotUsers3 = [];
         let newChatBotUsers4 = [];
-        chatBotUsersVisited.forEach(element => {
-            switch (element.state) {
-                case 1:
-                    // let i = 0;
-                    // for (i = 0; i < chatBotUsersVisited.length; i++) {
-                    //     const element2 = chatBotUsersVisited[i];
-                    //     if (element._id.equals(element2._id)) {
-                    //         // element = {...element, timesVisited: element2.timesVisited};
-                    //         // console.log(element);
-                    //         const timesVisited = element2.timesVisited
-                    //         element.timesVisited = element2.timesVisited;
-                    //         console.log(element.timesVisited);
-                    //         break;
-                    //     }
-                    // }
-                    // console.log(element.timesVisited);
-                    // chatBotUsersVisited.splice(i, 1);
-                    newChatBotUsers1.push(element);
-                    break;
-                case 2:
-                    newChatBotUsers2.push(element);
-                    break;
-                case 3:
-                    newChatBotUsers3.push(element);
-                    break;
-                case 4:
-                    newChatBotUsers4.push(element);
-                    break;
-                default:
-                    break;
-            }
-        });
+        // chatBotUsersVisited.forEach(element => {
+        //     switch (element.state) {
+        //         case 1:
+        //             // let i = 0;
+        //             // for (i = 0; i < chatBotUsersVisited.length; i++) {
+        //             //     const element2 = chatBotUsersVisited[i];
+        //             //     if (element._id.equals(element2._id)) {
+        //             //         // element = {...element, timesVisited: element2.timesVisited};
+        //             //         // console.log(element);
+        //             //         const timesVisited = element2.timesVisited
+        //             //         element.timesVisited = element2.timesVisited;
+        //             //         console.log(element.timesVisited);
+        //             //         break;
+        //             //     }
+        //             // }
+        //             // console.log(element.timesVisited);
+        //             // chatBotUsersVisited.splice(i, 1);
+        //             newChatBotUsers1.push(element);
+        //             break;
+        //         case 2:
+        //             newChatBotUsers2.push(element);
+        //             break;
+        //         case 3:
+        //             newChatBotUsers3.push(element);
+        //             break;
+        //         case 4:
+        //             newChatBotUsers4.push(element);
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        // });
         newChatBotUsers.push(newChatBotUsers1);
         newChatBotUsers.push(newChatBotUsers2);
         newChatBotUsers.push(newChatBotUsers3);

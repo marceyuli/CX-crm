@@ -17,6 +17,11 @@ async function saveUserVisit(facebookId) {
 async function getTimesVisited() {
     let userVisit = await UserVisit.aggregate([
         {
+            $match:{
+                state: 1
+            }
+        },
+        {
             $sort: {
                 createdAt: -1
             }
@@ -41,30 +46,22 @@ async function getTimesVisited() {
             }
         },
         {
-            $replaceRoot: { newRoot: { $mergeObjects: [{ $arrayElemAt: ["$chatbotuser", 0] }, "$$ROOT"] } }
+            $replaceRoot: {
+                newRoot:
+                {
+                    $mergeObjects:
+                        [
+                            {
+                                $arrayElemAt:
+                                    ["$chatbotuser", 0]
+                            }, "$$ROOT"]
+                }
+            }
         },
-        { $project: { chatbotuser: 0 } }
-        // {
-        //     $project: {
-        //         _id: 1,
-        //         timesVisited: 1,
-        //         lastUserVisit: 1,
-        //         firstName: "$chatbotuser.firstName",
-        //         lastName: "$chatbotuser.lastName",
-        //         facebookId: "$chatbotuser.facebookId",
-        //         profilePicture: "$chatbotuser.profilePicture",
-        //         email: "$chatbotuser.email",
-        //         phoneNumber: "$chatbotuser.phoneNumber",
-        //         state: "$chatbotuser.state",
-        //     }
-        // },
-        // { $unwind: "$firstName" },
-        // { $unwind: "$lastName" },
-        // { $unwind: "$facebookId" },
-        // { $unwind: "$profilePicture" },
-        // { $unwind: "$email" },
-        // { $unwind: "$phoneNumber" },
-        // { $unwind: "$state" }
+        {
+            $project:
+                { chatbotuser: 0 }
+        }
     ])
     return userVisit;
 }
