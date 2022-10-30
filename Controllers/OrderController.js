@@ -110,24 +110,18 @@ async function getAvgTotalPriceCreatedAt() {
                             avgTotalPrice: {
                                 $avg: "$totalPrice"
                             },
-                            avgCreatedAt: {
-                                $dateDiff: {
-                                    startDate: {
-                                        $first: "$createdAt"
-                                    },
-                                    endDate: {
-                                        $last: "$createdAt"
-                                    },
-                                    unit: "day"
-                                } //devuelve milisegundos
-                            },
+                            // avgCreatedAt: {
+                            //      $subtract //devuelve milisegundos
+                            // },
                         }
                     },
                     {
-                        $project: {
-                            avgCreatedAt: {
-                                $trunc:
-                                    ["$avgCreatedAt", 1]
+                        $project:{
+                            avgCreatedAt:{
+                                $subtract:[
+                                    {$first:"$createdAt"},
+                                    {$last: "$createdAt"}
+                                ]
                             }
                         }
                     }
@@ -150,9 +144,7 @@ async function getAvgTotalPriceCreatedAt() {
         },
         {
             $project:
-            {
-                orders: 0,
-            }
+                { orders: 0 }
         }
     ])
 }
