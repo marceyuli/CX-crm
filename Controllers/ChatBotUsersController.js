@@ -36,17 +36,18 @@ let getUsersData = async (req, res) => {
             const element = chatBotUsers[index];
             switch (element.state) {
                 case 1:
-                    for (let i = 0; i < chatBotUsersVisited.length; i++) {
-                        const element2 = chatBotUsersVisited[i];
-                        if (element._id.equals(element2._id)) {
-                            // element = {...element, timesVisited: element2.timesVisited};
-                            // console.log(element);
-                            const timesVisited = element2.timesVisited;
-                            element.timesVisited = timesVisited;
-                            console.log(element.timesVisited);
-                            break;
-                        }
-                    }
+                    // for (let i = 0; i < chatBotUsersVisited.length; i++) {
+                    //     const element2 = chatBotUsersVisited[i];
+                    //     if (element._id.equals(element2._id)) {
+                    //         // element = {...element, timesVisited: element2.timesVisited};
+                    //         // console.log(element);
+                    //         const timesVisited = element2.timesVisited;
+                    //         element.timesVisited = timesVisited;
+                    //         console.log(element.timesVisited);
+                    //         break;
+                    //     }
+                    // }
+                    element.timesVisited = "hola";
                     console.log(element.timesVisited);
                     // chatBotUsersVisited.splice(i, 1);
                     newChatBotUsers1.push(element);
