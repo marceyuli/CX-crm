@@ -41,7 +41,7 @@ async function getTimesVisited() {
             }
         },
         {
-            $replaceRoot: { newRoot: { $mergeObjects: [{ $arrayElemAt: ["$chatbotuser", 0] }, "$$ROOT"] } }
+            $replaceRoot: { newRoot: { $mergeObjects: [{ $arrayElemAt: ["$chatbotuser", 0] }] } }
         },
         { $project: { fromItems: 0 } }
         // {
