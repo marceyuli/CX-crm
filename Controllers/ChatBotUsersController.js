@@ -1,7 +1,8 @@
 const ChatbotUser = require('../Models/ChatbotUsers');
 const UserVisit = require('./UserVisitsController');
+const TalkDetails = require('./TalkDetailsController');
 const utils = require('../Utils/utils');
-const { $where } = require('../Models/ChatbotUsers');
+
 
 async function saveUserData(facebookId) {
     let isRegistered = await ChatbotUser.findOne({ facebookId });
@@ -26,10 +27,13 @@ async function saveUserData(facebookId) {
 let getUsersData = async (req, res) => {
     try {
         // let chatBotUsers = await ChatbotUser.find({})
-        let chatBotUsersProspect = await UserVisit.getTimesVisited();
-        let chatBotUsersContacted = await UserVisit.getTimesVisited();
-        let chatBotUsersActive = await UserVisit.getTimesVisited();
-        let chatBotUsersHabitual = await UserVisit.getTimesVisited();
+        // let chatBotUsersProspect = await UserVisit.getTimesVisited();
+        let chatBotUsersProspect = [];
+        let chatBotUsersContacted = await TalkDetails.getTimesContactedLastContact();
+        // let chatBotUsersActive = await UserVisit.getTimesVisited();
+        let chatBotUsersActive = [];
+        // let chatBotUsersHabitual = await UserVisit.getTimesVisited();
+        let chatBotUsersHabitual = [];
         let newChatBotUsers = [];
         // chatBotUsersVisited.forEach(element => {
         //     switch (element.state) {

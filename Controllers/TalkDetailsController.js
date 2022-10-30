@@ -1,4 +1,5 @@
 import TalkDetail from '../Models/TalkDetails';
+import ChatbotUsers from '../Models/ChatbotUsers';
 
 async function saveTalkDetail(content, socialMedia, chatBotUserId) {
     let talkDetail = new TalkDetail({
@@ -15,25 +16,58 @@ async function saveTalkDetail(content, socialMedia, chatBotUserId) {
 }
 
 //devuelve la ultima fecha en la que fue contactado un usuario
-async function getLastContact(chatBotUserId){
-    let lastContact = await TalkDetail.findOne({chatBotUserId}).sort('-createdAt')
+async function getLastContact(chatBotUserId) {
+    let lastContact = await TalkDetail.findOne({ chatBotUserId }).sort('-createdAt')
     return lastContact.createdAt;
 }
 
-
-//devuelve la cantidad de veces que fue contactado un usario
-async function getTimesContacted(){
-    return (await TalkDetail.find({chatBotUserId})).length;
+async function getTimesContactedLastContact() {
+    let talkDetail = await ChatbotUsers.aggregate([
+        {
+            $match: {
+                state: 2
+            }
+        },
+        {
+            $lookup: {
+                from: "talkdetails",
+                localField: "_id",
+                foreignField: "chatBotUserId",
+                pipeline: [
+                    {
+                        $sort: {
+                            createdAt: -1
+                        },
+                        $group: {
+                            _id: '$chatBotUserId',
+                            timesVisited: {
+                                $count: {}
+                            },
+                            lastUserVisit: {
+                                $first: "$createdAt"
+                            }
+                        }
+                    }
+                ],
+                as: "talkDetails"
+            }
+        }
+    ])
+    return talkDetail;
 }
+//devuelve la cantidad de veces que fue contactado un usario
+// async function getTimesContacted(){
+//     return (await TalkDetail.find({chatBotUserId})).length;
+// }
 
 //devuelve todos los detalles de las todas las veces que fue contactado un usuario
-async function getTalkDetails(chatBotUserId){
-    return await TalkDetail.find({chatBotUserId});
+async function getTalkDetails(chatBotUserId) {
+    return await TalkDetail.find({ chatBotUserId });
 }
 
 export default {
     saveTalkDetail,
     getLastContact,
-    getTimesContacted,
+    getTimesContactedLastContact,
     getTalkDetails
 }
