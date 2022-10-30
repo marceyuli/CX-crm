@@ -1,5 +1,5 @@
-const Order = request('../Models/Orders');
-const ChatBotUsers = request('../Models/ChatbotUser');
+const Order = require('../Models/Orders');
+const ChatBotUsers = require('../Models/ChatbotUser');
 
 
 
