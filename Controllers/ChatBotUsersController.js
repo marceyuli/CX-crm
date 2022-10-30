@@ -27,6 +27,7 @@ let getUsersData = async (req, res) => {
     try {
         let chatBotUsers = await ChatbotUser.find()
         let chatBotUsersVisited = await UserVisit.getTimesVisited();
+        console.log(chatBotUsersVisited);
         let newChatBotUsers = [];
         let newChatBotUsers1 = [];
         let newChatBotUsers2 = [];
@@ -36,6 +37,8 @@ let getUsersData = async (req, res) => {
             switch (element.state) {
                 case 1:
                     element.update({hola:"asd"});
+                    element.$set("asd",1);
+                    console.log(element);
                     // let i = 0;
                     // for (i = 0; i < chatBotUsersVisited.length; i++) {
                     //     const element2 = chatBotUsersVisited[i];
