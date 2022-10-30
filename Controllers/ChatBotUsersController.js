@@ -1,6 +1,7 @@
 const ChatbotUser = require('../Models/ChatbotUsers');
 const UserVisit = require('./UserVisitsController');
 const utils = require('../Utils/utils');
+const { $where } = require('../Models/ChatbotUsers');
 
 async function saveUserData(facebookId) {
     let isRegistered = await ChatbotUser.findOne({ facebookId });
@@ -40,8 +41,8 @@ let getUsersData = async (req, res) => {
                         if (element._id.equals(element2._id)) {
                             // element = {...element, timesVisited: element2.timesVisited};
                             // console.log(element);
-                            element.asd = "asd";
-                            console.log(element);
+                            element['timesVisited'] = 1;
+                            console.log(element['firstName']);
                             break;
                         }
                     }
