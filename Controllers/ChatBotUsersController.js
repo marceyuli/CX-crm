@@ -37,10 +37,7 @@ let getUsersData = async (req, res) => {
                     let i = 0;
                     for (i = 0; i < chatBotUsersVisited.length; i++) {
                         const element2 = chatBotUsersVisited[i];
-                        console.log(element2);
-                        console.log(element2._id);
-                        console.log(element._id);
-                        if (element._id === element2._id) {
+                        if (element._id == element2._id) {
                             console.log("holaaa");
                             element.timesVisited = element2.timesVisited;
                             // element.lastVisit = element2.lastVisit;
