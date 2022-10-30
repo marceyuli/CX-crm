@@ -116,11 +116,11 @@ async function getAvgTotalPriceCreatedAt() {
                         }
                     },
                     {
-                        $project:{
+                        $addFields:{
                             avgCreatedAt:{
                                 $subtract:[
                                     {$first:"$createdAt"},
-                                    {$last: "$createdAt"}
+                                    {$last:"$createdAt"}
                                 ]
                             }
                         }
