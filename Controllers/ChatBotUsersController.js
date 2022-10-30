@@ -43,6 +43,7 @@ let getUsersData = async (req, res) => {
                             // console.log(element);
                             element['timesVisited'] = 1;
                             console.log(element['firstName']);
+                            console.log(element['timesVisited']);
                             break;
                         }
                     }
