@@ -25,7 +25,7 @@ async function saveUserData(facebookId) {
 
 let getUsersData = async (req, res) => {
     try {
-        let chatBotUsers = await ChatbotUser.find({})
+        // let chatBotUsers = await ChatbotUser.find({})
         let chatBotUsersVisited = await UserVisit.getTimesVisited();
         console.log(chatBotUsersVisited);
         let newChatBotUsers = [];
@@ -33,7 +33,7 @@ let getUsersData = async (req, res) => {
         let newChatBotUsers2 = [];
         let newChatBotUsers3 = [];
         let newChatBotUsers4 = [];
-        chatBotUsers.forEach(element => {
+        chatBotUsersVisited.forEach(element => {
             switch (element.state) {
                 case 1:
                     // let i = 0;
