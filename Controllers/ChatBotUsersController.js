@@ -47,7 +47,7 @@ let getUsersData = async (req, res) => {
                         }
                     }
                     console.log(element.timesVisited);
-                    chatBotUsersVisited.splice(i, 1);
+                    // chatBotUsersVisited.splice(i, 1);
                     newChatBotUsers1.push(element);
                     console.log(newChatBotUsers1);
                     break;
