@@ -32,16 +32,17 @@ let getUsersData = async (req, res) => {
         let newChatBotUsers2 = [];
         let newChatBotUsers3 = [];
         let newChatBotUsers4 = [];
-        chatBotUsers.forEach(element => {
+        for (let index = 0; index < chatBotUsers.length; index++) {
+            const element = chatBotUsers[index];
             switch (element.state) {
                 case 1:
-                    let i = 0;
-                    for (i = 0; i < chatBotUsersVisited.length; i++) {
+                    for (let i = 0; i < chatBotUsersVisited.length; i++) {
                         const element2 = chatBotUsersVisited[i];
                         if (element._id.equals(element2._id)) {
                             // element = {...element, timesVisited: element2.timesVisited};
                             // console.log(element);
-                            element.timesVisited = element2.timesVisited;
+                            const timesVisited = element2.timesVisited;
+                            element.timesVisited = timesVisited;
                             console.log(element.timesVisited);
                             break;
                         }
@@ -49,7 +50,6 @@ let getUsersData = async (req, res) => {
                     console.log(element.timesVisited);
                     // chatBotUsersVisited.splice(i, 1);
                     newChatBotUsers1.push(element);
-                    console.log(newChatBotUsers1);
                     break;
                 case 2:
                     newChatBotUsers2.push(element);
@@ -63,7 +63,9 @@ let getUsersData = async (req, res) => {
                 default:
                     break;
             }
-        });
+        }
+
+
         newChatBotUsers.push(newChatBotUsers1);
         newChatBotUsers.push(newChatBotUsers2);
         newChatBotUsers.push(newChatBotUsers3);
