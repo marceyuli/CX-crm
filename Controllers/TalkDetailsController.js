@@ -1,5 +1,5 @@
-import TalkDetail from '../Models/TalkDetails';
-import ChatbotUsers from '../Models/ChatbotUsers';
+const TalkDetail = require('../Models/TalkDetails');
+const ChatbotUsers = require('../Models/ChatbotUsers');
 
 async function saveTalkDetail(content, socialMedia, chatBotUserId) {
     let talkDetail = new TalkDetail({
