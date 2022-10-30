@@ -31,36 +31,36 @@ async function getTimesVisited() {
                     $first: "$createdAt"
                 }
             }
-        },
-        {
-            $lookup: {
-                from: "chatbotusers",
-                localField: "_id",
-                foreignField: "_id",
-                as: "chatbotuser"
-            }
-        },
-        {
-            $project: {
-                _id: 1,
-                timesVisited: 1,
-                lastUserVisit: 1,
-                firstName: "$chatbotuser.firstName",
-                lastName: "$chatbotuser.lastName",
-                facebookId: "$chatbotuser.facebookId",
-                profilePicture: "$chatbotuser.profilePicture",
-                email: "$chatbotuser.email",
-                phoneNumber: "$chatbotuser.phoneNumber",
-                state: "$chatbotuser.state",
-            }
-        },
-        { $unwind: "$firstName" },
-        { $unwind: "$lastName" },
-        { $unwind: "$facebookId" },
-        { $unwind: "$profilePicture" },
-        { $unwind: "$email" },
-        { $unwind: "$phoneNumber" },
-        { $unwind: "$state" }
+        }
+        // {
+        //     $lookup: {
+        //         from: "chatbotusers",
+        //         localField: "_id",
+        //         foreignField: "_id",
+        //         as: "chatbotuser"
+        //     }
+        // },
+        // {
+        //     $project: {
+        //         _id: 1,
+        //         timesVisited: 1,
+        //         lastUserVisit: 1,
+        //         firstName: "$chatbotuser.firstName",
+        //         lastName: "$chatbotuser.lastName",
+        //         facebookId: "$chatbotuser.facebookId",
+        //         profilePicture: "$chatbotuser.profilePicture",
+        //         email: "$chatbotuser.email",
+        //         phoneNumber: "$chatbotuser.phoneNumber",
+        //         state: "$chatbotuser.state",
+        //     }
+        // },
+        // { $unwind: "$firstName" },
+        // { $unwind: "$lastName" },
+        // { $unwind: "$facebookId" },
+        // { $unwind: "$profilePicture" },
+        // { $unwind: "$email" },
+        // { $unwind: "$phoneNumber" },
+        // { $unwind: "$state" }
     ])
     return userVisit;
 }
