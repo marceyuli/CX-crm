@@ -40,7 +40,7 @@ let getUsersData = async (req, res) => {
                         const element2 = chatBotUsersVisited[i];
                         if (element._id == element2._id) {
                             element.timesVisited = element2.timesVisited;
-                            element.lastVisit = element2.lastVisit;
+                            // element.lastVisit = element2.lastVisit;
                             break;
                         }
                     }
