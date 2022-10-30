@@ -15,7 +15,7 @@ async function saveUserVisit(facebookId) {
 }
 
 async function getTimesVisited() {
-    return await UserVisit.aggregate([
+    let userVisit = await UserVisit.aggregate([
         {
             $sort:{
                 createdAt: -1
@@ -31,6 +31,7 @@ async function getTimesVisited() {
             }
         }
     ])
+    return userVisit;
 }
 // let getTimesVisited = async (req, res) => {
 //     var data = req.query;

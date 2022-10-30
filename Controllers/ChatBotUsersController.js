@@ -23,48 +23,56 @@ async function saveUserData(facebookId) {
 }
 
 let getUsersData = async (req, res) => {
+    try {
+        let chatBotUsers = await ChatbotUser.find()
+        let chatBotUsersVisited = await UserVisit.getTimesVisited();
+        console.log(chatBotUsersVisited);
+        let newChatBotUsers = [];
+        let newChatBotUsers1 = [];
+        let newChatBotUsers2 = [];
+        let newChatBotUsers3 = [];
+        let newChatBotUsers4 = [];
+        chatBotUsers.forEach(element => {
+            switch (element.state) {
+                case 1:
+                    for (let i = 0; i < chatBotUsersVisited.length; i++) {
+                        const element2 = chatBotUsersVisited[i];
+                        if (element._id == element2._id) {
+                            element.timesVisited = element2.timesVisited;
+                            element.lastVisit = element2.lastVisit;
+                            break;
+                        }
+                    }
+                    console.log(i);
+                    console.log(chatBotUsersVisited);
+                    chatBotUsersVisited.splice(i, 1);
+                    newChatBotUsers1.push(element);
+                    break;
+                case 2:
+                    newChatBotUsers2.push(element);
+                    break;
+                case 3:
+                    newChatBotUsers3.push(element);
+                    break;
+                case 4:
+                    newChatBotUsers4.push(element);
+                    break;
+                default:
+                    break;
+            }
+        });
+        newChatBotUsers.push(newChatBotUsers1);
+        newChatBotUsers.push(newChatBotUsers2);
+        newChatBotUsers.push(newChatBotUsers3);
+        newChatBotUsers.push(newChatBotUsers4);
+        res.json(newChatBotUsers);
+    } catch (error) {
+        console.log(error);
+    }
     // var data = req.query;
     // let chatBotUsers = await ChatbotUser.find({ state: data.state });
     // res.json(chatBotUsers);
-    let chatBotUsers = await ChatbotUser.find()
-    let chatBotUsersVisited = await UserVisit.getTimesVisited();
-    let newChatBotUsers = [];
-    let newChatBotUsers1 = [];
-    let newChatBotUsers2 = [];
-    let newChatBotUsers3 = [];
-    let newChatBotUsers4 = [];
-    chatBotUsers.forEach(element => {
-        switch (element.state) {
-            case 1:
-                for (let i = 0; i < chatBotUsersVisited.length; i++) {
-                    const element2 = chatBotUsersVisited[i];
-                    if (element._id == element2._id) {
-                        element.timesVisited = element2.timesVisited;
-                        element.lastVisit = element2.lastVisit;
-                        break;
-                    }
-                }
-                chatBotUsersVisited.splice(i,1);
-                newChatBotUsers1.push(element);
-                break;
-            case 2:
-                newChatBotUsers2.push(element);
-                break;
-            case 3:
-                newChatBotUsers3.push(element);
-                break;
-            case 4:
-                newChatBotUsers4.push(element);
-                break;
-            default:
-                break;
-        }
-    });
-    newChatBotUsers.push(newChatBotUsers1);
-    newChatBotUsers.push(newChatBotUsers2);
-    newChatBotUsers.push(newChatBotUsers3);
-    newChatBotUsers.push(newChatBotUsers4);
-    res.json(newChatBotUsers);
+
 }
 
 // async function getUsersByState(state) {
