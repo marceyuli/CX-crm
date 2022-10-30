@@ -34,11 +34,12 @@ let getUsersData = async (req, res) => {
         chatBotUsers.forEach(element => {
             switch (element.state) {
                 case 1:
-                    console.log(element);
-                    console.log(chatBotUsersVisited[0]);
                     let i = 0;
                     for (i = 0; i < chatBotUsersVisited.length; i++) {
                         const element2 = chatBotUsersVisited[i];
+                        console.log(element2);
+                        console.log(element2._id);
+                        console.log(element._id);
                         if (element._id === element2._id) {
                             console.log("holaaa");
                             element.timesVisited = element2.timesVisited;
@@ -47,7 +48,6 @@ let getUsersData = async (req, res) => {
                         }
                     }
                     console.log(i);
-                    console.log(chatBotUsersVisited);
                     chatBotUsersVisited.splice(i, 1);
                     newChatBotUsers1.push(element);
                     break;
