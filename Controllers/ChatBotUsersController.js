@@ -33,7 +33,9 @@ let getUsersData = async (req, res) => {
         let chatBotUsersContacted = await TalkDetails.getTimesContactedLastContact();
         // let chatBotUsersActive = [];
         let chatBotUsersActive = await Orders.getTimesOrderedLastOrder();
-        let chatBotUsersHabitual = [];
+        // let chatBotUsersHabitual = [];
+        let chatBotUsersHabitual = await Orders.getAvgTotalPriceCreatedAt();
+        console.log(chatBotUsersHabitual);
         let newChatBotUsers = [];
         newChatBotUsers.push(chatBotUsersProspect);
         newChatBotUsers.push(chatBotUsersContacted);

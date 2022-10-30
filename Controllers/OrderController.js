@@ -80,6 +80,64 @@ async function getLastOrder(chatBotUserId) {
 
 //al recuperar los datos en la vista se debe hacer un Date.now()-avgCreatedAt, luego ese resultado
 //convertirlo a dias Math.round(result/1000/60/60/24)
+
+async function getAvgTotalPriceCreatedAt() {
+    return await ChatBotUsers.aggregate([
+        {
+            $match: {
+                state: 4
+            }
+        },
+        {
+            $lookup: {
+                from: "orders",
+                localField: "_id",
+                foreignField: "chatBotUserId",
+                pipeline: [
+                    {
+                        $match: {
+                            order: true
+                        }
+                    },
+                    {
+                        $sort: {
+                            createdAt: -1
+                        }
+                    },
+                    {
+                        $group: {
+                            _id: '$chatBotUserId',
+                            avgTotalPrice: {
+                                $avg: "$totalPrice"
+                            },
+                            avgCreatedAt: {
+                                $avg: "$createdAt"  //devuelve milisegundos
+                            },
+                        }
+                    },
+                ],
+                as: "orders"
+            },
+        },
+        {
+            $replaceRoot: {
+                newRoot:
+                {
+                    $mergeObjects:
+                        [
+                            {
+                                $arrayElemAt:
+                                    ["$orders", 0]
+                            }, "$$ROOT"]
+                }
+            },
+        },
+        {
+            $project:
+                { orders: 0 }
+        }
+    ])
+}
 async function getAvgTotalPrice(chatBotUserId) {
     let order = await Order.aggregate(
         [
@@ -108,5 +166,6 @@ module.exports = {
     getTimesOrdered,
     getLastOrder,
     getAvgTotalPrice,
-    getTimesOrderedLastOrder
+    getTimesOrderedLastOrder,
+    getAvgTotalPriceCreatedAt
 }
