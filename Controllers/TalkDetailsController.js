@@ -49,13 +49,35 @@ async function getTimesContactedLastContact() {
                                 $first: "$createdAt"
                             }
                         }
-                    } 
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                        }
+                    }
                 ],
-        as: "talkDetails"
-            }
+                as: "talkDetails"
+            },
+        },
+        {
+            $replaceRoot: {
+                newRoot:
+                {
+                    $mergeObjects:
+                        [
+                            {
+                                $arrayElemAt:
+                                    ["$talkDetails", 0]
+                            }, "$$ROOT"]
+                }
+            },
+        },
+        {
+            $project:
+                { talkDetails: 0 }
         }
     ])
-return talkDetail;
+    return talkDetail;
 }
 //devuelve la cantidad de veces que fue contactado un usario
 // async function getTimesContacted(){
