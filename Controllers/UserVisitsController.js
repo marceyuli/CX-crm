@@ -41,26 +41,30 @@ async function getTimesVisited() {
             }
         },
         {
-            $project: {
-                _id: 1,
-                timesVisited: 1,
-                lastUserVisit: 1,
-                firstName: "$chatbotuser.firstName",
-                lastName: "$chatbotuser.lastName",
-                facebookId: "$chatbotuser.facebookId",
-                profilePicture: "$chatbotuser.profilePicture",
-                email: "$chatbotuser.email",
-                phoneNumber: "$chatbotuser.phoneNumber",
-                state: "$chatbotuser.state",
-            }
+            $replaceRoot: { newRoot: { $mergeObjects: [{ $arrayElemAt: ["$chatbotuser", 0] }, "$$ROOT"] } }
         },
-        { $unwind: "$firstName" },
-        { $unwind: "$lastName" },
-        { $unwind: "$facebookId" },
-        { $unwind: "$profilePicture" },
-        { $unwind: "$email" },
-        { $unwind: "$phoneNumber" },
-        { $unwind: "$state" }
+        { $project: { fromItems: 0 } }
+        // {
+        //     $project: {
+        //         _id: 1,
+        //         timesVisited: 1,
+        //         lastUserVisit: 1,
+        //         firstName: "$chatbotuser.firstName",
+        //         lastName: "$chatbotuser.lastName",
+        //         facebookId: "$chatbotuser.facebookId",
+        //         profilePicture: "$chatbotuser.profilePicture",
+        //         email: "$chatbotuser.email",
+        //         phoneNumber: "$chatbotuser.phoneNumber",
+        //         state: "$chatbotuser.state",
+        //     }
+        // },
+        // { $unwind: "$firstName" },
+        // { $unwind: "$lastName" },
+        // { $unwind: "$facebookId" },
+        // { $unwind: "$profilePicture" },
+        // { $unwind: "$email" },
+        // { $unwind: "$phoneNumber" },
+        // { $unwind: "$state" }
     ])
     return userVisit;
 }
