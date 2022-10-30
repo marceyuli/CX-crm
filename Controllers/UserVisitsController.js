@@ -45,16 +45,16 @@ async function getTimesVisited() {
                 _id: 1,
                 timesVisited: 1,
                 lastUserVisit: 1,
-                firstName: "$chatbotuser.firstname",
+                firstName: "$chatbotuser.firstName",
                 lastName: "$chatbotuser.lastName",
                 facebookId: "$chatbotuser.facebookId",
                 profilePicture: "$chatbotuser.profilePicture",
                 email: "$chatbotuser.email",
                 phoneNumber: "$chatbotuser.phoneNumber",
-                urlProfile: "$chatbotuser.urlProfile",
                 state: "$chatbotuser.state",
             }
-        }
+        },
+        { $unwind: ["$firstName", "$lastName", "$facebookId", "profilePicture", "$email", "$phoneNumber", "$state"] }
     ])
     return userVisit;
 }
