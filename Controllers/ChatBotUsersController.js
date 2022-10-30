@@ -35,7 +35,8 @@ let getUsersData = async (req, res) => {
         chatBotUsers.forEach(element => {
             switch (element.state) {
                 case 1:
-                    for (let i = 0; i < chatBotUsersVisited.length; i++) {
+                    let i = 0
+                    for (i = 0; i < chatBotUsersVisited.length; i++) {
                         const element2 = chatBotUsersVisited[i];
                         if (element._id == element2._id) {
                             element.timesVisited = element2.timesVisited;
