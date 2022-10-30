@@ -65,7 +65,7 @@ async function getTalkDetails(chatBotUserId) {
     return await TalkDetail.find({ chatBotUserId });
 }
 
-export default {
+module.exports = {
     saveTalkDetail,
     getLastContact,
     getTimesContactedLastContact,
