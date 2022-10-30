@@ -38,7 +38,7 @@ let getUsersData = async (req, res) => {
                     for (i = 0; i < chatBotUsersVisited.length; i++) {
                         const element2 = chatBotUsersVisited[i];
                         if (element._id.equals(element2._id)) {
-                            element = {...element, ...element2._id};
+                            element = {...element, ...element2};
                             console.log(element);
                             break;
                         }
