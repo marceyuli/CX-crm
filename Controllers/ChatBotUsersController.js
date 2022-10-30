@@ -41,12 +41,12 @@ let getUsersData = async (req, res) => {
                         if (element._id.equals(element2._id)) {
                             // element = {...element, timesVisited: element2.timesVisited};
                             // console.log(element);
-                            element['timesVisited'] = 1;
-                            console.log(element['firstName']);
+                            element['timesVisited'] = element2.timesVisited;
                             console.log(element['timesVisited']);
                             break;
                         }
                     }
+                    console.log(element['timesVisited']);
                     chatBotUsersVisited.splice(i, 1);
                     newChatBotUsers1.push(element);
                     break;
