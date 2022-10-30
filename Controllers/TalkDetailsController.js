@@ -42,10 +42,10 @@ async function getTimesContactedLastContact() {
                     {
                         $group: {
                             _id: '$chatBotUserId',
-                            timesVisited: {
+                            timesContacted: {
                                 $count: {}
                             },
-                            lastUserVisit: {
+                            lastUserContact: {
                                 $first: "$createdAt"
                             }
                         }

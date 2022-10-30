@@ -27,47 +27,13 @@ async function saveUserData(facebookId) {
 let getUsersData = async (req, res) => {
     try {
         // let chatBotUsers = await ChatbotUser.find({})
-        // let chatBotUsersProspect = await UserVisit.getTimesVisited();
-        let chatBotUsersProspect = [];
+        let chatBotUsersProspect = await UserVisit.getTimesVisited();
+        // let chatBotUsersProspect = [];
         let chatBotUsersContacted = await TalkDetails.getTimesContactedLastContact();
         console.log(chatBotUsersContacted);
-        // let chatBotUsersActive = await UserVisit.getTimesVisited();
         let chatBotUsersActive = [];
-        // let chatBotUsersHabitual = await UserVisit.getTimesVisited();
         let chatBotUsersHabitual = [];
         let newChatBotUsers = [];
-        // chatBotUsersVisited.forEach(element => {
-        //     switch (element.state) {
-        //         case 1:
-        //             // let i = 0;
-        //             // for (i = 0; i < chatBotUsersVisited.length; i++) {
-        //             //     const element2 = chatBotUsersVisited[i];
-        //             //     if (element._id.equals(element2._id)) {
-        //             //         // element = {...element, timesVisited: element2.timesVisited};
-        //             //         // console.log(element);
-        //             //         const timesVisited = element2.timesVisited
-        //             //         element.timesVisited = element2.timesVisited;
-        //             //         console.log(element.timesVisited);
-        //             //         break;
-        //             //     }
-        //             // }
-        //             // console.log(element.timesVisited);
-        //             // chatBotUsersVisited.splice(i, 1);
-        //             newChatBotUsers1.push(element);
-        //             break;
-        //         case 2:
-        //             newChatBotUsers2.push(element);
-        //             break;
-        //         case 3:
-        //             newChatBotUsers3.push(element);
-        //             break;
-        //         case 4:
-        //             newChatBotUsers4.push(element);
-        //             break;
-        //         default:
-        //             break;
-        //     }
-        // });
         newChatBotUsers.push(chatBotUsersProspect);
         newChatBotUsers.push(chatBotUsersContacted);
         newChatBotUsers.push(chatBotUsersActive);
