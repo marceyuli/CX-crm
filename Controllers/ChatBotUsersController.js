@@ -26,11 +26,11 @@ async function saveUserData(facebookId) {
 let getUsersData = async (req, res) => {
     try {
         // let chatBotUsers = await ChatbotUser.find({})
-        let chatBotUsersVisited = await UserVisit.getTimesVisited();
+        let chatBotUsersProspect = await UserVisit.getTimesVisited();
+        let chatBotUsersContacted = await UserVisit.getTimesVisited();
+        let chatBotUsersActive = await UserVisit.getTimesVisited();
+        let chatBotUsersHabitual = await UserVisit.getTimesVisited();
         let newChatBotUsers = [];
-        let newChatBotUsers2 = [];
-        let newChatBotUsers3 = [];
-        let newChatBotUsers4 = [];
         // chatBotUsersVisited.forEach(element => {
         //     switch (element.state) {
         //         case 1:
@@ -63,10 +63,10 @@ let getUsersData = async (req, res) => {
         //             break;
         //     }
         // });
-        newChatBotUsers.push(chatBotUsersVisited);
-        newChatBotUsers.push(newChatBotUsers2);
-        newChatBotUsers.push(newChatBotUsers3);
-        newChatBotUsers.push(newChatBotUsers4);
+        newChatBotUsers.push(chatBotUsersProspect);
+        newChatBotUsers.push(chatBotUsersContacted);
+        newChatBotUsers.push(chatBotUsersActive);
+        newChatBotUsers.push(chatBotUsersHabitual);
         // console.log(newChatBotUsers);
         res.json(newChatBotUsers);
     } catch (error) {
