@@ -1,10 +1,10 @@
 const ChatBotUser = require("../Models/ChatbotUsers");
 const UserVisit = require("../Models/UserVisits");
 
-async function saveUserVisit(facebookId){
-    let chatBotUser = await ChatBotUser.findOne({facebookId});
+async function saveUserVisit(facebookId) {
+    let chatBotUser = await ChatBotUser.findOne({ facebookId });
     let userVisit = new UserVisit({
-        chatBotUserId: chatBotUser._id, 
+        chatBotUserId: chatBotUser._id,
     });
     userVisit.save((err, res) => {
         if (err) {
@@ -14,14 +14,29 @@ async function saveUserVisit(facebookId){
     });
 }
 
-// async function getTimesVisited(chatBotUserId){
-//     return (await UserVisit.find({chatBotUserId})).length
-// }
-let getTimesVisited = async (req, res) => {
-    var data = req.query;
-    let timesVisited = (await UserVisit.find({ chatBotUserId: data._id })).length
-    res.json(timesVisited);
+async function getTimesVisited() {
+    return await UserVisit.aggregate([
+        {
+            $sort:{
+                createdAt: -1
+            }
+        },
+        {
+            $group: {
+                _id: '$chatBotUserId',
+                timesVisited: {
+                    $count: {}
+                },
+                lastVisit:'$createdAt'
+            }
+        }
+    ])
 }
+// let getTimesVisited = async (req, res) => {
+//     var data = req.query;
+//     let timesVisited = (await UserVisit.find({ chatBotUserId: data._id })).length
+//     res.json(timesVisited);
+// }
 
 let getLastVisit = async (req, res) => {
     var data = req.query;

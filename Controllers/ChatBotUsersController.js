@@ -27,6 +27,7 @@ let getUsersData = async (req, res) => {
     // let chatBotUsers = await ChatbotUser.find({ state: data.state });
     // res.json(chatBotUsers);
     let chatBotUsers = await ChatbotUser.find()
+    let chatBotUsersVisited = await UserVisit.getTimesVisited();
     let newChatBotUsers = [];
     let newChatBotUsers1 = [];
     let newChatBotUsers2 = [];
@@ -35,6 +36,15 @@ let getUsersData = async (req, res) => {
     chatBotUsers.forEach(element => {
         switch (element.state) {
             case 1:
+                for (let i = 0; i < chatBotUsersVisited.length; i++) {
+                    const element2 = chatBotUsersVisited[i];
+                    if (element._id == element2._id) {
+                        element.timesVisited = element2.timesVisited;
+                        element.lastVisit = element2.lastVisit;
+                        break;
+                    }
+                }
+                chatBotUsersVisited.splice(i,1);
                 newChatBotUsers1.push(element);
                 break;
             case 2:
