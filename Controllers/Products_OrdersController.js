@@ -79,6 +79,7 @@ async function getListShoppingCart(facebookId) {
             },
             {
                 $project:{
+                    _id: 0,
                     product_orders: 1
                 }
             },
@@ -86,7 +87,6 @@ async function getListShoppingCart(facebookId) {
                 $unwind: "$product_orders"
             }
         ]);
-        console.log(shoppingCart);
         let res = "Actualmente tienes lo siguiente en tu carrito de compras:\n";
         shoppingCart.forEach(element => {
             const product_orders = element.product_orders;

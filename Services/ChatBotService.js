@@ -93,8 +93,7 @@ async function handleDialogFlowAction(
             break;
         case "CarritoDeCompras.action":
             let listShoppingCart = await Products_Orders.getListShoppingCart(sender);
-            console.log(listShoppingCart);
-            sendTextMessage(sender, "siu");
+            sendTextMessage(sender, listShoppingCart);
             break;
         case "DatosRecibidos.action":
             if (parameters.fields.phoneNumber.stringValue != '' && parameters.fields.email.stringValue != '') {
