@@ -1,8 +1,6 @@
 //files
 const dialogflow = require("../dialogflow");
 const chatBotService = require("../Services/ChatBotService");
-const sessionIds = new Map();
-const uuid = require("uuid");
 
 if (!process.env.PAGE_ACCESS_TOKEN) {
     throw new Error("missing PAGE_ACCESS_TOKEN");
@@ -120,8 +118,8 @@ async function sendToDialogFlow(senderId, messageText) {
     chatBotService.sendTypingOn(senderId);
     try {
         let result;
-        setSessionAndUser(senderId);
-        let session = sessionIds.get(senderId);
+        chatBotService.setSessionAndUser(senderId);
+        let session = chatBotService.getSessionsId(senderId);
         result = await dialogflow.sendToDialogFlow(
             messageText,
             session,
@@ -130,16 +128,6 @@ async function sendToDialogFlow(senderId, messageText) {
         chatBotService.handleDialogFlowResponse(senderId, result);
     } catch (error) {
         console.log("salio mal en sendToDialogflow...", error);
-    }
-}
-
-async function setSessionAndUser(senderId) {
-    try {
-        if (!sessionIds.has(senderId)) {
-            sessionIds.set(senderId, uuid.v1());
-        }
-    } catch (error) {
-        throw error;
     }
 }
 

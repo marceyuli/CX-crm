@@ -1,5 +1,6 @@
 var request = require("request");
-
+const sessionIds = new Map();
+const uuid = require("uuid");
 //libraries
 const Artists = require('../Controllers/ArtistController');
 const utils = require('../Utils/utils');
@@ -105,9 +106,11 @@ async function handleDialogFlowAction(
             var data = await ChatBotUsers.haveData(sender);
             console.log(data);
             if (data != "") { 
+                setSessionAndUser(sender);
+                let session = sessionIds.get(sender);
                 let res = await DialogFlow.sendToDialogFlow(
                     data,
-                    sender,
+                    session,
                     "FACEBOOK",
                 )
                 handleDialogFlowResponse(sender, res);
@@ -391,8 +394,24 @@ function isDefined(obj) {
     return obj != null;
 }
 
+async function setSessionAndUser(senderId) {
+    try {
+        if (!sessionIds.has(senderId)) {
+            sessionIds.set(senderId, uuid.v1());
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function getSessionsId(senderId){
+    return sessionIds.get(senderId);
+}
+
 module.exports = {
     handleDialogFlowResponse,
     sendTypingOn,
     sendTextMessage,
+    setSessionAndUser,
+    getSessionsId
 }
