@@ -75,7 +75,7 @@ async function handleDialogFlowAction(
             let productName = parameters.fields.NombreDePrenda.stringValue;
             let productType = parameters.fields.Prenda.stringValue;
             let quantity = parameters.fields.Cantidad.numberValue;
-            if (size == '' || productName == '' || productType == '' || quantity == '') {
+            if (size == '' || productName == '' || productType == '' || quantity) {
                 handleMessages(messages, sender);
                 break;
             }
