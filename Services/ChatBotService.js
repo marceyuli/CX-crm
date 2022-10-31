@@ -71,28 +71,28 @@ async function handleDialogFlowAction(
             sendGenericMessage(sender, cards);
             break;
         case "ArtistaPrendaYTalla.action":
-            let size = parameters.fields.Talla.stringValue;
-            let productName = parameters.fields.NombreDePrenda.stringValue;
-            let productType = parameters.fields.Prenda.stringValue;
-            let quantity = parameters.fields.Cantidad.numberValue;
+            var size = parameters.fields.Talla.stringValue;
+            var productName = parameters.fields.NombreDePrenda.stringValue;
+            var productType = parameters.fields.Prenda.stringValue;
+            var quantity = parameters.fields.Cantidad.numberValue;
             if (size == '' || productName == '' || productType == '' || !quantity) {
                 handleMessages(messages, sender);
                 break;
             }
             ChatBotUsers_Products.saveUserInterest(sender, productName, productType);
-            let res = await ProductDescriptions.sizeExist(size, productName, productType, quantity);
+            const res = await ProductDescriptions.sizeExist(size, productName, productType, quantity);
             sendTextMessage(sender, res);
             break;
         case "IntencionDeCompra.action":
-            let size1 = contexts[0].parameters.fields.Talla.stringValue;
-            let productName1 = contexts[0].parameters.fields.NombreDePrenda.stringValue;
-            let productType1 = contexts[0].parameters.fields.Prenda.stringValue;
-            let quantity1 = contexts[0].parameters.fields.Cantidad.numberValue;
-            await Products_Orders.createProductsOrders(sender, productName1, productType1, quantity1, size1);
+            var size = contexts[0].parameters.fields.Talla.stringValue;
+            var productName = contexts[0].parameters.fields.NombreDePrenda.stringValue;
+            var productType = contexts[0].parameters.fields.Prenda.stringValue;
+            var quantity = contexts[0].parameters.fields.Cantidad.numberValue;
+            await Products_Orders.createProductsOrders(sender, productName, productType, quantity, size);
             handleMessages(messages, sender);
             break;
         case "CarritoDeCompras.action":
-            let listShoppingCart = await Products_Orders.getListShoppingCart(sender);
+            const listShoppingCart = await Products_Orders.getListShoppingCart(sender);
             sendTextMessage(sender, listShoppingCart);
             break;
         case "DatosRecibidos.action":
