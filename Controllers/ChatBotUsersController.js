@@ -51,7 +51,7 @@ async function haveData(facebookId) {
     let chatBotUser = await ChatbotUser.findOne({ facebookId });
     let res = "";
     if (chatBotUser.email != '' && chatBotUser.phoneNumber != '') {
-        res = chatBotUser.email + " " + chatbotUser.phoneNumber;
+        res = chatBotUser.email + " " + chatBotUser.phoneNumber;
     }
     return res;
 }
