@@ -26,67 +26,7 @@ async function createProductsOrders(facebookId, productName, productType, quanti
 async function getListShoppingCart(facebookId) {
     try {
         let chatBotUser = await ChatBotUsers.findOne({ facebookId });
-        let shoppingCart = await Order.aggregate([
-            {
-                $match: {
-                    chatBotUserId: chatBotUser._id,
-                    order: false
-                }
-            },
-            {
-                $lookup: {
-                    from: "products_orders",
-                    localField: "_id",
-                    foreignField: "orderId",
-                    pipeline: [
-                        {
-                            $lookup: {
-                                from: "products",
-                                localField: "productId",
-                                foreignField: "_id",
-                                pipeline: [
-                                    {
-                                        $project: {
-                                            _id: 0,
-                                            name: 1,
-                                            type: 1,
-                                        }
-                                    },
-                                ],
-                                as: "product",
-                            }
-                        },
-                        {
-                            $replaceRoot: {
-                                newRoot:
-                                {
-                                    $mergeObjects:
-                                        [
-                                            {
-                                                $arrayElemAt:
-                                                    ["$product", 0]
-                                            }, "$$ROOT"]
-                                }
-                            },
-                        },
-                        {
-                            $project:
-                                { product: 0 }
-                        }
-                    ],
-                    as: "product_orders"
-                }
-            },
-            {
-                $project:{
-                    _id: 0,
-                    product_orders: 1
-                }
-            },
-            {
-                $unwind: "$product_orders"
-            }
-        ]);
+        let shoppingCart = await getProductsOrders(chatBotUser);
         let res = "Actualmente tienes lo siguiente en tu carrito de compras:\n";
         shoppingCart.forEach(element => {
             const product_orders = element.product_orders;
@@ -98,7 +38,70 @@ async function getListShoppingCart(facebookId) {
     } catch (error) {
         console.log(error);
     }
+}
 
+async function getProductsOrders(chatBotUser){
+    return await Order.aggregate([
+        {
+            $match: {
+                chatBotUserId: chatBotUser._id,
+                order: false
+            }
+        },
+        {
+            $lookup: {
+                from: "products_orders",
+                localField: "_id",
+                foreignField: "orderId",
+                pipeline: [
+                    {
+                        $lookup: {
+                            from: "products",
+                            localField: "productId",
+                            foreignField: "_id",
+                            pipeline: [
+                                {
+                                    $project: {
+                                        _id: 0,
+                                        name: 1,
+                                        type: 1,
+                                    }
+                                },
+                            ],
+                            as: "product",
+                        }
+                    },
+                    {
+                        $replaceRoot: {
+                            newRoot:
+                            {
+                                $mergeObjects:
+                                    [
+                                        {
+                                            $arrayElemAt:
+                                                ["$product", 0]
+                                        }, "$$ROOT"]
+                            }
+                        },
+                    },
+                    {
+                        $project:
+                            { product: 0 }
+                    }
+                ],
+                as: "product_orders"
+            }
+        },
+        {
+            $project:{
+                _id: 0,
+                product_orders: 1
+            }
+        },
+        {
+            $unwind: "$product_orders"
+        }
+    ]);
 }
 
 async function deleteProductOrders(facebookId, productName, productType) {
@@ -111,4 +114,5 @@ module.exports = {
     createProductsOrders,
     getListShoppingCart,
     deleteProductOrders,
+    getProductsOrders,
 }

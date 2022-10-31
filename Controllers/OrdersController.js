@@ -1,5 +1,6 @@
 const Order = require('../Models/Orders');
 const ChatBotUsers = require('../Models/ChatbotUsers');
+const Products_Orders = require('../Controllers/Products_OrdersController');
 
 async function createShoppingCart(facebookId) {
     let chatBotUser = await ChatBotUsers.findOne({ facebookId });
@@ -18,6 +19,63 @@ async function createShoppingCart(facebookId) {
         }
         console.log("Se creo un carrito de compras: ", res);
     })
+}
+
+async function updateToOrder(facebookId) {
+    let chatBotUser = await ChatBotUsers.findOne({ facebookId });
+    let products_orders = await Products_Orders.getProductsOrders(chatBotUser);
+    let totalPrice = 0;
+    products_orders.forEach(element => {
+        const product_order = element.product_orders;
+        totalPrice += product_order.quantity * product_order.price;
+    });
+    await Order.updateOne(
+        {
+            chatBotUserId: chatBotUser._id,
+            order: false,
+        },
+        {
+            $set: {
+                order: true,
+                totalPrice,
+            },
+            $currentDate: {
+                lastModified: true,
+            }
+        }
+    );
+    if (chatBotUser.state == 4) {
+        return;
+    }
+    let timesOrdered = (await Order.find({ chatBotUserId: chatBotUser._id, order: true })).length;
+    if (timesOrdered > 2) {
+        ChatBotUsers.updateOne(
+            {
+                facebookId
+            },
+            {
+                $set: {
+                    state: 4
+                },
+                $currentDate: {
+                    lastModified: true,
+                }
+            })
+    }
+    else if (timesOrdered == 1) {
+        ChatBotUsers.updateOne(
+            {
+                facebookId
+            },
+            {
+                $set: {
+                    state: 3
+                },
+                $currentDate: {
+                    lastModified: true,
+                }
+            })
+    }
 }
 //devuelve a los clientes activos (state = 3) junto con la fecha de su ultimo pedido, y todas las ordenes que hizo
 async function getTimesOrderedLastOrder() {
@@ -170,4 +228,5 @@ module.exports = {
     getTimesOrderedLastOrder,
     getAvgTotalPriceCreatedAt,
     createShoppingCart,
+    updateToOrder,
 }

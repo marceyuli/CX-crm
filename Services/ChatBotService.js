@@ -102,10 +102,10 @@ async function handleDialogFlowAction(
             const listShoppingCart = await Products_Orders.getListShoppingCart(sender);
             sendTextMessage(sender, listShoppingCart);
             break;
-        case "PedirDatosDelCliente.action": 
+        case "PedirDatosDelCliente.action":
             var data = await ChatBotUsers.haveData(sender);
             console.log(data);
-            if (data != "") { 
+            if (data != "") {
                 let res = await DialogFlow.sendToDialogFlow(
                     data,
                     session,
@@ -119,11 +119,18 @@ async function handleDialogFlowAction(
         case "DatosRecibidos.action":
             if (parameters.fields.phoneNumber.stringValue != '' && parameters.fields.email.stringValue != '') {
                 await ChatBotUsers.updateData(sender, parameters.fields.phoneNumber.stringValue, parameters.fields.email.stringValue);
+                await Orders.updateToOrder(sender);
             }
             handleMessages(messages, sender);
             break;
         case "PuntuacionFinal.action":
             Score.saveScore(sender, parameters.fields.number.numberValue);
+            handleMessages(messages, sender);
+            break;
+        case "pedirDatosDeComunicacionAFuturo.action":
+            if (parameters.fields.phoneNumber.stringValue != '' && parameters.fields.email.stringValue != '') {
+                await ChatBotUsers.updateData(sender, parameters.fields.phoneNumber.stringValue, parameters.fields.email.stringValue);
+            }
             handleMessages(messages, sender);
             break;
         default:
