@@ -104,7 +104,6 @@ async function handleDialogFlowAction(
             break;
         case "PedirDatosDelCliente.action":
             var data = await ChatBotUsers.haveData(sender);
-            console.log(data);
             if (data != "") {
                 let res = await DialogFlow.sendToDialogFlow(
                     data,

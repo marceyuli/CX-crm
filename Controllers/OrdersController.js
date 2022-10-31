@@ -44,14 +44,12 @@ async function updateToOrder(facebookId) {
             }
         }
     );
-    console.log(chatBotUser.state);
     if (chatBotUser.state == 4) {
         return;
     }
     let timesOrdered = (await Order.find({ chatBotUserId: chatBotUser._id, order: true })).length;
-    console.log(timesOrdered);
     if (timesOrdered > 2) {
-        ChatBotUsers.updateOne(
+        await ChatBotUsers.updateOne(
             {
                 facebookId
             },
@@ -62,9 +60,10 @@ async function updateToOrder(facebookId) {
                 $currentDate: {
                     lastModified: true,
                 }
-            })
+            }
+        );
     } else if (timesOrdered == 1) {
-        ChatBotUsers.updateOne(
+        await ChatBotUsers.updateOne(
             {
                 facebookId
             },
