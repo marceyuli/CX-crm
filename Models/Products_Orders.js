@@ -9,4 +9,4 @@ const Product_OrderSchema = new Schema({
     productId: mongoose.SchemaTypes.ObjectId
 }, { timestamps: true });
 
-module.exports = mongoose.model('product_orders', Product_OrderSchema);
+module.exports = mongoose.model('products_orders', Product_OrderSchema);
