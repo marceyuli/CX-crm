@@ -14,7 +14,6 @@ const ResponseConstructor = require('../Utils/responseConstructors');
 const Orders = require('../Controllers/OrdersController');
 const Products_Orders = require("../Controllers/Products_OrdersController");
 const DialogFlow = require("../dialogflow");
-const ChatbotUsers = require("../Models/ChatbotUsers");
 
 function handleDialogFlowResponse(sender, response) {
     let responseText = response.fulfillmentText;
@@ -118,7 +117,7 @@ async function handleDialogFlowAction(
             break;
         case "DatosRecibidos.action":
             if (parameters.fields.phoneNumber.stringValue != '' && parameters.fields.email.stringValue != '') {
-                await ChatbotUsers.updateData(sender, parameters.fields.phoneNumber.stringValue, parameters.fields.email.stringValue);
+                await ChatBotUsers.updateData(sender, parameters.fields.phoneNumber.stringValue, parameters.fields.email.stringValue);
             }
             handleMessages(messages, sender);
             break;
