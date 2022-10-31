@@ -124,7 +124,7 @@ async function getAvgTotalPriceCreatedAt() {
                                 $avg: "$totalPrice"
                             },
                             avgTotalPrice: {
-                                $first: "$avrCreatedAt"
+                                $first: "$createdAt"
                             }
                         }
                     },
