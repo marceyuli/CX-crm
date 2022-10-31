@@ -124,10 +124,11 @@ async function getAvgTotalPriceCreatedAt() {
                     {
                         $project: {
                             avgTotalPrice: 1,
+                            lastOrder:1,
                             frequencyOrder: {
                                 $divide: [
                                     {
-                                        $subtract:["$lastOrder","$firstOrder"]
+                                        $subtract:[new Date(),"$firstOrder"]
                                     },
                                     {
                                         $subtract:["$timesOrdered",1]
