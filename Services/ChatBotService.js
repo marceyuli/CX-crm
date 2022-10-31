@@ -11,6 +11,8 @@ const ChatBotUsers_Products = require('../Controllers/ChatBotUsers_ProductsContr
 const Score = require('../Controllers/ScoresController');
 const UserVisits = require('../Controllers/UserVisitsController');
 const ResponseConstructor = require('../Utils/responseConstructors');
+const Orders = require('../Controllers/OrdersController');
+const Products_Orders = require("../Controllers/Products_OrdersController");
 
 function handleDialogFlowResponse(sender, response) {
     let responseText = response.fulfillmentText;
@@ -54,6 +56,10 @@ async function handleDialogFlowAction(
                 await sendImageMessage(sender, element.picture);
             }
             break;
+        case "PrendasOPersonalizados.action":
+            await Orders.createShoppingCart(sender);
+            handleMessages(messages, sender);
+            break;
         case "FallbackArtista.action":
             let artists = await Artists.getArtistsInText();
             sendTextMessage(sender, artists);
@@ -68,13 +74,26 @@ async function handleDialogFlowAction(
             let size = parameters.fields.Talla.stringValue;
             let productName = parameters.fields.NombreDePrenda.stringValue;
             let productType = parameters.fields.Prenda.stringValue;
-            if (size == '' || productName == '' || productType == '') {
+            let quantity = parameters.fields.Cantidad.stringValue;
+            if (size == '' || productName == '' || productType == '' || quantity == '') {
                 handleMessages(messages, sender);
                 break;
             }
             ChatBotUsers_Products.saveUserInterest(sender, productName, productType);
-            let res = await ProductDescriptions.sizeExist(size, productName, productType);
+            let res = await ProductDescriptions.sizeExist(size, productName, productType, quantity);
             sendTextMessage(sender, res);
+            break;
+        case "IntencionDeCompra.action":
+            let size1 = contexts[0].parameters.fields.Talla.stringValue;
+            let productName1 = contexts[0].parameters.fields.NombreDePrenda.stringValue;
+            let productType1 = contexts[0].parameters.fields.Prenda.stringValue;
+            let quantity1 = contexts[0].parameters.fields.Cantidad.stringValue;
+            await Products_Orders.createProductsOrders(sender, productName1, productType1, quantity1, size1);
+            handleMessages(messages, sender);
+            break;
+        case "CarritoDeCompras.action":
+            let listShoppingCart = await Products_Orders.getListShoppingCart(sender);
+            sendTextMessage(sender, listShoppingCart);
             break;
         case "DatosRecibidos.action":
             if (parameters.fields.phoneNumber.stringValue != '' && parameters.fields.email.stringValue != '') {

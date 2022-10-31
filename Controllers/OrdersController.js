@@ -1,7 +1,24 @@
 const Order = require('../Models/Orders');
 const ChatBotUsers = require('../Models/ChatbotUsers');
 
-
+async function createShoppingCart(facebookId) {
+    let chatBotUser = await ChatBotUsers.findOne({ facebookId });
+    let order = await Order.findOne({ chatBotUserId: chatBotUser._id, order: false });
+    if (order) {
+        return;
+    }
+    let shoppingCart = new Order({
+        totalPrice: 0,
+        chatBotUserId: chatBotUser._id,
+        order: false
+    })
+    shoppingCart.save((err, res) => {
+        if (err) {
+            return console.log(err);
+        }
+        console.log("Se creo un carrito de compras: ", res);
+    })
+}
 //devuelve a los clientes activos (state = 3) junto con la fecha de su ultimo pedido, y todas las ordenes que hizo
 async function getTimesOrderedLastOrder() {
     return await ChatBotUsers.aggregate([
@@ -113,14 +130,14 @@ async function getAvgTotalPriceCreatedAt() {
                     {
                         $project: {
                             avgTotalPrice: 1,
-                            lastOrder:1,
+                            lastOrder: 1,
                             frequencyOrder: {
                                 $divide: [
                                     {
-                                        $subtract:[new Date(),"$firstOrder"]
+                                        $subtract: [new Date(), "$firstOrder"]
                                     },
                                     {
-                                        $subtract:["$timesOrdered",1]
+                                        $subtract: ["$timesOrdered", 1]
                                     }
                                 ]
                             }
@@ -151,5 +168,6 @@ async function getAvgTotalPriceCreatedAt() {
 }
 module.exports = {
     getTimesOrderedLastOrder,
-    getAvgTotalPriceCreatedAt
+    getAvgTotalPriceCreatedAt,
+    createShoppingCart,
 }
