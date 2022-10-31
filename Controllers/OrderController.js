@@ -114,13 +114,28 @@ async function getAvgTotalPriceCreatedAt() {
                                 $first: "$createdAt"
                             },
                             firstOrder: {
-                                $last: "createdAt"
+                                $last: "$createdAt"
                             },
-                            timesOrdered:{
-                                $count:{}
+                            timesOrdered: {
+                                $count: {}
                             }
                         }
                     },
+                    {
+                        $project: {
+                            avgTotalPrice: 1,
+                            frequencyOrder: {
+                                $divide: [
+                                    {
+                                        $subtract:["$lastOrder","$firstOrder"]
+                                    },
+                                    {
+                                        $subtract:["$timesOrdered",1]
+                                    }
+                                ]
+                            }
+                        }
+                    }
                 ],
                 as: "orders"
             },
