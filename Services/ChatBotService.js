@@ -71,6 +71,7 @@ async function handleDialogFlowAction(
             sendGenericMessage(sender, cards);
             break;
         case "ArtistaPrendaYTalla.action":
+            console.log(parameters.fields);
             let size = parameters.fields.Talla.stringValue;
             let productName = parameters.fields.NombreDePrenda.stringValue;
             let productType = parameters.fields.Prenda.stringValue;
