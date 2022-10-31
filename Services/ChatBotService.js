@@ -1,6 +1,5 @@
 var request = require("request");
-const sessionIds = new Map();
-const uuid = require("uuid");
+
 //libraries
 const Artists = require('../Controllers/ArtistController');
 const utils = require('../Utils/utils');
@@ -16,7 +15,7 @@ const Orders = require('../Controllers/OrdersController');
 const Products_Orders = require("../Controllers/Products_OrdersController");
 const DialogFlow = require("../dialogflow");
 
-function handleDialogFlowResponse(sender, response) {
+function handleDialogFlowResponse(sender, response, session) {
     let responseText = response.fulfillmentText;
     let messages = response.fulfillmentMessages;
     let action = response.action;
@@ -25,7 +24,7 @@ function handleDialogFlowResponse(sender, response) {
     sendTypingOff(sender);
 
     if (isDefined(action)) {
-        handleDialogFlowAction(sender, action, messages, contexts, parameters);
+        handleDialogFlowAction(sender, action, messages, contexts, parameters, session);
     } else if (isDefined(messages)) {
         handleMessages(messages, sender);
     } else if (responseText == "" && !isDefined(action)) {
@@ -42,7 +41,8 @@ async function handleDialogFlowAction(
     action,
     messages,
     contexts,
-    parameters
+    parameters,
+    session
 ) {
     switch (action) {
         case "input.welcome":
@@ -106,8 +106,6 @@ async function handleDialogFlowAction(
             var data = await ChatBotUsers.haveData(sender);
             console.log(data);
             if (data != "") { 
-                setSessionAndUser(sender);
-                let session = sessionIds.get(sender);
                 let res = await DialogFlow.sendToDialogFlow(
                     data,
                     session,
@@ -394,24 +392,8 @@ function isDefined(obj) {
     return obj != null;
 }
 
-async function setSessionAndUser(senderId) {
-    try {
-        if (!sessionIds.has(senderId)) {
-            sessionIds.set(senderId, uuid.v1());
-        }
-    } catch (error) {
-        throw error;
-    }
-}
-
-async function getSessionsId(senderId){
-    return sessionIds.get(senderId);
-}
-
 module.exports = {
     handleDialogFlowResponse,
     sendTypingOn,
     sendTextMessage,
-    setSessionAndUser,
-    getSessionsId
 }

@@ -1,6 +1,8 @@
 //files
 const dialogflow = require("../dialogflow");
 const chatBotService = require("../Services/ChatBotService");
+const sessionIds = new Map();
+const uuid = require("uuid");
 
 if (!process.env.PAGE_ACCESS_TOKEN) {
     throw new Error("missing PAGE_ACCESS_TOKEN");
@@ -118,16 +120,26 @@ async function sendToDialogFlow(senderId, messageText) {
     chatBotService.sendTypingOn(senderId);
     try {
         let result;
-        chatBotService.setSessionAndUser(senderId);
-        let session = chatBotService.getSessionsId(senderId);
+        setSessionAndUser(senderId);
+        let session = sessionIds.get(senderId);
         result = await dialogflow.sendToDialogFlow(
             messageText,
             session,
             "FACEBOOK"
         );
-        chatBotService.handleDialogFlowResponse(senderId, result);
+        chatBotService.handleDialogFlowResponse(senderId, result, session);
     } catch (error) {
         console.log("salio mal en sendToDialogflow...", error);
+    }
+}
+
+async function setSessionAndUser(senderId) {
+    try {
+        if (!sessionIds.has(senderId)) {
+            sessionIds.set(senderId, uuid.v1());
+        }
+    } catch (error) {
+        throw error;
     }
 }
 
