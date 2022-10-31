@@ -85,8 +85,11 @@ async function getListShoppingCart(facebookId) {
     ]);
     let res = "Actualmente tienes lo siguiente en tu carrito de compras:\n";
     shoppingCart.forEach(element => {
-        res += element.quantity + " " + element.type + " "  + element.name + " de talla " + element.size 
+        res += "-" + element.quantity + " " + element.type + " "  + element.name + " de talla " + element.size + 
+        " con un precio de " + element.price * element.quantity + " Bs\n" 
     });
+    res += "Deseas quitar un producto, añadir o continuar con la compra?";
+    return res;
 }
 
 module.exports = {
