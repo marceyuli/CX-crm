@@ -110,21 +110,14 @@ async function getAvgTotalPriceCreatedAt() {
                             avgTotalPrice: {
                                 $avg: "$totalPrice"
                             },
-                            // avgCreatedAt: {
-                            //      $subtract //devuelve milisegundos
-                            // },
-                        }
-                    },
-                    {
-                        $addFields:{
-                            avgCreatedAt:{
+                            avgCreatedAt: {
                                 $subtract:[
                                     {$first:"$createdAt"},
                                     {$last:"$createdAt"}
                                 ]
                             }
                         }
-                    }
+                    },
                 ],
                 as: "orders"
             },
