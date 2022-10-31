@@ -7,8 +7,8 @@ async function sizeExist(size, productName, productType, quantity){
     let product = await Product.getProductByNameAndType(productName, productType);
     let productDescription = await ProductDescriptions.findOne({productId: product._id, size});
     if (productDescription) {
-        let res = "Ha seleccionado" + quantity + " prenda/s " + productName + " de talla " +
-         size + "con un costo de: " + quantity * product.price + "Bs" +"\nDesea continuar con el pedido?"
+        let res = "Ha seleccionado " + quantity + " prenda/s " + productName + " de talla " +
+         size + " con un costo de: " + quantity * product.price + "Bs en total" +"\nDesea continuar con el pedido?"
         return res;
     }
     return "No tenemos disponible la talla en esa prenda por el momento. ¿Desea pedir otra prenda?"

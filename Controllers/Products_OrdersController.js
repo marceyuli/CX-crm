@@ -44,15 +44,6 @@ async function getListShoppingCart(facebookId) {
                                 from: "products",
                                 localField: "productId",
                                 foreignField: "_id",
-                                pipeline: [
-                                    {
-                                        $project: {
-                                            _id: 0,
-                                            name: 1,
-                                            type: 1,
-                                        }
-                                    },
-                                ],
                                 as: "product",
                             }
                         },
