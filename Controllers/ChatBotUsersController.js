@@ -15,7 +15,10 @@ async function saveUserData(facebookId) {
         firstName: userData.first_name,
         lastName: userData.last_name,
         facebookId,
-        profilePicture: userData.profile_pic
+        profilePicture: userData.profile_pic,
+        phoneNumber: "",
+        email: "",
+        state: 1,
     })
     chatbotUser.save((err, res) => {
         if (err) {

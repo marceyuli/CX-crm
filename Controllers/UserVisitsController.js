@@ -5,6 +5,7 @@ async function saveUserVisit(facebookId) {
     let chatBotUser = await ChatBotUser.findOne({ facebookId });
     let userVisit = new UserVisit({
         chatBotUserId: chatBotUser._id,
+        phrases: []
     });
     userVisit.save((err, res) => {
         if (err) {
