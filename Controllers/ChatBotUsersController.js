@@ -1,5 +1,9 @@
 const ChatbotUser = require('../Models/ChatbotUsers');
+const UserVisit = require('./UserVisitsController');
+const TalkDetails = require('./TalkDetailsController');
+const Orders = require('./OrdersController');
 const utils = require('../Utils/utils');
+
 
 async function saveUserData(facebookId) {
     let isRegistered = await ChatbotUser.findOne({ facebookId });
@@ -21,6 +25,31 @@ async function saveUserData(facebookId) {
     })
 }
 
+//conecta al api, devuelve un array de arrays que contienen
+//[0] prospecto 
+//[1] clientes contactados
+//[2] clientes activos
+//[3] clientes habituales
+let getUsersData = async (req, res) => {
+    try {
+        let chatBotUsersProspect = await UserVisit.getTimesVisitedLastVisit();
+        let chatBotUsersContacted = await TalkDetails.getTimesContactedLastContact();
+        let chatBotUsersActive = await Orders.getTimesOrderedLastOrder();
+        let chatBotUsersHabitual = await Orders.getAvgTotalPriceCreatedAt();
+        let newChatBotUsers = [];
+        newChatBotUsers.push(chatBotUsersProspect);
+        newChatBotUsers.push(chatBotUsersContacted);
+        newChatBotUsers.push(chatBotUsersActive);
+        newChatBotUsers.push(chatBotUsersHabitual);
+        res.json(newChatBotUsers);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
 module.exports = {
-    saveUserData
+    saveUserData,
+    getUsersData
 }

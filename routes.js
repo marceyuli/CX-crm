@@ -1,6 +1,7 @@
 var express = require("express");
 const ChatBotController = require("./Controllers/ChatBotController");
 const HomePageController = require("./Controllers/HomePageController");
+const ChatBotUsersController = require("./Controllers/ChatBotUsersController");
 
 let router = express.Router();
 
@@ -8,7 +9,7 @@ let initWebRoutes = (app)=> {
     router.get("/", HomePageController.getHomepage);
     router.get("/webhook", ChatBotController.getWebhook);
     router.post("/webhook", ChatBotController.postWebhook);
-
+    router.get("/getuserdata", ChatBotUsersController.getUsersData)
     return app.use("/", router);
 };
 
