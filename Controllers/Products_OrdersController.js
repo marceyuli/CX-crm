@@ -78,14 +78,20 @@ async function getListShoppingCart(facebookId) {
                 }
             },
             {
+                $project:{
+                    product_orders: 1
+                }
+            },
+            {
                 $unwind: "$product_orders"
             }
         ]);
         console.log(shoppingCart);
         let res = "Actualmente tienes lo siguiente en tu carrito de compras:\n";
         shoppingCart.forEach(element => {
-            res += "-" + element.quantity + " " + element.type + " " + element.name + " de talla " + element.size +
-                " con un precio de " + element.price * element.quantity + " Bs\n"
+            const product_orders = element.product_orders;
+            res += "-" + product_orders.quantity + " " + product_orders.type + " " + product_orders.name + " de talla " + product_orders.size +
+                " con un precio de " + product_orders.price * product_orders.quantity + " Bs\n"
         });
         res += "Deseas quitar un producto, añadir o continuar con la compra?";
         return res;
