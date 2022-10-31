@@ -50,6 +50,17 @@ let getUsersData = async (req, res) => {
     }
 }
 
+let getActiveClientData = async (req, res) => {
+    try {
+        console.log(req);
+        console.log(req.body);
+        let data = req.body
+        res.json({asd:123});
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 async function haveData(facebookId) {
     let chatBotUser = await ChatbotUser.findOne({ facebookId });
     let res = "";
@@ -81,4 +92,5 @@ module.exports = {
     getUsersData,
     haveData,
     updateData,
+    getActiveClientData
 }
