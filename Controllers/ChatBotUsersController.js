@@ -47,9 +47,35 @@ let getUsersData = async (req, res) => {
     }
 }
 
+async function haveData(facebookId) {
+    let chatBotUser = await ChatbotUser.findOne({ facebookId });
+    let res = "";
+    if (chatBotUser.email != '' && chatBotUser.phoneNumber != '') {
+        res = chatBotUser.email + " " + chatbotUser.phoneNumber;
+    }
+    return res;
+}
 
+async function updateData(facebookId, phoneNumber, email) {
+    await ChatbotUser.updateOne(
+        {
+            facebookId
+        },
+        {
+            $set: {
+                email,
+                phoneNumber,
+            },
+            $currentDate: {
+                lastModified: true,
+            }
+        }
+    );
+}
 
 module.exports = {
     saveUserData,
-    getUsersData
+    getUsersData,
+    haveData,
+    updateData,
 }

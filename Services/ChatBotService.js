@@ -13,6 +13,8 @@ const UserVisits = require('../Controllers/UserVisitsController');
 const ResponseConstructor = require('../Utils/responseConstructors');
 const Orders = require('../Controllers/OrdersController');
 const Products_Orders = require("../Controllers/Products_OrdersController");
+const DialogFlow = require("../dialogflow");
+const ChatbotUsers = require("../Models/ChatbotUsers");
 
 function handleDialogFlowResponse(sender, response) {
     let responseText = response.fulfillmentText;
@@ -92,12 +94,31 @@ async function handleDialogFlowAction(
             handleMessages(messages, sender);
             break;
         case "CarritoDeCompras.action":
+            var productName = parameters.fields.NombreDePrenda.stringValue;
+            var productType = parameters.fields.Prenda.stringValue;
+            if (productName != '' && productType != '') {
+                await Products_Orders.deleteProductOrders(sender, productName, productType);
+            }
             const listShoppingCart = await Products_Orders.getListShoppingCart(sender);
             sendTextMessage(sender, listShoppingCart);
             break;
+        case "PedirDatosDelCliente.action": 
+            var data = await ChatBotUsers.haveData(sender);
+            console.log(data);
+            if (data != "") { 
+                let res = await DialogFlow.sendToDialogFlow(
+                    data,
+                    sender,
+                    "FACEBOOK",
+                )
+                handleDialogFlowResponse(sender, res);
+                return;
+            }
+            handleMessages(messages, sender);
+            break;
         case "DatosRecibidos.action":
             if (parameters.fields.phoneNumber.stringValue != '' && parameters.fields.email.stringValue != '') {
-                //Aca guardaba los datos en el client, ahora debe añadirlos a chatBotUser
+                await ChatbotUsers.updateData(sender, parameters.fields.phoneNumber.stringValue, parameters.fields.email.stringValue);
             }
             handleMessages(messages, sender);
             break;

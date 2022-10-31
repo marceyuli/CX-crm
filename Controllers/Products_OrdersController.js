@@ -101,7 +101,14 @@ async function getListShoppingCart(facebookId) {
 
 }
 
+async function deleteProductOrders(facebookId, productName, productType) {
+    let chatBotUser = await ChatBotUsers.findOne({ facebookId });
+    let order = await Order.findOne({ chatBotUserId: chatBotUser._id, order: false });
+    let product = await Product.getProductByNameAndType(productName, productType);
+    await Product_Orders.findOneAndRemove({ productId: product._id, orderId: order._id });
+}
 module.exports = {
     createProductsOrders,
     getListShoppingCart,
+    deleteProductOrders,
 }
