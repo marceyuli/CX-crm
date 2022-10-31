@@ -105,16 +105,26 @@ async function getAvgTotalPriceCreatedAt() {
                         }
                     },
                     {
+                        $project: {
+                            chatBotUserId: 1,
+                            totalPrice: 1,
+                            createdAt: 1,
+                            avgCreatedAt: {
+                                $subtract: [
+                                    { $first: "$createdAt" },
+                                    { $last: "$createdAt" }
+                                ]
+                            }
+                        }
+                    },
+                    {
                         $group: {
                             _id: '$chatBotUserId',
                             avgTotalPrice: {
                                 $avg: "$totalPrice"
                             },
-                            avgCreatedAt: {
-                                $subtract:[
-                                    {$first:"$createdAt"},
-                                    {$last:"$createdAt"}
-                                ]
+                            avgTotalPrice: {
+                                $first: "$avrCreatedAt"
                             }
                         }
                     },
