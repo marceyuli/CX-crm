@@ -111,7 +111,7 @@ async function handleDialogFlowAction(
                     session,
                     "FACEBOOK",
                 )
-                handleDialogFlowResponse(sender, res);
+                handleDialogFlowResponse(sender, res, session);
                 return;
             }
             handleMessages(messages, sender);
