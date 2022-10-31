@@ -26,7 +26,6 @@ async function createProductsOrders(facebookId, productName, productType, quanti
 async function getListShoppingCart(facebookId) {
     try {
         let chatBotUser = await ChatBotUsers.findOne({ facebookId });
-        console.log(chatBotUser);
         let shoppingCart = await Order.aggregate([
             {
                 $match: {
@@ -51,9 +50,6 @@ async function getListShoppingCart(facebookId) {
                                             _id: 0,
                                             name: 1,
                                             type: 1,
-                                            picture: 0,
-                                            price: 0,
-                                            artistId: 0
                                         }
                                     },
                                 ],
