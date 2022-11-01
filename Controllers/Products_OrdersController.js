@@ -134,7 +134,7 @@ async function getActiveClientData(chatBotUserId) {
                     {
                         $lookup: {
                             from: "products",
-                            localField: "_id.productId",
+                            localField: "productId",
                             foreignField: "_id",
                             pipeline: [
                                 {
