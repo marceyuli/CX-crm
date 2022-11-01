@@ -54,10 +54,8 @@ let getUsersData = async (req, res) => {
 let getActiveClientData = async (req, res) => {
     try {
         let data = req.body
-        console.log(data);
         let chatBotUser = await ChatbotUser.findOne({ facebookId:data.facebookId });
         let activeClient = await Products_Orders.getActiveClientData(chatBotUser);
-        console.log(activeClient);
         res.json(activeClient);
     } catch (error) {
         console.log(error);
@@ -90,10 +88,15 @@ async function updateData(facebookId, phoneNumber, email) {
     );
 }
 
+async function getChatBotUser(facebookId){
+    return await ChatbotUser.findOne({ facebookId})
+}
+
 module.exports = {
     saveUserData,
     getUsersData,
     haveData,
     updateData,
-    getActiveClientData
+    getActiveClientData,
+    getChatBotUser
 }
