@@ -55,7 +55,8 @@ let getActiveClientData = async (req, res) => {
     try {
         let data = req.body
         console.log(data);
-        let activeClient = await Products_Orders.getActiveClientData(data._id);
+        let chatBotUser = await ChatbotUser.findOne({ facebookId:data.facebookId });
+        let activeClient = await Products_Orders.getActiveClientData(chatBotUser);
         console.log(activeClient);
         res.json(activeClient);
     } catch (error) {

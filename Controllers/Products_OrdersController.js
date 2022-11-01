@@ -104,11 +104,11 @@ async function getProductsOrders(chatBotUser) {
     ]);
 }
 
-async function getActiveClientData(chatBotUserId) {
+async function getActiveClientData(chatBotUser) {
     return await Order.aggregate([
         {
             $match: {
-                chatBotUserId,
+                chatBotUserId: chatBotUser._id,
                 order: true
             }
         },
