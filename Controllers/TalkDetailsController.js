@@ -1,6 +1,6 @@
 const TalkDetails = require('../Models/TalkDetails');
 const ChatbotUsers = require('../Models/ChatbotUsers');
-const ChatBotUser = require('./ChatBotUsersController');
+const ChatBotUsersController = require('./ChatBotUsersController');
 
 async function saveTalkDetail(content, socialMedia, chatBotUserId) {
     let talkDetail = new TalkDetails({
@@ -81,7 +81,7 @@ let getTalkDetails = async (req, res) => {
     try {
         let data = req.body;
         console.log(data);
-        let chatBotUser = await ChatBotUser.getChatBotUser(data.facebookId);
+        let chatBotUser = await ChatBotUsersController.getChatBotUser(data.facebookId);
         let talkdetails = await TalkDetails.find({chatBotUserId:chatBotUser._id});
         console.log(talkdetails);
         res.json(talkdetails);
