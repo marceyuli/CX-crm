@@ -129,42 +129,45 @@ async function getActiveClientData(chatBotUserId) {
                                     $multiply:["$quantiy","$price"]
                                 }
                             },
-                        }
-                    },
-                    {
-                        $lookup: {
-                            from: "products",
-                            localField: "productId",
-                            foreignField: "_id",
-                            pipeline: [
-                                {
-                                    $project: {
-                                        _id: 0,
-                                        name: 1,
-                                        type: 1,
-                                    }
-                                },
-                            ],
-                            as: "product",
-                        }
-                    },
-                    {
-                        $replaceRoot: {
-                            newRoot:
-                            {
-                                $mergeObjects:
-                                    [
-                                        {
-                                            $arrayElemAt:
-                                                ["$product", 0]
-                                        }, "$$ROOT"]
+                            quantity:{
+                                $sum:"$quantity"
                             }
-                        },
+                        }
                     },
-                    {
-                        $project:
-                            { product: 0 }
-                    }
+                    // {
+                    //     $lookup: {
+                    //         from: "products",
+                    //         localField: "productId",
+                    //         foreignField: "_id",
+                    //         pipeline: [
+                    //             {
+                    //                 $project: {
+                    //                     _id: 0,
+                    //                     name: 1,
+                    //                     type: 1,
+                    //                 }
+                    //             },
+                    //         ],
+                    //         as: "product",
+                    //     }
+                    // },
+                    // {
+                    //     $replaceRoot: {
+                    //         newRoot:
+                    //         {
+                    //             $mergeObjects:
+                    //                 [
+                    //                     {
+                    //                         $arrayElemAt:
+                    //                             ["$product", 0]
+                    //                     }, "$$ROOT"]
+                    //         }
+                    //     },
+                    // },
+                    // {
+                    //     $project:
+                    //         { product: 0 }
+                    // }
                 ],
                 as: "product_orders"
             }
