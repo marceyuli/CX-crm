@@ -40,7 +40,7 @@ async function getListShoppingCart(facebookId) {
     }
 }
 
-async function getProductsOrders(chatBotUser){
+async function getProductsOrders(chatBotUser) {
     return await Order.aggregate([
         {
             $match: {
@@ -93,7 +93,7 @@ async function getProductsOrders(chatBotUser){
             }
         },
         {
-            $project:{
+            $project: {
                 _id: 0,
                 product_orders: 1
             }
@@ -104,7 +104,7 @@ async function getProductsOrders(chatBotUser){
     ]);
 }
 
-async function getActiveClientData(chatBotUserId){
+async function getActiveClientData(chatBotUserId) {
     return await Order.aggregate([
         {
             $match: {
@@ -119,15 +119,22 @@ async function getActiveClientData(chatBotUserId){
                 foreignField: "orderId",
                 pipeline: [
                     {
-                        $group:{
-                            _id:["$productId","$size"],
-                            totalPrice:{$sum:"$price"},
+                        $group: {
+                            _id: {
+                                productId: "$productId",
+                                size: "$size"
+                            },
+                            totalPrice: {
+                                $sum:{
+                                    $multiply:["$quantiy","$price"]
+                                }
+                            },
                         }
                     },
                     {
                         $lookup: {
                             from: "products",
-                            localField: "productId",
+                            localField: "_id.productId",
                             foreignField: "_id",
                             pipeline: [
                                 {
@@ -163,9 +170,9 @@ async function getActiveClientData(chatBotUserId){
             }
         },
         {
-            $project:{
+            $project: {
                 _id: 0,
-                product_orders: 1
+                product_orders: 1,
             }
         },
         {
