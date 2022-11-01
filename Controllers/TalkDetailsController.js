@@ -2,7 +2,7 @@ const TalkDetails = require('../Models/TalkDetails');
 const ChatbotUsers = require('../Models/ChatbotUsers');
 
 //enlazada al api, guarda los detalles de un usuario contactado
-let saveTalkDetail = async (req, res) => {
+let saveTalkDetails = async (req, res) => {
     try {
         let data = req.body;
         let chatBotUser = await ChatbotUsers.findOne({ facebookId: data[0].facebookId });
@@ -107,5 +107,5 @@ module.exports = {
     saveTalkDetail,
     getTimesContactedLastContact,
     getTalkDetails,
-    saveTalkDetail
+    saveTalkDetails
 }
