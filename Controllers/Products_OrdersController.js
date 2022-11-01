@@ -104,6 +104,77 @@ async function getProductsOrders(chatBotUser){
     ]);
 }
 
+async function getActiveClientData(chatBotUserId){
+    return await Order.aggregate([
+        {
+            $match: {
+                chatBotUserId,
+                order: true
+            }
+        },
+        {
+            $lookup: {
+                from: "products_orders",
+                localField: "_id",
+                foreignField: "orderId",
+                pipeline: [
+                    {
+                        $group:{
+                            productId:"$productId",
+                            totalPrice:{$sum:"$price"},
+                            size:"$size"
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: "products",
+                            localField: "productId",
+                            foreignField: "_id",
+                            pipeline: [
+                                {
+                                    $project: {
+                                        _id: 0,
+                                        name: 1,
+                                        type: 1,
+                                    }
+                                },
+                            ],
+                            as: "product",
+                        }
+                    },
+                    {
+                        $replaceRoot: {
+                            newRoot:
+                            {
+                                $mergeObjects:
+                                    [
+                                        {
+                                            $arrayElemAt:
+                                                ["$product", 0]
+                                        }, "$$ROOT"]
+                            }
+                        },
+                    },
+                    {
+                        $project:
+                            { product: 0 }
+                    }
+                ],
+                as: "product_orders"
+            }
+        },
+        {
+            $project:{
+                _id: 0,
+                product_orders: 1
+            }
+        },
+        {
+            $unwind: "$product_orders"
+        }
+    ]);
+}
+
 async function deleteProductOrders(facebookId, productName, productType) {
     let chatBotUser = await ChatBotUsers.findOne({ facebookId });
     let order = await Order.findOne({ chatBotUserId: chatBotUser._id, order: false });
@@ -115,4 +186,5 @@ module.exports = {
     getListShoppingCart,
     deleteProductOrders,
     getProductsOrders,
+    getActiveClientData
 }

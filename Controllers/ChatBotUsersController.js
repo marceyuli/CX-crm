@@ -3,6 +3,7 @@ const UserVisit = require('./UserVisitsController');
 const TalkDetails = require('./TalkDetailsController');
 const Orders = require('./OrdersController');
 const utils = require('../Utils/utils');
+const Products_Orders = require('./Products_OrdersController');
 
 
 async function saveUserData(facebookId) {
@@ -52,10 +53,9 @@ let getUsersData = async (req, res) => {
 
 let getActiveClientData = async (req, res) => {
     try {
-        console.log(req);
-        console.log(req.body);
         let data = req.body
-        res.json({asd:123});
+        let activeClient = Products_Orders.getActiveClientData(data._id);
+        res.json(activeClient);
     } catch (error) {
         console.log(error);
     }
