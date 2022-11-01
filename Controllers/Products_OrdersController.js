@@ -164,7 +164,24 @@ async function getActiveClientData(chatBotUser) {
         },
         {
             $unwind: "$product_orders"
-        }
+        },
+        {
+            $group: {
+                _id: {
+                    productId: "$product_orders.productId",
+                    size: "$product_orders.size",
+                    type: "$product_orders.type",
+                },
+                totalPrice: {
+                    $sum:{
+                        $multiply:["$price","$quantity"]
+                    }
+                },
+                quantity:{
+                    $sum:"$quantity"
+                }
+            }
+        },
     ]);
 }
 
