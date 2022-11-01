@@ -120,9 +120,8 @@ async function getActiveClientData(chatBotUserId){
                 pipeline: [
                     {
                         $group:{
-                            productId:"$productId",
+                            _id:["$productId","$size"],
                             totalPrice:{$sum:"$price"},
-                            size:"$size"
                         }
                     },
                     {

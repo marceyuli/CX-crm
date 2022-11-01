@@ -54,7 +54,7 @@ let getUsersData = async (req, res) => {
 let getActiveClientData = async (req, res) => {
     try {
         let data = req.body
-        let activeClient = Products_Orders.getActiveClientData(data._id);
+        let activeClient = await Products_Orders.getActiveClientData(data._id);
         res.json(activeClient);
     } catch (error) {
         console.log(error);
