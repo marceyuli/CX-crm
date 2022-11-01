@@ -1,11 +1,12 @@
 const TalkDetails = require('../Models/TalkDetails');
 const ChatbotUsers = require('../Models/ChatbotUsers');
 
-//enlazada al api, guarda los detalles de un usuario contactado
+//enlazada al api, guarda los detalles de un usuario contactado y lo cambia a state = 2
 let saveTalkDetails = async (req, res) => {
     try {
         let data = req.body;
-        let chatBotUser = await ChatbotUsers.findOne({ facebookId: data[0].facebookId });
+        let chatBotUser = await ChatbotUsers.findOneAndUpdate({ facebookId: data[0].facebookId },
+            {$set:{state:2}});
         await saveTalkDetail(data[1].content, data[1].socialMedia, chatBotUser._id, data[1].dateContacted);
         res.json("ok");
     } catch (error) {
