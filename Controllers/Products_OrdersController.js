@@ -171,14 +171,15 @@ async function getActiveClientData(chatBotUser) {
                     productId: "$product_orders.productId",
                     size: "$product_orders.size",
                     type: "$product_orders.type",
+                    name: "$product_orders.name",
                 },
                 totalPrice: {
                     $sum:{
-                        $multiply:["$price","$quantity"]
+                        $multiply:["$product_orders.price","$product_orders.quantity"]
                     }
                 },
                 quantity:{
-                    $sum:"$quantity"
+                    $sum:"$product_orders.quantity"
                 }
             }
         },
