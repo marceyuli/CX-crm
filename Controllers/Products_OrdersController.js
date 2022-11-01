@@ -119,15 +119,24 @@ async function getActiveClientData(chatBotUserId) {
                 foreignField: "orderId",
                 pipeline: [
                     {
+                        $project:{
+                            productId: 1,
+                            size: 1,
+                            quantity: 1,
+                            price: 1,
+                            totalPrice:{
+                                $multiply:["$quantiy","$price"]
+                            }
+                        }
+                    },
+                    {
                         $group: {
                             _id: {
                                 productId: "$productId",
                                 size: "$size"
                             },
                             totalPrice: {
-                                $sum:{
-                                    $multiply:["$quantiy","$price"]
-                                }
+                                $sum:"$totalPrice"
                             },
                             quantity:{
                                 $sum:"$quantity"
