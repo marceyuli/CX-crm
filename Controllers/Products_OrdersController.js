@@ -125,7 +125,7 @@ async function getActiveClientData(chatBotUserId) {
                             quantity: 1,
                             price: 1,
                             totalPrice:{
-                                $multiply:["$quantiy","$price"]
+                                $multiply:["$quantity","$price"]
                             }
                         }
                     },
