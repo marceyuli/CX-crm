@@ -15,6 +15,7 @@ let initWebRoutes = (app)=> {
     router.post("/getactiveclientdata", ChatBotUsersController.getActiveClientData);
     router.post("/getmessages", Messages.getMessages);
     router.post("/gettalkdetails", TalkDetails.getTalkDetails);
+    router.post("/savetalkdetail", TalkDetails.saveTalkDetail);
     return app.use("/", router);
 };
 

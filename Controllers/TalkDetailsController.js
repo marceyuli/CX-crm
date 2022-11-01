@@ -1,11 +1,25 @@
 const TalkDetails = require('../Models/TalkDetails');
 const ChatbotUsers = require('../Models/ChatbotUsers');
 
-async function saveTalkDetail(content, socialMedia, chatBotUserId) {
+//enlazada al api, guarda los detalles de un usuario contactado
+let saveTalkDetail = async (req, res) => {
+    try {
+        let data = req.body;
+        let chatBotUser = await ChatbotUsers.findOne({ facebookId: data[0].facebookId });
+        await saveTalkDetail(data[1].content, data[1].socialMedia, chatBotUser._id, data[1].dateContacted);
+        res.json("ok");
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function saveTalkDetail(content, socialMedia, chatBotUserId, dateContacted) {
     let talkDetail = new TalkDetails({
         content,
         socialMedia,
-        chatBotUserId
+        chatBotUserId,
+        accountId : "1",
+        dateContacted
     })
     talkDetail.save((err, res) => {
         if (err) {
@@ -14,6 +28,7 @@ async function saveTalkDetail(content, socialMedia, chatBotUserId) {
         console.log("Se creo un TalkDetail: ", res);
     })
 }
+
 
 //devuelve a los clientes contactados (state = 2) junto con la cantidad de veces que fueron contactados
 //y con la ultima fecha de su contacto
@@ -76,13 +91,12 @@ async function getTimesContactedLastContact() {
     return talkDetail;
 }
 
+//conecta con la api que devuelve todas las veces que se contacto a un usuario
 let getTalkDetails = async (req, res) => {
     try {
         let data = req.body;
-        console.log(data);
-        let chatBotUser = await ChatbotUsers.findOne({ facebookId: data.facebookId});
-        let talkdetails = await TalkDetails.find({chatBotUserId:chatBotUser._id});
-        console.log(talkdetails);
+        let chatBotUser = await ChatbotUsers.findOne({ facebookId: data.facebookId });
+        let talkdetails = await TalkDetails.find({ chatBotUserId: chatBotUser._id });
         res.json(talkdetails);
     } catch (error) {
         console.log(error);
@@ -92,5 +106,6 @@ let getTalkDetails = async (req, res) => {
 module.exports = {
     saveTalkDetail,
     getTimesContactedLastContact,
-    getTalkDetails
+    getTalkDetails,
+    saveTalkDetail
 }
