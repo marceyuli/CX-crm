@@ -129,20 +129,20 @@ async function getActiveClientData(chatBotUser) {
                             }
                         }
                     },
-                    // {
-                    //     $group: {
-                    //         _id: {
-                    //             productId: "$productId",
-                    //             size: "$size"
-                    //         },
-                    //         totalPrice: {
-                    //             $sum:"$totalPrice"
-                    //         },
-                    //         quantity:{
-                    //             $sum:"$quantity"
-                    //         }
-                    //     }
-                    // },
+                    {
+                        $group: {
+                            _id: {
+                                productId: "$productId",
+                                size: "$size"
+                            },
+                            totalPrice: {
+                                $sum:"$totalPrice"
+                            },
+                            quantity:{
+                                $sum:"$quantity"
+                            }
+                        }
+                    },
                     // {
                     //     $lookup: {
                     //         from: "products",
