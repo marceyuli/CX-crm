@@ -3,6 +3,7 @@ const ChatBotController = require("./Controllers/ChatBotController");
 const HomePageController = require("./Controllers/HomePageController");
 const ChatBotUsersController = require("./Controllers/ChatBotUsersController");
 const Messages = require("./Controllers/MessagesController");
+const TalkDetails = require("./Controllers/TalkDetailsController");
 
 let router = express.Router();
 
@@ -13,6 +14,7 @@ let initWebRoutes = (app)=> {
     router.get("/getusersdata", ChatBotUsersController.getUsersData);
     router.post("/getactiveclientdata", ChatBotUsersController.getActiveClientData);
     router.post("/getmessages", Messages.getMessages);
+    router.post("/gettalkdetails", TalkDetails.getTalkDetails);
     return app.use("/", router);
 };
 
