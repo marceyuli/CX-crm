@@ -33,9 +33,19 @@ async function getProducts(){
     return products;
 }
 
+//conecta con api, devuelve una lista de todos los productos
+let getProduct = async (req, res) =>{
+    try {
+        let products = await getProducts();
+        res.json(products);
+    } catch (error) {
+        console.log(error);
+    }
+}
 module.exports = {
     getProductsByArtistName,
     getProductByNameAndType,
     getPrice,
     getProducts,
+    getProduct
 }

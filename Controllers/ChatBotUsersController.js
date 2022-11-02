@@ -5,7 +5,7 @@ const Orders = require('./OrdersController');
 const utils = require('../Utils/utils');
 const Products_Orders = require('./Products_OrdersController');
 
-
+//crea un nuevo chatBotUser
 async function saveUserData(facebookId) {
     let isRegistered = await ChatbotUser.findOne({ facebookId });
     if (isRegistered) {
@@ -51,6 +51,7 @@ let getUsersData = async (req, res) => {
     }
 }
 
+//conecta con api, devuelve el precio total y cantidad de cada producto que pidio un usuario
 let getActiveClientData = async (req, res) => {
     try {
         let data = req.body
@@ -62,6 +63,7 @@ let getActiveClientData = async (req, res) => {
     }
 }
 
+//si tiene asignado un email y un telefono los devuelve, sino devuelve una cadena vacia
 async function haveData(facebookId) {
     let chatBotUser = await ChatbotUser.findOne({ facebookId });
     let res = "";
@@ -71,6 +73,7 @@ async function haveData(facebookId) {
     return res;
 }
 
+//asigna un email y numero de telefono
 async function updateData(facebookId, phoneNumber, email) {
     await ChatbotUser.updateOne(
         {
@@ -88,8 +91,14 @@ async function updateData(facebookId, phoneNumber, email) {
     );
 }
 
+//devuelve un usuario segun su facebookId
 async function getChatBotUser(facebookId){
     return await ChatbotUser.findOne({ facebookId})
+}
+
+//devuelve una lista de usuarios segun su state
+async function getChatBotUserByState(state){
+    return await ChatbotUser.find({state});
 }
 
 module.exports = {
@@ -98,5 +107,6 @@ module.exports = {
     haveData,
     updateData,
     getActiveClientData,
-    getChatBotUser
+    getChatBotUser,
+    getChatBotUserByState
 }
