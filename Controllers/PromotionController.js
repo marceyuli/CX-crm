@@ -30,7 +30,9 @@ async function createPromotion(description, picture, discount) {
 let savePromotion = async (req, res) => {
     try {
         let data = req.body
+        console.log(data);
         let products = data.products;
+        console.log(data.products);
         let promotion = await createPromotion(data.description, data.picture, parseInt(data.discount));
         for (let j = 0; j < products.length; j++) {
             const element = products[j];
