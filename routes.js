@@ -4,7 +4,6 @@ const HomePageController = require("./Controllers/HomePageController");
 const ChatBotUsersController = require("./Controllers/ChatBotUsersController");
 const Messages = require("./Controllers/MessagesController");
 const TalkDetails = require("./Controllers/TalkDetailsController");
-const Messages = require("./Controllers/MessagesController");
 const Products = require("./Controllers/ProductController");
 const Promotions = require("./Controllers/PromotionController");
 const Accounts = require("./Controllers/AccountsController");
