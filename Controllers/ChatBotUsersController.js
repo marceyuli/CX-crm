@@ -26,9 +26,10 @@ async function saveUserData(facebookId) {
         if (err) {
             return console.log(err);
         }
+        UserVisit.saveUserVisit(facebookId);
         console.log("Se creo un usuario: ", res);
     })
-    UserVisit.saveUserVisit(facebookId);
+    
 }
 
 //conecta al api, devuelve un array de arrays que contienen
