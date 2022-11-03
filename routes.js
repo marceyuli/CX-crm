@@ -20,7 +20,7 @@ let initWebRoutes = (app)=> {
     router.post("/gettalkdetails", TalkDetails.getTalkDetails);
     router.post("/savetalkdetail", TalkDetails.saveTalkDetails);
     router.post("/savemessage", Messages.saveMessage);
-    router.post("/getproducts", Products.getProduct);
+    router.get("/getproducts", Products.getProduct);
     router.post("/savepromotion", Promotions.savePromotion);
     router.post("/login", Accounts.login);
     return app.use("/", router);
