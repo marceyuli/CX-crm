@@ -9,6 +9,7 @@ const Products_Orders = require('./Products_OrdersController');
 async function saveUserData(facebookId) {
     let isRegistered = await ChatbotUser.findOne({ facebookId });
     if (isRegistered) {
+        UserVisit.saveUserVisit(facebookId);
         return;
     }
     let userData = await utils.getUserData(facebookId);
@@ -27,6 +28,7 @@ async function saveUserData(facebookId) {
         }
         console.log("Se creo un usuario: ", res);
     })
+    UserVisit.saveUserVisit(facebookId);
 }
 
 //conecta al api, devuelve un array de arrays que contienen
