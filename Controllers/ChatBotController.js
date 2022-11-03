@@ -1,6 +1,7 @@
 //files
 const dialogflow = require("../dialogflow");
 const chatBotService = require("../Services/ChatBotService");
+const SendToDialogFlow = require('../Services/SendToDialogFlow');
 const sessionIds = new Map();
 const uuid = require("uuid");
 
@@ -117,7 +118,7 @@ async function receivedPostback(event) {
 
 
 async function sendToDialogFlow(senderId, messageText) {
-    chatBotService.sendTypingOn(senderId);
+    SendToDialogFlow.sendTypingOn(senderId);
     try {
         let result;
         setSessionAndUser(senderId);

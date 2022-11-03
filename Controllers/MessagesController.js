@@ -1,6 +1,6 @@
 const Messages = require('../Models/Messages');
 const ChatBotUsers = require('./ChatBotUsersController');
-const ChatBotService = require('../Services/ChatBotService');
+const SendToDialogFlow = require('../Services/SendToDialogFlow');
 
 //encuentra un usuario y se crea un nuevo Mensaje
 async function createMessage(facebookId, text, picture) {
@@ -40,11 +40,11 @@ async function saveAndSendMessage(facebookId, text, picture) {
 
 //envia el mensaje
 async function sendMessage(facebookId, text) {
-    await ChatBotService.sendTextMessage(facebookId, text);
+    await SendToDialogFlow.sendTextMessage(facebookId, text);
 }
 
 async function sendImage(facebookId, imageUrl) {
-    await ChatBotService.sendImageMessage(facebookId, imageUrl);
+    await SendToDialogFlow.sendImageMessage(facebookId, imageUrl);
 }
 
 //conecta con api, devuelve todos los mensajes
