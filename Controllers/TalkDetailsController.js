@@ -50,7 +50,7 @@ async function getTimesContactedLastContact() {
                 pipeline: [
                     {
                         $sort: {
-                            createdAt: -1
+                            dateContacted: -1
                         }
                     },
                     {
@@ -60,7 +60,7 @@ async function getTimesContactedLastContact() {
                                 $count: {}
                             },
                             lastUserContact: {
-                                $first: "$createdAt"
+                                $first: "$dateContacted"
                             }
                         }
                     },
