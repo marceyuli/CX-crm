@@ -1,6 +1,6 @@
 const Messages = require('../Models/Messages');
-const ChatBotUsers = require('./ChatBotUsersController')
-const ChatBotService = require('../Services/ChatBotService')
+const ChatBotUsers = require('./ChatBotUsersController');
+const ChatBotService = require('../Services/ChatBotService');
 
 //encuentra un usuario y se crea un nuevo Mensaje
 async function createMessage(facebookId, text, picture) {

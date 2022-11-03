@@ -1,5 +1,5 @@
 let Promotions_Products = require('../Models/Promotions_Products');
-let Products = require('./ProductController')
+let Products = require('./ProductController');
 
 async function createPromotionsProducts(productName, productType, promotion){
     let product = await Products.getProductByNameAndType(productName, productType);
