@@ -20,4 +20,5 @@ async function getAccount(username){
 
 module.exports = {
     login,
+    getAccount
 }
