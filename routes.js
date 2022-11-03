@@ -7,6 +7,7 @@ const TalkDetails = require("./Controllers/TalkDetailsController");
 const Messages = require("./Controllers/MessagesController");
 const Products = require("./Controllers/ProductController");
 const Promotions = require("./Controllers/PromotionController");
+const Accounts = require("./Controllers/AccountsController");
 
 let router = express.Router();
 
@@ -22,6 +23,7 @@ let initWebRoutes = (app)=> {
     router.post("/savemessage", Messages.saveMessage);
     router.post("/getproducts", Products.getProduct);
     router.post("/savepromotion", Promotions.savePromotion);
+    router.post("/login", Accounts.login);
     return app.use("/", router);
 };
 

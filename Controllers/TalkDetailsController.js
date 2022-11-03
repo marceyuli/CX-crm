@@ -5,6 +5,8 @@ const ChatbotUsers = require('../Models/ChatbotUsers');
 let saveTalkDetails = async (req, res) => {
     try {
         let data = req.body;
+        console.log(req);
+        console.log(data);
         let chatBotUser = await ChatbotUsers.findOneAndUpdate({ facebookId: data[0].facebookId },
             {$set:{state:2}});
         await saveTalkDetail(data[1].content, data[1].socialMedia, chatBotUser._id, data[1].dateContacted);
