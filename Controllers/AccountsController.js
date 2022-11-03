@@ -14,6 +14,10 @@ let login = async (req, res) => {
     }
 }
 
+async function getAccount(username){
+    return await Accounts.findOne({username});
+}
+
 module.exports = {
     login,
 }
