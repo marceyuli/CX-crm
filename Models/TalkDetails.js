@@ -5,7 +5,7 @@ const TalkDetailSchema = new Schema({
     content: String,
     socialMedia: String,
     chatBotUserId: mongoose.SchemaTypes.ObjectId,
-    accountId: String,
+    accountId: mongoose.SchemaTypes.ObjectId,
     dateContacted: mongoose.SchemaTypes.Date,
 }, {timestamps: true});
 
