@@ -35,11 +35,16 @@ let saveMessage = async (req, res) => {
 async function saveAndSendMessage(facebookId, text, picture) {
     await createMessage(facebookId, text, picture);
     await sendMessage(facebookId, text);
+    await sendImage(facebookId, picture)
 }
 
 //envia el mensaje
 async function sendMessage(facebookId, text) {
     await ChatBotService.sendTextMessage(facebookId, text);
+}
+
+async function sendImage(facebookId, imageUrl) {
+    await ChatBotService.sendImageMessage(facebookId, imageUrl);
 }
 
 //conecta con api, devuelve todos los mensajes
