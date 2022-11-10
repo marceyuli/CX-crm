@@ -17,13 +17,5 @@ mongoose.connect('mongodb+srv://dialogflowuser:dialogflowpass@dialogflowcluster.
   if (err) {
     return console.log("Hubo un error en la base de datos", err);
   }
-  try {
-    console.log(res);
-    res.isMaster();
-    res.hostname();
-    res.hostInfo();
-  } catch (error) {
-    console.log(error);
-  }
   console.log("BASE DE DATOS ONLINE");
 });
