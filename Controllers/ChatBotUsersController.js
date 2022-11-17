@@ -66,6 +66,16 @@ let getActiveClientData = async (req, res) => {
     }
 }
 
+//conecta con api, devuelve todos los usuarios habituales
+let getHabitualUsers = async (req, res) => {
+    try {
+        let habitualClients = await ChatbotUser.find({state:3});
+        res.json(habitualClients);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 //si tiene asignado un email y un telefono los devuelve, sino devuelve una cadena vacia
 async function haveData(facebookId) {
     let chatBotUser = await ChatbotUser.findOne({ facebookId });
@@ -111,5 +121,6 @@ module.exports = {
     updateData,
     getActiveClientData,
     getChatBotUser,
-    getChatBotUserByState
+    getChatBotUserByState,
+    getHabitualUsers
 }

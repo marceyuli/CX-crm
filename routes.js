@@ -23,6 +23,8 @@ let initWebRoutes = (app)=> {
     router.get("/getproducts", Products.getProduct);
     router.post("/savepromotion", Promotions.savePromotion);
     router.post("/login", Accounts.login);
+    router.get("/gethabitualusers", ChatBotUsersController.getHabitualUsers);
+
     return app.use("/", router);
 };
 
