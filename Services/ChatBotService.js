@@ -67,9 +67,13 @@ async function handleDialogFlowAction(
             break;
         case "ArtistaPrendaEspecifica.action":
             SendToDialogFlow.sendTextMessage(sender, "tenemos disponibles las siguientes prendas de " + parameters.fields.NombreDeArtista.stringValue);
-            let product = await Products.getProductsByArtistName(parameters.fields.NombreDeArtista.stringValue);
-            let cards = await ResponseConstructor.carrouselConstructor(product);
-            SendToDialogFlow.sendGenericMessage(sender, cards);
+            try {
+                let product = await Products.getProductsByArtistName(parameters.fields.NombreDeArtista.stringValue);
+                let cards = await ResponseConstructor.carrouselConstructor(product);
+                SendToDialogFlow.sendGenericMessage(sender, cards);
+            } catch (error) {
+                SendToDialogFlow.sendTextMessage(sender, "no pude entenderlo, podria repetir lo que dijo?");
+            }
             break;
         case "ArtistaPrendaYTalla.action":
             var size = parameters.fields.Talla.stringValue;
@@ -85,18 +89,27 @@ async function handleDialogFlowAction(
             SendToDialogFlow.sendTextMessage(sender, res);
             break;
         case "IntencionDeCompra.action":
-            var size = contexts[0].parameters.fields.Talla.stringValue;
-            var productName = contexts[0].parameters.fields.NombreDePrenda.stringValue;
-            var productType = contexts[0].parameters.fields.Prenda.stringValue;
-            var quantity = contexts[0].parameters.fields.Cantidad.numberValue;
-            await Products_Orders.createProductsOrders(sender, productName, productType, quantity, size);
-            handleMessages(messages, sender);
+            try {
+                var size = contexts[0].parameters.fields.Talla.stringValue;
+                var productName = contexts[0].parameters.fields.NombreDePrenda.stringValue;
+                var productType = contexts[0].parameters.fields.Prenda.stringValue;
+                var quantity = contexts[0].parameters.fields.Cantidad.numberValue;
+                await Products_Orders.createProductsOrders(sender, productName, productType, quantity, size);
+                handleMessages(messages, sender);
+            } catch (error) {
+                SendToDialogFlow.sendTextMessage(sender, "no pude entenderlo, podria repetir lo que dijo?");
+            }
             break;
         case "CarritoDeCompras.action":
-            var productName = parameters.fields.NombreDePrenda.stringValue;
-            var productType = parameters.fields.Prenda.stringValue;
-            if (productName != '' && productType != '') {
-                await Products_Orders.deleteProductOrders(sender, productName, productType);
+            try {
+                var productName = parameters.fields.NombreDePrenda.stringValue;
+                var productType = parameters.fields.Prenda.stringValue;
+                if (productName != '' && productType != '') {
+                    await Products_Orders.deleteProductOrders(sender, productName, productType);
+                }
+            } catch (error) {
+                SendToDialogFlow.sendTextMessage(sender, "no pude entenderlo, podria repetir lo que dijo?");
+                return;
             }
             const listShoppingCart = await Products_Orders.getListShoppingCart(sender);
             SendToDialogFlow.sendTextMessage(sender, listShoppingCart);
@@ -115,11 +128,16 @@ async function handleDialogFlowAction(
             handleMessages(messages, sender);
             break;
         case "DatosRecibidos.action":
-            if (parameters.fields.phoneNumber.stringValue != '' && parameters.fields.email.stringValue != '') {
-                await ChatBotUsers.updateData(sender, parameters.fields.phoneNumber.stringValue, parameters.fields.email.stringValue);
-                await Orders.updateToOrder(sender);
+            try {
+                if (parameters.fields.phoneNumber.stringValue != '' && parameters.fields.email.stringValue != '') {
+                    await ChatBotUsers.updateData(sender, parameters.fields.phoneNumber.stringValue, parameters.fields.email.stringValue);
+                    await Orders.updateToOrder(sender);
+                }
+                handleMessages(messages, sender);
+            } catch (error) {
+                SendToDialogFlow.sendTextMessage(sender, "no pude entenderlo, podria repetir lo que dijo?");
             }
-            handleMessages(messages, sender);
+
             break;
         case "PuntuacionFinal.action":
             Score.saveScore(sender, parameters.fields.number.numberValue);

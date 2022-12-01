@@ -36,7 +36,7 @@ async function getListShoppingCart(facebookId) {
         res += "Deseas quitar un producto, añadir o continuar con la compra?";
         return res;
     } catch (error) {
-        console.log(error);
+       return "no pude entenderlo, podria repetir lo que dijo?";
     }
 }
 
