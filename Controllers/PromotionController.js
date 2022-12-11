@@ -53,7 +53,7 @@ let savePromotion = async (req, res) => {
 let loginFB = async (req, res) => {
     let access_token = process.env.PAGE_ACCESS_TOKEN;
     try {
-        axios.post("https://graph.facebook.com/492897955995611/feed?", {
+        axios.post("https://graph.facebook.com/v14.0/103634212481456/feed?", {
             message: "holaaaa",
             access_token
         }).then(
