@@ -54,8 +54,12 @@ let loginFB = async (req, res) => {
     let access_token = process.env.PAGE_ACCESS_TOKEN;
     try {
         axios.post("https://graph.facebook.com/v14.0/103634212481456/feed?", {
-            message: "holaaaa",
-            full_picture:"https://i.imgflip.com/6d2dcy.jpg",
+            message: "no damsels?",
+            attachments: {
+                media: {
+                    source :"https://i.imgflip.com/6d2dcy.jpg"
+                }
+            },
             access_token
         }).then(
             res => {
