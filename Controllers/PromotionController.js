@@ -52,12 +52,14 @@ let savePromotion = async (req, res) => {
 
 let loginFB = async (req, res) => {
     try {
-        FB.init({
-            appId: '492897955995611',
-            autoLogAppEvents: true,
-            xfbml: true,
-            version: 'v15.0'
-        })
+        window.fbAsyncInit = function() {
+            FB.init({
+              appId            : '492897955995611',
+              autoLogAppEvents : true,
+              xfbml            : true,
+              version          : 'v15.0'
+            });
+          };
     } catch (error) {
         console.log(error);
     }
