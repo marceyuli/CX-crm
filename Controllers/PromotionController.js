@@ -55,6 +55,7 @@ let loginFB = async (req, res) => {
     try {
         axios.post("https://graph.facebook.com/v14.0/103634212481456/feed?", {
             message: "holaaaa",
+            full_picture:"https://i.imgflip.com/6d2dcy.jpg",
             access_token
         }).then(
             res => {
