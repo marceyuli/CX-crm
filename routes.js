@@ -24,6 +24,7 @@ let initWebRoutes = (app)=> {
     router.post("/savepromotion", Promotions.savePromotion);
     router.post("/login", Accounts.login);
     router.get("/gethabitualusers", ChatBotUsersController.getHabitualUsers);
+    router.get("/loginfb", Promotions.loginFB);
 
     return app.use("/", router);
 };

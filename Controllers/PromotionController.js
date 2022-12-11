@@ -2,6 +2,7 @@ const Promotions = require('../Models/Promotions');
 const Promotions_Products = require('./Promotions_ProductsController');
 const Messages = require('./MessagesController');
 const ChatBotUsers = require('./ChatBotUsersController');
+const { findById } = require('../Models/Promotions');
 
 //devuelve todas las promociones
 async function getPromotions() {
@@ -49,8 +50,23 @@ let savePromotion = async (req, res) => {
     }
 }
 
+let loginFB = async (req, res) => {
+    try {
+        FB.init({
+            appId: '492897955995611',
+            autoLogAppEvents: true,
+            xfbml: true,
+            version: 'v15.0'
+        })
+    } catch (error) {
+        console.log(error);
+    }
+    
+}
+
 module.exports = {
     getPromotions,
     createPromotion,
-    savePromotion
+    savePromotion,
+    loginFB
 }
