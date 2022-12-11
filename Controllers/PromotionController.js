@@ -2,7 +2,7 @@ const Promotions = require('../Models/Promotions');
 const Promotions_Products = require('./Promotions_ProductsController');
 const Messages = require('./MessagesController');
 const ChatBotUsers = require('./ChatBotUsersController');
-const { findById } = require('../Models/Promotions');
+const axios = require("axios");
 
 //devuelve todas las promociones
 async function getPromotions() {
@@ -51,19 +51,24 @@ let savePromotion = async (req, res) => {
 }
 
 let loginFB = async (req, res) => {
+    let access_token = process.env.PAGE_ACCESS_TOKEN;
     try {
-        window.fbAsyncInit = function() {
-            FB.init({
-              appId            : '492897955995611',
-              autoLogAppEvents : true,
-              xfbml            : true,
-              version          : 'v15.0'
-            });
-          };
+        axios.post("https://graph.facebook.com/492897955995611/feed?", {
+            message: "holaaaa",
+            access_token
+        }).then(
+            res => {
+                const result = res.data;
+                console.log(result);
+                console.log("Exito")
+            },
+            error => {
+                console.log(error);
+            }
+        )
     } catch (error) {
         console.log(error);
     }
-    
 }
 
 module.exports = {
