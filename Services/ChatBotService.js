@@ -118,6 +118,7 @@ async function handleDialogFlowAction(
         case "PedirDatosDelCliente.action":
             var data = await ChatBotUsers.haveData(sender);
             if (data != "") {
+                UserVisits.saveFinishedConversation(sender);
                 let res = await DialogFlow.sendToDialogFlow(
                     data,
                     session,
@@ -133,7 +134,7 @@ async function handleDialogFlowAction(
                 if (parameters.fields.phoneNumber.stringValue != '' && parameters.fields.email.stringValue != '') {
                     await ChatBotUsers.updateData(sender, parameters.fields.phoneNumber.stringValue, parameters.fields.email.stringValue);
                     await Orders.updateToOrder(sender);
-                    await UserVisits.saveFinishedConversation(sender);
+                    UserVisits.saveFinishedConversation(sender);
                 }
                 handleMessages(messages, sender);
             } catch (error) {

@@ -18,7 +18,7 @@ async function saveUserVisit(facebookId) {
 async function saveFinishedConversation(facebookId) {
     let chatBotUser = await ChatBotUser.findOne({ facebookId });
     let userVisit = await UserVisit.findOneAndUpdate({ chatBotUserId: chatBotUser._id },
-        {$set:{finishedConversation: new Date()}});
+        { $set: { finishedConversation: new Date() } }, { sort: { createdAt: -1 } });
 }
 
 //Devuelve todos los usuarios que pertenezcan al prospecto (state=1) junto con la fecha de su ultima visita
