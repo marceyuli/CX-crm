@@ -10,9 +10,9 @@ async function getPromotions() {
     return cursor;
 }
 
-let getLastPromotion = async(req, res) =>{
+let getLastPromotion = async (req, res) => {
     try {
-        let lastPromotion = await Promotions.findOne().sort({created_at: -1});
+        let lastPromotion = await Promotions.findOne().sort({ createdAt: -1 });
         res.json(lastPromotion);
     } catch (error) {
         console.log(error);
@@ -63,7 +63,7 @@ let loginFB = async (req, res) => {
     try {
         axios.post("https://graph.facebook.com/v14.0/103634212481456/photos?", {
             message: ":D",
-            url:"https://www.metroworldnews.com/resizer/rBF6nDTfcpfdMnxY_ku21Xkn3bY=/800x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/metroworldnews/E7V4NSIU55BB3KBUNJFGRZWBQE.jpg",
+            url: "https://www.metroworldnews.com/resizer/rBF6nDTfcpfdMnxY_ku21Xkn3bY=/800x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/metroworldnews/E7V4NSIU55BB3KBUNJFGRZWBQE.jpg",
             access_token
         }).then(
             res => {
