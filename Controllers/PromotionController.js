@@ -42,6 +42,7 @@ let savePromotion = async (req, res) => {
         let products = data.products;
         let discount = parseInt(data.discount)
         discount = discount / 100;
+        postFacebook(data.description, data.picture);
         let promotion = await createPromotion(data.description, data.picture, discount);
         for (let j = 0; j < products.length; j++) {
             const element = products[j];
@@ -64,6 +65,28 @@ let loginFB = async (req, res) => {
         axios.post("https://graph.facebook.com/v14.0/103634212481456/photos?", {
             message: ":D",
             url: "https://www.metroworldnews.com/resizer/rBF6nDTfcpfdMnxY_ku21Xkn3bY=/800x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/metroworldnews/E7V4NSIU55BB3KBUNJFGRZWBQE.jpg",
+            access_token
+        }).then(
+            res => {
+                const result = res.data;
+                console.log(result);
+                console.log("Exito")
+            },
+            error => {
+                console.log(error);
+            }
+        )
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function postFacebook(message, url){
+    let access_token = process.env.PAGE_ACCESS_TOKEN;
+    try {
+        axios.post("https://graph.facebook.com/v14.0/103634212481456/photos?", {
+            message,
+            url,
             access_token
         }).then(
             res => {
