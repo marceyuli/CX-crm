@@ -10,6 +10,14 @@ async function getPromotions() {
     return cursor;
 }
 
+let getLastPromotion = async(req, res) =>{
+    try {
+        let lastPromotion = await Promotions.findOne().sort({created_at: -1});
+        res.json(lastPromotion);
+    } catch (error) {
+        console.log(error);
+    }
+}
 //crea una promocion y la devuelve
 async function createPromotion(description, picture, discount) {
     let promotion = new Promotions({
@@ -76,5 +84,6 @@ module.exports = {
     getPromotions,
     createPromotion,
     savePromotion,
-    loginFB
+    loginFB,
+    getLastPromotion
 }
