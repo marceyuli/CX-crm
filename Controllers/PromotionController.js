@@ -2,6 +2,7 @@ const Promotions = require('../Models/Promotions');
 const Promotions_Products = require('./Promotions_ProductsController');
 const Messages = require('./MessagesController');
 const ChatBotUsers = require('./ChatBotUsersController');
+const SendGridService = require('../Services/SendGridService');
 const axios = require("axios");
 
 //devuelve todas las promociones
@@ -10,7 +11,7 @@ async function getPromotions() {
     return cursor;
 }
 
-let getLastPromotion = async (req, res) => {
+let getLastPromotionJson = async (req, res) => {
     try {
         let lastPromotion = await Promotions.findOne().sort({ createdAt: -1 });
         res.json(lastPromotion);
@@ -18,6 +19,11 @@ let getLastPromotion = async (req, res) => {
         console.log(error);
     }
 }
+
+async function getLastPromotion() {
+    return await Promotions.findOne().sort({ createdAt: -1 });
+}
+
 //crea una promocion y la devuelve
 async function createPromotion(description, picture, discount) {
     let promotion = new Promotions({
@@ -53,6 +59,7 @@ let savePromotion = async (req, res) => {
             const element = activeClients[i];
             Messages.saveAndSendMessage(element.facebookId, data.description, data.picture);
         }
+        sendEmails(activeClients, promotion);
         res.json("ok");
     } catch (error) {
         console.log(error);
@@ -103,10 +110,15 @@ async function postFacebook(message, url){
     }
 }
 
+async function sendEmails(habitualUsers, lastPromotion){
+    SendGridService.sendEmails(habitualUsers, lastPromotion);
+}
+
 module.exports = {
     getPromotions,
     createPromotion,
     savePromotion,
     loginFB,
+    getLastPromotionJson,
     getLastPromotion
 }

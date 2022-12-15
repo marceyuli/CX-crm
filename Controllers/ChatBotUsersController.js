@@ -67,13 +67,17 @@ let getActiveClientData = async (req, res) => {
 }
 
 //conecta con api, devuelve todos los usuarios habituales
-let getHabitualUsers = async (req, res) => {
+let getHabitualUsersJson = async (req, res) => {
     try {
         let habitualClients = await ChatbotUser.find({state:3});
         res.json(habitualClients);
     } catch (error) {
         console.log(error);
     }
+}
+
+async function getHabitualUsers() {
+    return await ChatbotUser.find({state:4});
 }
 
 //si tiene asignado un email y un telefono los devuelve, sino devuelve una cadena vacia
@@ -122,5 +126,6 @@ module.exports = {
     getActiveClientData,
     getChatBotUser,
     getChatBotUserByState,
-    getHabitualUsers
+    getHabitualUsers,
+    getHabitualUsersJson
 }
