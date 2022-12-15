@@ -1,5 +1,5 @@
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey('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');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 async function sendEmails(habitualUsers, lastPromotion){
     habitualUsers.forEach(element => {
