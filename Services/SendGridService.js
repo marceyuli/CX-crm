@@ -11,7 +11,6 @@ async function sendEmail(email, firstName, description, picture) {
     const msg = {
         to: email, // Change to your recipient
         from: 'le_soleto@hotmail.com', // Change to your verified sender
-        subject: 'Te encantara esta nueva promocion' + firstName,
         templateId: "d-6c9966cb55134e89bb814b249e83c7cb",
         dynamic_template_data: { firstName, description, picture }
     }

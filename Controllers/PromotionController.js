@@ -41,12 +41,12 @@ async function createPromotion(description, picture, discount) {
 }
 
 //conecta con api, guarda una promocion, se le asigna a todos los productos y envia mensaje a todos los
-//clientes activos
+//clientes habituales
 let savePromotion = async (req, res) => {
     try {
         let data = req.body
         let products = data.products;
-        let discount = parseInt(data.discount)
+        let discount = parseInt(data.discount);
         discount = discount / 100;
         postFacebook(data.description, data.picture);
         let promotion = await createPromotion(data.description, data.picture, discount);
@@ -54,12 +54,12 @@ let savePromotion = async (req, res) => {
             const element = products[j];
             Promotions_Products.createPromotionsProducts(element.productName, element.productType, promotion);
         }
-        let activeClients = await ChatBotUsers.getChatBotUserByState(4);
-        for (let i = 0; i < activeClients.length; i++) {
-            const element = activeClients[i];
+        let habitualClients = await ChatBotUsers.getChatBotUserByState(4);
+        for (let i = 0; i < habitualClients.length; i++) {
+            const element = habitualClients[i];
             Messages.saveAndSendMessage(element.facebookId, data.description, data.picture);
         }
-        sendEmails(activeClients, promotion);
+        sendEmails(habitualClients, promotion);
         res.json("ok");
     } catch (error) {
         console.log(error);
