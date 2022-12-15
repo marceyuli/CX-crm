@@ -33,6 +33,11 @@ async function getListShoppingCart(facebookId) {
             res += "-" + product_orders.quantity + " " + product_orders.type + " " + product_orders.name + " de talla " + product_orders.size +
                 " con un precio de " + product_orders.price * product_orders.quantity + " Bs\n"
         });
+        shoppingCart.forEach(element => {
+            const product_orders = element.product_orders;
+            res += "-" + product_orders.quantity + " " + product_orders.type + " " + product_orders.name + " de talla " + product_orders.size +
+                " con un precio de " + product_orders.price * product_orders.quantity + " Bs\n"
+        });
         res += "Deseas quitar un producto, añadir o continuar con la compra?";
         return res;
     } catch (error) {
